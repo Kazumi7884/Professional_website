@@ -1,0 +1,42 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title>Angular</title>
+<link href="../CSS/styles.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+	    <!-- W3Schools Dropdown Navbar -->
+    <div class="navbar">
+        <a href="/index.html">Home</a>
+        <div class="dropdown">
+            <button class="dropbtn">Blogs 
+            <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="CSharp.html">C#</a>
+                <a href="Python.html">Python</a>
+                <a href="React.html">React</a>
+                <a href="Angular.html">Angular</a>
+                <a href="EthicalHacking.html">Ethical hacking</a>
+				<a href="CyberSecurity.html">Cyber Security</a>
+            </div>
+        </div> 
+    </div>
+	
+	
+	<div class="update-box" id="updateBox">
+  <h2>Latest Updates</h2>
+  <ul id="updateList">
+    <!-- Update items will be dynamically added here -->
+  </ul>
+</div>
+
+<script src="../JS/BoxScript.js"></script>
+
+
+	<div><h1>This page is the start of my Angular learning.</h1></div>
+	    <!-- Include PHP file to display all posts -->
+    <?php include_once 'display_all_posts.php'; ?>
+</body>
+</html>

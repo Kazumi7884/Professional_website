@@ -1,0 +1,36 @@
+<?php
+// Include database connection code
+include_once 'database.php';
+
+// Array of table names
+$tables = array("angular_posts", "csharp_posts", "react_posts", "ethicalhacking_posts", "cybersecurity_posts", "python_posts");
+
+// Loop through tables
+foreach ($tables as $table) {
+    // Query to retrieve data from the current table
+    $sql = "SELECT * FROM $table";
+    
+    // Execute query
+    $result = $conn->query($sql);
+    
+    // Display table name
+    echo "<h2>$table Posts</h2>";
+    
+    // Check if there are results
+    if ($result->num_rows > 0) {
+        // Output data of each row
+        while($row = $result->fetch_assoc()) {
+            echo "<h3>Title: " . $row["title"]. "</h3>";
+            echo "<p>Content: " . $row["content"]. "</p>";
+            // Output additional columns as needed
+        }
+    } else {
+        echo "0 results";
+    }
+    
+    echo "<hr>"; // Add a horizontal line between posts from different tables
+}
+
+// Close connection
+$conn->close();
+?>

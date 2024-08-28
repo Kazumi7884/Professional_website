@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+    <channel>
+        <title>Personal Stuff Blogs</title>
+        <link>https://kazumi7884.co.uk/MainPages/</link>
+        <description>Blog posts related to personal stuff</description>
+        <language>en-us</language>
+        
+        <!-- About Me -->
+        <item>
+            <title>About Me Blog Post Title</title>
+            <link>https://kazumi7884.co.uk/MainPages/About/About.html</link>
+            <description><![CDATA[Short description or excerpt of the About Me blog post]]></description>
+            <pubDate>Fri, 22 Apr 2024 12:00:00 GMT</pubDate>
+        </item>
+
+        <!-- Phasmophobia Guide -->
+        <item>
+            <title>Phasmophobia Guide Blog Post Title</title>
+            <link>https://kazumi7884.co.uk/MainPages/OtherBlogs/Phasmophobia.html</link>
+            <description><![CDATA[Short description or excerpt of the Phasmophobia Guide blog post]]></description>
+            <pubDate>Sat, 23 Apr 2024 12:00:00 GMT</pubDate>
+        </item>
+
+        <!-- Service 3 -->
+        <item>
+            <title>Service 3 Blog Post Title</title>
+            <link>https://kazumi7884.co.uk/MainPages/service3.html</link>
+            <description><![CDATA[Short description or excerpt of the Service 3 blog post]]></description>
+            <pubDate>Sun, 24 Apr 2024 12:00:00 GMT</pubDate>
+        </item>
+    </channel>
+</rss>

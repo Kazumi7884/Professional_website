@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+    <link href="CSS/CSS/styles.css" rel="stylesheet" type="text/css"> <!-- Link to your CSS file -->
+    <style>
+        /* Additional CSS for update box */
+        .update-box {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px auto;
+            width: 300px;
+        }
+
+        .update-box a {
+            color: #007bff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <header>
+        <!-- Your navbar code here -->
+    </header>
+
+    <!-- Main Content -->
+    <main class="content">
+        <h1>Welcome to your website!</h1>
+        <p>This is your main content area. You can add your existing content here.</p>
+        <!-- Add your original content here -->
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed lobortis hendrerit ante a vestibulum. Donec ultricies justo at eros scelerisque, vel feugiat odio venenatis. Fusce id arcu id massa sollicitudin pharetra.</p>
+    </main>
+
+    <!-- Update Box -->
+    <div class="update-box">
+        <!-- Dynamically generated content will be inserted here -->
+    </div>
+
+    <!-- JavaScript for generating update content -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Extract relevant information from the page
+            const pageTitle = document.title;
+            const pageURL = window.location.href;
+
+            // Generate update content
+            const updateDescription = `New content available: ${pageTitle}`;
+            const updateLink = `<a href="${pageURL}">View</a>`;
+
+            // Create update box content
+            const updateContent = `<div>${updateDescription} - ${updateLink}</div>`;
+
+            // Insert update box content into the update box
+            document.querySelector('.update-box').innerHTML = updateContent;
+        });
+    </script>
+
+    <!-- CSS Validation Section -->
+    <footer>
+        <p>This website via validation through <a href="https://jigsaw.w3.org/css-validator/validator">The W3 CSS Validation Service</a> has passed W3 CSS Level 3 validation</p>
+        <div>
+            <p>
+                <a href="http://jigsaw.w3.org/css-validator/check/referer">
+                    <img style="border:0;width:88px;height:31px" src="http://jigsaw.w3.org/css-validator/images/vcss" alt="Valid CSS!">
+                </a>
+            </p>
+            <p>
+                <a href="http://jigsaw.w3.org/css-validator/check/referer">
+                    <img style="border:0;width:88px;height:31px" src="http://jigsaw.w3.org/css-validator/images/vcss-blue" alt="Valid CSS!">
+                </a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C# Blog 1</title>
+    <link href="../../../../CSS/CSS/styles.css" rel="stylesheet" type="text/css">
+    <!-- Link to your CSS file -->
+  </head>
+  <body>
+    <!-- Navbar -->
+    <header>
+      <nav class="navbar">
+        <a href="/index.html">Home</a>
+        <!-- Home link -->
+        <div class="dropdown">
+          <button class="dropbtn">Learning Blogs</button>
+          <!-- Dropdown button -->
+          <div class="dropdown-content">
+            <!-- Dropdown links -->
+            <a href="../CSharp.html">C#</a>
+            <a href="../../Python/Python.html">Python</a>
+            <a href="../../React/React.html">React</a>
+            <a href="../../Angular/Angular.html">Angular</a>
+            <a href="../../EthicalHacking/EthicalHacking.html">Ethical hacking</a>
+            <a href="../../CyberSecurity/CyberSecurity.html">Cyber Security</a>
+          </div>
+        </div>
+        <div class="dropdown">
+          <button class="dropbtn">Personal stuff</button>
+          <!-- Dropdown button -->
+          <div class="dropdown-content">
+            <!-- Dropdown links -->
+            <a href="../../../About/About.html">About me</a>
+            <a href="CSharp1.html">Phasmophobia Guide</a>
+            <a href="../CSharp.html">Service 3</a>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <section class="card-container">
+      <!-- Added class to section -->
+      <div class="card">
+        <!-- Added class to div -->
+        <h3>10/05/24</h3>
+        <h1>Blog 1: The Console Apps Overview and Examples</h1>
+        <h2>What is a "Console" App and Why Use It?</h2>
+        <p>Console apps are applications that make use of the Windows Terminal. This can be a Command Prompt, PowerShell Terminal, DOS interface, or other similar programs. They are particularly useful for tasks requiring text-based interaction or automation, such as system administration, data processing, and testing.</p>
+        <p>Developers often use console apps for prototyping, debugging, and learning purposes. They provide a lightweight and straightforward environment for experimenting with code snippets or implementing simple utilities.</p>
+        <div class="card-footer">
+          <!-- Added class to div -->
+          <h4>How I've Incorporated This:</h4>
+          <p>In my recent project, I utilized console apps to automate repetitive tasks in data analysis. By leveraging the simplicity and flexibility of console-based interfaces, I streamlined data processing workflows, reducing manual effort and increasing productivity. By utilising the console windows I've been able to create basic outputs for my needs, these windows can come from different files but typically on a Windows install will default to a Command Prompt or a CMD window; although PowerShell is also used.</p>
+          <!-- The following is code using an example batch file --->
+          <p>
+          The following is an example code using a batch file which will perform  basic Windows repairs.
+          <pre>
+          @echo off
+rem this is system file check
+rem pause pauses the program to make you put a keystroke in to continue
+rem like how you pause and unpause a game
+sfc /scannow
+pause
+rem this is deployment image servicing and management
+rem basically does an online check with microsofts database
+DISM /Online /Cleanup-Image /CheckHealth
+DISM /Online /Cleanup-Image /ScanHealth
+DISM /Online /Cleanup-Image /RestoreHealth
+pause
+rem chkdsk is check disk
+rem delete until it matches the drives you have
+chkdsk /f /r /b /perf /scan c:
+pause
+rem this defrags all hdd's you have at normal priority instead of low thanks to /c and /h
+defrag /c /u /v /x /h
+pause cleanmgr.exe /autoclean
+cleanmgr.exe /d c /verylowdisk
+
+exit
+rem exit exits the program
+rem v2.0 - added defrag capability
+rem v3.0 added disk cleanup capability
+          </pre>
+           By using this, Windows is using SFC which is a System File Check, DISM which is Deployment Image Servicing and Management and CHKDSK which is a Check Disk. SFC scans the current Windows system for corrupted files and then download and replace any files found to be corrupted.
+          </p>
+        </div>
+      </div>
+    </section>
+    <!-- Footer -->
+    <footer>
+      <p>&copy;Kazumi7884 - <span id="currentYear"></span>
+      </p>
+    </footer>
+    <!-- JavaScript for displaying current year -->
+    <script>
+      document.getElementById("currentYear").innerText = new Date().getFullYear();
+    </script>
+  </body>
+</html>
