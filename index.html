@@ -5,17 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Welcome</title>
     <link href="CSS/CSS/styles.css" rel="stylesheet" />
-    <style>
-      .discord-widget {
-          position: fixed;
-          bottom: 10px;
-          right: 10px;
-          width: 350px;
-          height: 500px;
-          border: medium #19A0E1;
-          z-index: 1000;
-      }
-    </style>
   </head>
 
   <body>
@@ -76,20 +65,50 @@
 
     <div class="update-box"></div>
 
+    <div id="discord-widget-container">
+      <button id="hide-discord">Hide Discord</button>
+      <iframe
+        id="discord-widget"
+        src="https://discord.com/widget?id=1217488512140705903&theme=dark"
+        width="350" height="500"
+        allowtransparency="true" 
+        frameborder="0"
+        sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+      ></iframe>
+    </div>
+
     <script>
       document.addEventListener('DOMContentLoaded', function() {
-          const pageTitle = document.title;
-          const pageURL = window.location.href;
-          const updateContent = `
-              <div>New content available: ${pageTitle} - <a href="${pageURL}">View</a></div>`;
-          document.querySelector('.update-box').innerHTML = updateContent;
+        const pageTitle = document.title;
+        const pageURL = window.location.href;
+        const updateContent = `
+            <div>New content available: ${pageTitle} - <a href="${pageURL}">View</a></div>`;
+        document.querySelector('.update-box').innerHTML = updateContent;
       });
     </script>
 
-    <iframe
-      class="discord-widget"
-      src="https://discord.com/widget?id=1217488512140705903&theme=dark"
-      sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
-    ></iframe>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const hideButton = document.getElementById('hide-discord');
+        const showButton = document.createElement('button');
+        showButton.id = 'show-discord';
+        showButton.textContent = 'Show Discord';
+        const widgetContainer = document.getElementById('discord-widget-container');
+        const discordWidget = document.getElementById('discord-widget');
+
+        hideButton.addEventListener('click', function() {
+          discordWidget.style.display = 'none';
+          hideButton.style.display = 'none';
+          widgetContainer.insertBefore(showButton, discordWidget);
+          showButton.style.display = 'block';
+        });
+
+        showButton.addEventListener('click', function() {
+          discordWidget.style.display = 'block';
+          showButton.style.display = 'none';
+          hideButton.style.display = 'block';
+        });
+      });
+    </script>
   </body>
 </html>
