@@ -44,9 +44,9 @@
       </nav>
     </header>
 
-    <main>
-      <div class="content">
-        <h1>Welcome to My Personal Learning Journey!</h1>
+    <main class="content">
+      <section class="section">
+        <h1 class="section-title">Welcome to My Personal Learning Journey!</h1>
         <p>Explore my journey through various programming languages and cybersecurity topics.</p>
         <p>Current focus areas:</p>
         <ul>
@@ -62,9 +62,30 @@
           <li>Insights from Udemy courses and personal projects</li>
         </ul>
         <p>While currently built with HTML, CSS, and basic JavaScript, this site will evolve as I expand my skills. Stay tuned for ongoing improvements and a more personalized experience!</p>
-      </div>
+      </section>
 
-      <div>
+      <section class="section">
+        <h2 class="section-title">Current Focus Areas</h2>
+        <p>Explore my journey through various programming languages and cybersecurity topics.</p>
+        <p>Current focus areas:</p>
+        <ul>
+          <li>C# Masterclass</li>
+          <li>React and Angular frameworks</li>
+          <li>Ethical Hacking and Cyber Security</li>
+          <li>Quick Reference Guide for Phasmophobia</li>
+        </ul>
+        <p>This website serves as a dynamic portfolio of my learning progress, featuring:</p>
+        <ul>
+          <li>Dedicated blogs for each programming language and topic</li>
+          <li>Regular updates on my learning journey</li>
+          <li>Insights from Udemy courses and personal projects</li>
+        </ul>
+        <p>While currently built with HTML, CSS, and basic JavaScript, this site will evolve as I expand my skills. Stay tuned for ongoing improvements and a more personalized experience!</p>
+      </section>
+
+      <div class="update-box"></div>
+
+      <div class="validation">
         <p>This website via validation through <a href="https://jigsaw.w3.org/css-validator/validator">The W3 CSS Validation Service</a> has passed W3 CSS Level 3 validation</p>
         <p>
           <a href="http://jigsaw.w3.org/css-validator/check/referer">
@@ -73,18 +94,6 @@
         </p>
       </div>
     </main>
-
-    <div class="update-box"></div>
-
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-          const pageTitle = document.title;
-          const pageURL = window.location.href;
-          const updateContent = `
-              <div>New content available: ${pageTitle} - <a href="${pageURL}">View</a></div>`;
-          document.querySelector('.update-box').innerHTML = updateContent;
-      });
-    </script>
 
     <iframe
       class="discord-widget"

@@ -2,8 +2,8 @@
 
 /* Body */
 body {
-  background: linear-gradient(to bottom, #2c0e37, #1a0b29);
-  color: #f0e6ff;
+  background: linear-gradient(to bottom, #0a1f2b, #1a3a4a);
+  color: #e0f0ff;
   font-family: 'Open Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 16px;
   line-height: 1.6;
@@ -17,14 +17,14 @@ h1, h2, h3, h4, h5, h6 {
   font-family: 'Roboto', 'Arial', sans-serif;
   margin: 20px 0 10px;
   padding: 10px;
-  color: #ff79c6;
+  color: #7bf1ff;
   font-weight: 700;
   line-height: 1.2;
 }
 
 h1 {
   font-size: 2.5em;
-  border-bottom: 2px solid #bd93f9;
+  border-bottom: 2px solid #00ffff;
   padding-bottom: 10px;
 }
 
@@ -41,21 +41,21 @@ p {
 
 /* Links */
 a {
-  color: #ff79c6;
+  color: #7bf1ff;
   text-decoration: underline;
   text-underline-offset: 2px;
   transition: color 0.3s ease-in-out;
 }
 
 a:hover, a:focus {
-  color: #bd93f9;
+  color: #00ffff;
   text-decoration: none;
 }
 
 /* Buttons */
 button {
-  background-color: #ff79c6;
-  color: #1a0b29;
+  background-color: #00ffff;
+  color: #0a1f2b;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
@@ -67,34 +67,34 @@ button {
 }
 
 button:hover {
-  background-color: #bd93f9;
+  background-color: #7bf1ff;
   transform: translateY(-2px);
 }
 
 /* Form Elements */
 input[type="text"] {
-  background-color: #2c0e37;
-  color: #f0e6ff;
-  border: 1px solid #bd93f9;
+  background-color: #0a1f2b;
+  color: #e0f0ff;
+  border: 1px solid #00ffff;
   padding: 8px 12px;
   border-radius: 5px;
   transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 input[type="text"]:focus {
-  border-color: #ff79c6;
+  border-color: #7bf1ff;
   outline: none;
-  box-shadow: 0 0 10px rgba(255, 121, 198, 0.5);
+  box-shadow: 0 0 10px rgba(123, 241, 255, 0.5);
 }
 
 ::placeholder {
-  color: #bd93f9;
+  color: #7bf1ff;
 }
 
 /* Navbar */
 .navbar {
-  background-color: #1a0b29;
-  color: #f0e6ff;
+  background-color: #0a1f2b;
+  color: #e0f0ff;
   padding: 10px 20px;
   display: flex;
   justify-content: space-between;
@@ -102,36 +102,24 @@ input[type="text"]:focus {
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.navbar a {
+.navbar a, .dropdown .dropbtn {
   font-size: 16px;
-  color: #f0e6ff;
+  color: #e0f0ff;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
   transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 }
 
-.dropdown .dropbtn {
-  font-size: 16px;
-  border: none;
-  outline: none;
-  color: #f0e6ff;
-  padding: 14px 16px;
-  background-color: inherit;
-  font-family: inherit;
-  margin: 0;
-  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
-}
-
 .navbar a:hover, .dropdown:hover .dropbtn {
-  background-color: #ff79c6;
-  color: #1a0b29;
+  background-color: #00ffff;
+  color: #0a1f2b;
 }
 
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: #2c0e37;
+  background-color: #1a3a4a;
   min-width: 160px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   z-index: 1;
@@ -139,17 +127,15 @@ input[type="text"]:focus {
 }
 
 .dropdown-content a {
-  float: none;
-  color: #f0e6ff; 
+  color: #e0f0ff; 
   padding: 12px 16px;
-  text-decoration: none;
   display: block;
   text-align: left;
 }
 
 .dropdown-content a:hover {
-  background-color: #ff79c6;
-  color: #1a0b29;
+  background-color: #00ffff;
+  color: #0a1f2b;
 }
 
 .dropdown:hover .dropdown-content {
@@ -158,13 +144,13 @@ input[type="text"]:focus {
 
 /* Cards */
 .card {
-  background-color: #2c0e37;
-  color: #f0e6ff;
+  background-color: #1a3a4a;
+  color: #e0f0ff;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
-  border: 1px solid #bd93f9;
+  border: 1px solid #00ffff;
 }
 
 .card:hover {
@@ -183,8 +169,8 @@ input[type="text"]:focus {
 
 /* Update Box */
 .update-box {
-  background-color: #2c0e37;
-  border: 1px solid #bd93f9;
+  background-color: #1a3a4a;
+  border: 1px solid #00ffff;
   padding: 20px;
   border-radius: 5px;
   width: 300px;
@@ -194,7 +180,7 @@ input[type="text"]:focus {
 
 .update-box h2 {
   margin-top: 0;
-  color: #ff79c6;
+  color: #7bf1ff;
 }
 
 .update-box ul {
@@ -204,11 +190,11 @@ input[type="text"]:focus {
 
 .update-box li {
   margin-bottom: 10px;
-  color: #f0e6ff;
+  color: #e0f0ff;
 }
 
 .update-box a {
-  color: #ff79c6;
+  color: #7bf1ff;
   text-decoration: none;
 }
 
@@ -218,8 +204,8 @@ input[type="text"]:focus {
 
 /* Footer */
 footer {
-  background-color: #1a0b29;
-  color: #f0e6ff;
+  background-color: #0a1f2b;
+  color: #e0f0ff;
   padding: 20px;
   text-align: center;
   box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
@@ -236,7 +222,7 @@ footer {
 .discord-widget {
   width: 350px;
   height: 500px;
-  border: 2px solid #bd93f9;
+  border: 2px solid #00ffff;
   border-radius: 10px;
   overflow: hidden;
 }
@@ -278,28 +264,26 @@ footer {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  background-color: rgba(44, 14, 55, 0.8);
+  background-color: rgba(26, 58, 74, 0.8);
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 code {
-  background-color: #1a0b29;
-  color: #ff79c6;
+  background-color: #0a1f2b;
+  color: #7bf1ff;
   padding: 2px 4px;
   border-radius: 3px;
   font-family: 'Courier New', Courier, monospace;
 }
 
 blockquote {
-  border-left: 4px solid #ff79c6;
+  border-left: 4px solid #00ffff;
   padding-left: 20px;
   margin-left: 0;
   font-style: italic;
-  color: #bd93f9;
+  color: #7bf1ff;
 }
-
-
 
 /* Phasmophobia Styles */
 .phasmophobia-section {
@@ -309,8 +293,8 @@ blockquote {
 }
 
 .phasmophobia-card {
-  background-color: #2c0e37;
-  border: 1px solid #bd93f9;
+  background-color: #1a3a4a;
+  border: 1px solid #00ffff;
   border-radius: 10px;
   padding: 20px;
   margin-bottom: 20px;
@@ -324,22 +308,19 @@ blockquote {
 }
 
 .phasmophobia-card h2 {
-  color: #ff79c6;
+  color: #7bf1ff;
   font-size: 24px;
   margin-top: 0;
   margin-bottom: 15px;
-  border-bottom: 2px solid #bd93f9;
+  border-bottom: 2px solid #00ffff;
   padding-bottom: 10px;
 }
 
-.phasmophobia-card p {
-  color: #f0e6ff;
-  font-size: 16px;
-  line-height: 1.6;
+.phasmophobia-card p, .phasmophobia-card ul, .phasmophobia-card ol, .phasmophobia-card li {
+  color: #e0f0ff;
 }
 
 .phasmophobia-card ul, .phasmophobia-card ol {
-  color: #f0e6ff;
   padding-left: 20px;
 }
 
@@ -354,18 +335,18 @@ blockquote {
 }
 
 .phasmophobia-card th, .phasmophobia-card td {
-  border: 1px solid #bd93f9;
+  border: 1px solid #00ffff;
   padding: 10px;
   text-align: left;
 }
 
 .phasmophobia-card th {
-  background-color: #3c1a47;
-  color: #ff79c6;
+  background-color: #0a1f2b;
+  color: #7bf1ff;
 }
 
 .phasmophobia-card tr:nth-child(even) {
-  background-color: #341640;
+  background-color: #1a3a4a;
 }
 
 .phasmophobia-grid {
@@ -388,12 +369,12 @@ blockquote {
 }
 
 .phasmophobia-card a {
-  color: #ff79c6;
+  color: #7bf1ff;
   text-decoration: none;
   transition: color 0.3s ease-in-out;
 }
 
 .phasmophobia-card a:hover {
-  color: #bd93f9;
+  color: #00ffff;
   text-decoration: underline;
 }
