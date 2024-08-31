@@ -233,7 +233,7 @@ footer {
   z-index: 1000;
 }
 
-#hide-discord, #show-discord {
+#show-discord, #hide-discord {
   display: block;
   padding: 10px;
   background-color: #7289DA;
@@ -241,10 +241,9 @@ footer {
   border: none;
   cursor: pointer;
   border-radius: 5px;
-  margin-bottom: 10px;
 }
 
-#show-discord {
+#discord-widget-wrapper {
   display: none;
 }
 

@@ -9,8 +9,8 @@
 
   <body>
     <header>
-      <nav class="navbar">
-        <a href="/index.html">Home</a>
+      <div class="navbar">
+        <a href="index.html">Home</a>
         <div class="dropdown">
           <button class="dropbtn">Learning Blogs</button>
           <div class="dropdown-content">
@@ -27,10 +27,10 @@
           <div class="dropdown-content">
             <a href="MainPages/About/About.html">About me</a>
             <a href="MainPages/OtherBlogs/Phasmophobia.html">Phasmophobia Guide</a>
-            <a href="service3.html">Service 3</a>
+            <a href="MainPages/OtherBlogs/Setup.html">My Setup</a>
           </div>
         </div>
-      </nav>
+      </div>
     </header>
 
     <main>
@@ -104,9 +104,13 @@
         });
 
         showButton.addEventListener('click', function() {
-          discordWidget.style.display = 'block';
+          widgetWrapper.style.display = 'block';
           showButton.style.display = 'none';
-          hideButton.style.display = 'block';
+        });
+
+        hideButton.addEventListener('click', function() {
+          widgetWrapper.style.display = 'none';
+          showButton.style.display = 'block';
         });
       });
     </script>
