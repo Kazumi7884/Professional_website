@@ -5,8 +5,8 @@ The main website source lives in **Kazumi7884/Professional_website**, on **main*
 V5.2 adds a local writing desk and three high-contrast themes.
 Run `python tools/site.py studio` to write posts in your browser.
 See [the writing guide](docs/WRITING.md) for the complete workflow.
-This is the refreshed V5 personal website: learning notebooks, blog posts,
-project pages and distinct hobby sections. It builds ordinary HTML, CSS and
+This is the refreshed V5 personal website: C# learning notes, misc blog posts,
+Phasmophobia research, Steam visualisations and distinct hobby sections. It builds ordinary HTML, CSS and
 JavaScript. The web host does not need Python, Node, a database or containers.
 
 Start with [the update guide](docs/UPDATING.md). It covers pulling, committing,
