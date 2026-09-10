@@ -114,6 +114,24 @@
     url.hash = 'post-body';
     copy(url.href, event.currentTarget, document.querySelector('[data-copy-status]'));
   });
+  const progress = document.querySelector('[data-reading-progress]');
+  const article = document.querySelector('[data-article-body]');
+  if (progress && article) {
+    let frame;
+    const updateProgress = () => {
+      frame = undefined;
+      const bounds = article.getBoundingClientRect();
+      const total = Math.max(1, article.scrollHeight - window.innerHeight * .55);
+      const travelled = Math.min(total, Math.max(0, -bounds.top + window.innerHeight * .2));
+      const value = Math.round((travelled / total) * 100);
+      progress.style.transform = `scaleX(${value / 100})`;
+      progress.setAttribute('aria-valuenow', String(value));
+    };
+    const requestProgress = () => { if (frame === undefined) frame = requestAnimationFrame(updateProgress); };
+    window.addEventListener('scroll', requestProgress, {passive: true});
+    window.addEventListener('resize', requestProgress);
+    requestProgress();
+  }
   document.querySelectorAll('.prose pre').forEach(pre => {
     pre.tabIndex = 0;
     pre.setAttribute('aria-label', 'Code example; scroll horizontally if needed');
