@@ -66,7 +66,9 @@
     $('post-title').value = meta.title || '';
     $('post-summary').value = meta.description || '';
     $('post-date').value = String(meta.date || today()).slice(0, 10);
-    $('post-kind').value = meta.entryType || 'page';
+    const kind = meta.entryType || 'page';
+    if (![...$('post-kind').options].some(option => option.value === kind)) $('post-kind').add(new Option(kind, kind));
+    $('post-kind').value = kind;
     if (!document) $('post-kind').value = 'post';
     $('post-tags').value = (meta.tags || []).join(', ');
     $('post-body').value = document?.body || '';

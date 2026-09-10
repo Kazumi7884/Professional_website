@@ -151,14 +151,14 @@ def optimise_html(document, route, aliases):
 
 def build():
     started = time.perf_counter()
-    config = json.loads((ROOT / 'site.json').read_text())
+    config = json.loads((ROOT / 'site.json').read_text(encoding='utf-8'))
     if not re.fullmatch(r'https://[a-zA-Z0-9.-]+(?::[0-9]+)?', config['url']):
         raise ValueError('site.json url must be an HTTPS origin without a trailing slash')
     pages = read_pages()
     urls = [p['url'] for p in pages]
     if len(urls) != len(set(urls)):
         raise ValueError('Duplicate page URL; choose unique titles/slugs for taxonomy entries')
-    aliases = json.loads((ROOT / 'data/legacy-routes.json').read_text()) if (ROOT / 'data/legacy-routes.json').exists() else {}
+    aliases = json.loads((ROOT / 'data/legacy-routes.json').read_text(encoding='utf-8')) if (ROOT / 'data/legacy-routes.json').exists() else {}
     for old, new in aliases.items():
         route_path(old)
         if new not in urls:raise ValueError(f'Legacy redirect destination does not exist: {new}')
@@ -185,7 +185,7 @@ def build():
         assets[source.name] = '/' + dest.as_posix()
     env = Environment(loader=FileSystemLoader(ROOT / 'templates'), autoescape=select_autoescape(['html']))
     env.filters['slug'] = slug
-    data = {name: json.loads((ROOT / path).read_text()) for name, path in {
+    data = {name: json.loads((ROOT / path).read_text(encoding='utf-8')) for name, path in {
         'steam': 'data/steam.json', 'pc': 'data/pc.json', 'anime': 'static/data/anime.json',
         'ghosts': 'data/phasmophobia/ghosts.json', 'maps': 'data/phasmophobia/maps.json',
         'items': 'data/phasmophobia/items.json', 'general': 'data/phasmophobia/general.json'}.items()}

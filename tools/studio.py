@@ -86,7 +86,7 @@ def save_document(payload):
         raise ValueError('Keep the summary under 350 characters.')
     if type(supplied.get('draft')) is not bool:
         raise ValueError('Choose Draft or Ready for publishing.')
-    if supplied.get('entryType') not in ('post', 'project', 'resource', 'page', 'section'):
+    if supplied.get('entryType') not in ('post', 'project', 'resource', 'page', 'section', 'dashboard', 'phasmophobia', 'sitemap'):
         raise ValueError('Choose a valid entry type.')
     tags = supplied.get('tags', [])
     if not isinstance(tags, list) or len(tags) > 20 or any(not isinstance(t, str) or not t.strip() or len(t) > 60 for t in tags):

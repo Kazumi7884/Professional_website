@@ -20,8 +20,8 @@ OUT = ROOT / 'dist'
 
 
 def run():
-    report = json.loads((ROOT / '.cache/build.json').read_text())
-    config = json.loads((ROOT / 'site.json').read_text())
+    report = json.loads((ROOT / '.cache/build.json').read_text(encoding='utf-8'))
+    config = json.loads((ROOT / 'site.json').read_text(encoding='utf-8'))
     documents = {}
     for item in report['pages']:
         raw = (OUT / item['file']).read_text(encoding='utf-8')

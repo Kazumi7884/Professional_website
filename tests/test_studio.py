@@ -48,13 +48,13 @@ class StudioFiles(unittest.TestCase):
     def test_stale_revision_is_rejected(self):
         result = studio.save_document(self.data)
         self.data['revision'] = result['revision']
-        studio.content_path(self.data['path']).write_text(studio.content_path(self.data['path']).read_text() + '\nExternal edit\n')
+        studio.content_path(self.data['path']).write_text(studio.content_path(self.data['path']).read_text(encoding='utf-8') + '\nExternal edit\n', encoding='utf-8')
         with self.assertRaises(studio.Conflict): studio.save_document(self.data)
 
     def test_unknown_metadata_survives(self):
         result = studio.save_document(self.data)
         path = studio.content_path(self.data['path'])
-        path.write_text(path.read_text().replace('draft: true', 'draft: true\nurl: /my-original-url/\naliases: [/old/]\nlayout: journal'))
+        path.write_text(path.read_text(encoding='utf-8').replace('draft: true', 'draft: true\nurl: /my-original-url/\naliases: [/old/]\nlayout: journal'), encoding='utf-8')
         result = studio.read_document(path)
         self.data['revision'] = result['revision']
         self.data['metadata']['draft'] = False
@@ -94,6 +94,11 @@ class StudioFiles(unittest.TestCase):
         try: (self.root / 'content' / 'escape').symlink_to(self.root, target_is_directory=True)
         except OSError: self.skipTest('Symlink creation unavailable on this Windows account')
         with self.assertRaises(ValueError): studio.content_path('escape/post.md')
+
+    def test_specialised_page_types_survive_save(self):
+        for kind in ('dashboard', 'phasmophobia', 'sitemap'):
+            data = {**self.data, 'path': f'{kind}.md', 'metadata': {**self.data['metadata'], 'entryType': kind}}
+            self.assertEqual(studio.save_document(data)['metadata']['entryType'], kind)
 
     def test_catalogue_includes_drafts(self):
         studio.save_document(self.data)
@@ -144,7 +149,7 @@ class StudioHTTP(unittest.TestCase):
 class ThemeContrast(unittest.TestCase):
     def test_all_three_palettes_meet_high_contrast_text_target(self):
         import re
-        css = (ROOT / 'assets/css/site.css').read_text()
+        css = (ROOT / 'assets/css/site.css').read_text(encoding='utf-8')
         palettes = re.findall(r':root(?:\[data-theme="(?:halo|resident)"\])?\s*\{([^}]+)', css)[:3]
         self.assertEqual(len(palettes), 3)
         def luminance(colour):

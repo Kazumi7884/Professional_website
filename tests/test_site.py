@@ -22,11 +22,11 @@ spec.loader.exec_module(site)
 class BuildRegression(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.report = json.loads((ROOT / '.cache/build.json').read_text())
+        cls.report = json.loads((ROOT / '.cache/build.json').read_text(encoding='utf-8'))
         cls.pages = site.read_pages()
 
     def soup(self, url):
-        return BeautifulSoup((ROOT / 'dist' / site.route_path(url)).read_text(), 'html.parser')
+        return BeautifulSoup((ROOT / 'dist' / site.route_path(url)).read_text(encoding='utf-8'), 'html.parser')
 
     def test_all_authored_pages_migrated(self):
         authored = [p for p in self.pages if not p['synthetic']]
@@ -55,18 +55,18 @@ class BuildRegression(unittest.TestCase):
                 self.assertTrue((ROOT/'dist'/site.route_path(target)).exists())
 
     def test_watch_list_is_rendered_without_script(self):
-        items = json.loads((ROOT/'static/data/anime.json').read_text())['items']
+        items = json.loads((ROOT/'static/data/anime.json').read_text(encoding='utf-8'))['items']
         self.assertEqual(len(self.soup('/personal/anime/').select('.anime-entry')),len(items))
 
     def test_recovered_charts_all_render(self):
         self.assertEqual(len(self.soup('/personal/games/').select('.chart-grid figure')),15)
 
     def test_ghost_reference_is_rendered_without_script(self):
-        ghosts = json.loads((ROOT/'data/phasmophobia/ghosts.json').read_text())
+        ghosts = json.loads((ROOT/'data/phasmophobia/ghosts.json').read_text(encoding='utf-8'))
         self.assertEqual(len(self.soup('/personal/misc/phasmophobia/ghosts/').select('details.case-file')),len(ghosts))
 
     def test_nonsearchable_pages_stay_out_of_search(self):
-        index = json.loads((ROOT/'dist/search-index.json').read_text())
+        index = json.loads((ROOT/'dist/search-index.json').read_text(encoding='utf-8'))
         self.assertNotIn('/maintenance/',{p['url'] for p in index})
         self.assertEqual(len(index),len({p['url'] for p in index}))
 
@@ -124,7 +124,7 @@ class AuthoringSafety(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory, patch.object(site,'ROOT',Path(directory)):
             site.new_post('My note','learning/c-sharp/posts')
             path=Path(directory)/'content/learning/c-sharp/posts/my-note.md'
-            path.write_text(path.read_text().replace('draft: true','draft: false'))
+            path.write_text(path.read_text(encoding='utf-8').replace('draft: true','draft: false'), encoding='utf-8')
             pages=site.read_pages()
             self.assertIn('/learning/c-sharp/posts/my-note/',{p['url'] for p in pages})
 
