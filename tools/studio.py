@@ -171,9 +171,6 @@ def preview_html(body):
 
 
 def make_handler(token, port, build_fn):
-    origins = {f'http://127.0.0.1:{port}', f'http://localhost:{port}'}
-    hosts = {f'127.0.0.1:{port}', f'localhost:{port}'}
-
     class Handler(http.server.SimpleHTTPRequestHandler):
         def __init__(self, *args, **kwargs):
             super().__init__(*args, directory=str(ROOT / 'dist'), **kwargs)
@@ -194,6 +191,9 @@ def make_handler(token, port, build_fn):
             self.wfile.write(data)
 
         def trusted(self, api=False):
+            actual_port = self.server.server_address[1]
+            origins = {f'http://127.0.0.1:{actual_port}', f'http://localhost:{actual_port}'}
+            hosts = {f'127.0.0.1:{actual_port}', f'localhost:{actual_port}'}
             if self.headers.get('Host') not in hosts:
                 self.send_json({'error': 'This writing desk accepts localhost requests only.'}, 403)
                 return False
@@ -286,9 +286,16 @@ def make_handler(token, port, build_fn):
 def serve(port, build_fn):
     build_fn()
     token = secrets.token_urlsafe(32)
-    handler = make_handler(token, port, build_fn)
-    with http.server.ThreadingHTTPServer(('127.0.0.1', port), handler) as server:
-        print(f'Writing desk: http://127.0.0.1:{port}/__studio/ — Ctrl+C to stop.', flush=True)
+    try:
+        server = http.server.ThreadingHTTPServer(('127.0.0.1', port), make_handler(token, port, build_fn))
+    except OSError as exc:
+        if port == 0:
+            raise
+        print(f'Port {port} is unavailable ({exc}); selecting an available localhost port.', flush=True)
+        server = http.server.ThreadingHTTPServer(('127.0.0.1', 0), make_handler(token, 0, build_fn))
+    actual_port = server.server_address[1]
+    with server:
+        print(f'Writing desk: http://127.0.0.1:{actual_port}/__studio/ — Ctrl+C to stop.', flush=True)
         try:
             server.serve_forever()
         except KeyboardInterrupt:
