@@ -1,10 +1,10 @@
-/* V5.2 — three complete skins. Geometry and typography live below the tokens.
-   Shared text colours are deliberately high contrast against every surface. */
+/* V5.2 — three personal interfaces, not costume skins. Each has its own
+   paper/ink relationship while the layout stays recognisably Kaz's. */
 :root {
   color-scheme: light;
-  --bg: #edf0f4; --surface: #ffffff; --inset: #f3f5f8; --bar: #e5eaf1;
-  --ink: #151e2b; --muted: #3d4859; --line: #6f7c8e;
-  --accent: #163e8c; --green: #53338a; --focus: #9b220a; --code: #e8edf4;
+  --bg: #f1eee7; --surface: #fffdf8; --inset: #f6f1e8; --bar: #e7e0d3;
+  --ink: #1f2733; --muted: #35424e; --line: #72766f;
+  --accent: #123e62; --green: #713124; --focus: #8a2c16; --code: #ebe6dc;
   --body-font: 'Segoe UI', Arial, sans-serif;
   --heading-font: Georgia, 'Times New Roman', serif;
   --radius: 3px;
@@ -12,16 +12,16 @@
 }
 :root[data-theme="halo"] {
   color-scheme: dark;
-  --bg: #080d1b; --surface: #101c32; --inset: #0c1527; --bar: #202747;
-  --ink: #f2f6ff; --muted: #c0cee4; --line: #7183a9;
-  --accent: #8cddff; --green: #e5b4ff; --focus: #f5e481; --code: #070e1b;
+  --bg: #0c1420; --surface: #152337; --inset: #101c2d; --bar: #25344a;
+  --ink: #f0f4f3; --muted: #c3d0d0; --line: #728795;
+  --accent: #b4dfd5; --green: #f0d17e; --focus: #f2d56a; --code: #09111c;
   --heading-font: 'Arial Narrow', 'Segoe UI', sans-serif; --radius: 0px;
 }
 :root[data-theme="resident"] {
   color-scheme: dark;
-  --bg: #0d0f0f; --surface: #181b19; --inset: #111513; --bar: #292e29;
-  --ink: #f4f4e9; --muted: #c6cdc0; --line: #828c7b;
-  --accent: #e5d6a6; --green: #ffafa4; --focus: #f0dd8e; --code: #0a0d0b;
+  --bg: #101111; --surface: #1b1c1a; --inset: #141614; --bar: #292824;
+  --ink: #f0eadc; --muted: #c4bca9; --line: #857d6c;
+  --accent: #d8c38d; --green: #f2a499; --focus: #f2c86d; --code: #0b0c0b;
   --heading-font: Georgia, 'Times New Roman', serif; --radius: 0px;
 }
 * { box-sizing: border-box; }
@@ -252,7 +252,7 @@ audio { width: 100%; max-width: 480px; }
 .room-anime .page-heading { border-bottom-style: double; border-bottom-width: 5px; }
 .room-games .chart-grid { gap: 2rem; }
 .room-phasmo .page-heading { border-bottom-style: dashed; }
-/* Halo: Covenant colours, angular panels and wide, technical headings. */
+/* Halo: field-manual colours, angular panels and wide technical headings. */
 [data-theme="halo"] .site-header { border-top-color: var(--green); border-bottom: 2px solid var(--accent); }
 [data-theme="halo"] .page-heading h1 { letter-spacing: .035em; text-transform: uppercase; font-weight: 600; }
 [data-theme="halo"] .board-heading { border-left: 4px solid var(--green); background: var(--bar); }
@@ -261,7 +261,7 @@ audio { width: 100%; max-width: 480px; }
 [data-theme="halo"] .welcome-note { border-left: 0; border-top: 3px solid var(--accent); border-right: 1px solid var(--line); }
 [data-theme="halo"] .topic-mark { color: var(--accent); }
 [data-theme="halo"] .post-frame { border-top: 3px solid var(--accent); }
-/* Resident Evil: file tabs, typewriter metadata, restrained warning-red rules. */
+/* Resident Evil: case-file tabs, typewriter metadata and restrained warning-red rules. */
 [data-theme="resident"] .site-header { border-top-color: var(--green); }
 [data-theme="resident"] .site-brand strong { font-family: Georgia, serif; font-weight: 400; }
 [data-theme="resident"] .eyebrow, [data-theme="resident"] .topic-meta,
