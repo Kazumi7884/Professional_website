@@ -1,99 +1,120 @@
-# Writing posts and editing pages
+# Writing posts in V5.2
 
-Posts live in `content/`. A file called `_index.md` introduces a section; another
-Markdown filename becomes a page. For example,
-`content/learning/c-sharp/posts/my-first-lesson.md` becomes
-`/learning/c-sharp/posts/my-first-lesson/`.
+## First-time setup
 
-Create a draft with your environment's Python:
+Use the Windows or Linux setup commands in README.md once. The writing desk
+uses the same Python environment and requirements as the website build.
+
+## Open the writing desk
+
+From your website folder on Windows:
+
+```powershell
+.venv\Scripts\python.exe tools/site.py studio
+```
+
+On Linux:
+
+```bash
+.venv/bin/python tools/site.py studio
+```
+
+Open **http://127.0.0.1:8000/__studio/**. Keep the terminal running while you
+write. Stop it with Ctrl+C. If port 8000 is busy, add `--port 8001` and open the
+address printed in the terminal. Zen/Firefox works with the native controls;
+there is no browser-specific file-picker API or extra Node setup.
+
+## Create a post
+
+1. Click **New post**.
+2. Enter a title. The filename fills itself in; edit it before the first save
+   if you want a different address.
+3. Select a section. Use **blog** for a general blog post,
+   **personal/misc/writing/posts** for your journal, or a learning track's
+   **posts** folder for technical notes.
+4. Write a short summary, choose a date and add comma-separated tags.
+5. Write your text. Select text and use **Bold**, **Italic**, **Link** or the
+   other formatting buttons. The code button inserts a fenced block; replace
+   `text` after its opening backticks with `csharp`, `ruby`, `r` or your language.
+6. Use **Preview** or **Side by side** to check the article. The theme selector
+   previews the same three colour systems used by the website.
+7. Click **Save draft**, or use Ctrl+S (Cmd+S on macOS).
+
+The template menu inserts an outline at your cursor without replacing your
+existing text. Markdown stays editable in any text editor.
+
+## Edit an existing page
+
+Search by title or folder in the left-hand list, then click a page. The desk
+preserves existing aliases, custom URLs, layouts and other metadata that is
+not shown in the form. Existing filenames are locked to avoid breaking links.
+For a deliberate rename, use Git and add a redirect/alias as described below.
+
+The catalogue includes pages, resources and projects as well as posts. Preview
+shows the article text; specialised anime, hardware and games layouts should
+also be checked with **Build site**, then **View site**.
+
+## Draft recovery and file conflicts
+
+Changes are copied to this browser's local storage while you type. These
+recovery copies are not committed, are not synced by OneDrive and can be lost
+if browser data is cleared. **Save** is the step that writes your Markdown to
+the website folder. **Download Markdown** creates a portable backup.
+
+If a recovery copy exists when the desk opens, choose **Restore unsaved work**.
+If another editor or OneDrive changes a file after you opened it, the desk
+rejects the save instead of overwriting that newer version. Download your
+Markdown, reopen the page, compare the versions and copy your changes back.
+Work on one device at a time and let OneDrive finish syncing before switching.
+
+## Make a post publish-ready
+
+1. Add the summary, date and post text.
+2. Change Status to **Ready for publishing** and click **Save ready post**.
+3. Click **Build site**, then **View site**. Drafts remain excluded from the
+   generated website, search index and RSS feed.
+4. Run your usual check command and review the diff before committing.
+
+With your environment activated, the shared workflow is:
+
+```bash
+python tools/site.py check
+git status --short
+git diff -- content/
+git add content/
+git commit -m "Add my new post"
+git push
+```
+
+Without activation, replace `python` with `.venv\Scripts\python.exe` on Windows
+or `.venv/bin/python` on Linux. See UPDATING.md for pulling and resolving conflicts.
+Saving, marking ready and building are local actions; they do not upload or
+publish the website. See PUBLISHING.md for uploading the generated site.
+
+## Manual editing still works
 
 ```bash
 python tools/site.py new "My first lesson" --section learning/c-sharp/posts
 ```
 
-For a personal journal entry:
-
-```bash
-python tools/site.py new "A weekend on the bike" --section personal/misc/writing/posts
-```
-
-The command never overwrites an existing file. New drafts are excluded from the
-published site, search and feeds. Set `draft: false` when ready, then build.
-
-## Metadata
+A minimal post file looks like this:
 
 ```yaml
 ---
 title: My first lesson
-description: What I learned while making a small console program.
+description: What I learned about console input.
 date: '2026-09-10'
-lastmod: '2026-09-10'
 entryType: post
-draft: false
+draft: true
 tags:
-  - c-sharp
+  - C#
   - learning
 ---
 ```
 
-Use the real original publication date for `date`. Change `lastmod` when you
-make a meaningful update. The imported archive contains migration-era dates;
-check them against your original notes before correcting historical posts.
+Write Markdown after the closing `---`. Set `draft: false` when ready.
+You do not need to edit menus, HTML, an index or the RSS feed for a new post.
 
-Use `entryType: project` for a project and `entryType: resource` for a useful
-link or reference. These automatically populate Projects and Resources.
-
-## Article body
-
-Write Markdown below the second `---`. Start body headings with `##` because the
-template supplies the page's `h1`. Use `###` for a subsection. The contents list
-is generated from these headings.
-
-Put code in fenced blocks and name the language, such as `csharp`, `python`,
-`javascript`, `css` or `html`. Keep HTML, CSS and JavaScript examples in separate
-blocks. Explain what a block does in the paragraph beside it.
-
-Images belong in `static/assets/images/your-topic/`. Link to them from Markdown
-using the public path, for example:
-
-```markdown
-![Console output showing the calculated total](/assets/images/your-topic/console-output.webp)
-```
-
-Use your own screenshots and photographs when possible. Keep captions factual;
-do not present generated examples as work you personally completed. The build
-checks image files and records their dimensions automatically.
-
-## Rename a post without breaking old links
-
-Rename the Markdown file, then add the old public address to its metadata:
-
-```yaml
-aliases:
-  - /learning/c-sharp/posts/old-name/
-  - /learning/c-sharp/posts/old-name.html
-```
-
-The old addresses become redirects. Update internal links to the new path;
-the build also canonicalises known aliases.
-
-## Hobby data
-
-The anime list is a dated snapshot in `static/data/anime.json`. PC data lives in
-`data/pc.json`, Steam chart captions in `data/steam.json`, and game notes in
-`data/phasmophobia/`. Keep snapshot dates honest. Refreshing the site alone does
-not fetch a new list or verify current game mechanics.
-
-The original optional MyAnimeList sync tool is retained:
-
-```bash
-python tools/sync_myanimelist.py
-```
-
-Set `MAL_USERNAME` and `MAL_CLIENT_ID` in your ignored `.env.local` first. Keep
-that file off GitHub. This step contacts the official API; ordinary builds use
-the existing snapshot and need no credentials. After a successful sync, review
-`static/data/anime.json`, build/check, then commit the changed snapshot.
-
-The public post layout looks like a forum, but posting is done through these
-source files. There is no public discussion server or pretend reply counter.
+For a renamed post, keep the old URL under `aliases` in its metadata, for
+example `aliases: [/learning/c-sharp/posts/old-title/]`. Build and check before
+publishing. Do not reuse an alias that belongs to another page.

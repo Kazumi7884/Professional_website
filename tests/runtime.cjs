@@ -32,8 +32,8 @@ test('blocked storage never erases article content', () => {
   const before=authoredText();
   Object.defineProperty(dom.window,'localStorage',{get(){throw new Error('denied');}});
   dom.window.eval(script('theme-init.js'));start(dom);
-  change(dom,dom.window.document.querySelector('#theme-select'),'paper');
-  assert.equal(dom.window.document.documentElement.dataset.theme,'paper');
+  change(dom,dom.window.document.querySelector('#theme-select'),'balanced');
+  assert.equal(dom.window.document.documentElement.dataset.theme,'balanced');
   assert.equal(dom.window.document.querySelector('[data-article-body]'),article);
   assert.deepEqual(authoredText(),before);
   dom.window.close();
@@ -41,17 +41,17 @@ test('blocked storage never erases article content', () => {
 test('invalid stored theme is ignored', () => {
   const dom=page();dom.window.localStorage.setItem('kaz-interface-theme','<script>');
   dom.window.eval(script('theme-init.js'));
-  assert.equal(dom.window.document.documentElement.dataset.theme,'halo');dom.window.close();
+  assert.equal(dom.window.document.documentElement.dataset.theme,'balanced');dom.window.close();
 });
 test('valid saved preference applies before enhancement', () => {
-  const dom=page();dom.window.localStorage.setItem('kaz-interface-theme','paper');
+  const dom=page();dom.window.localStorage.setItem('kaz-interface-theme','balanced');
   dom.window.eval(script('theme-init.js'));start(dom);
-  assert.equal(dom.window.document.querySelector('#theme-select').value,'paper');dom.window.close();
+  assert.equal(dom.window.document.querySelector('#theme-select').value,'balanced');dom.window.close();
 });
 test('cross-tab preference updates only the theme', () => {
   const dom=page();start(dom);const before=dom.window.document.querySelector('main');
-  dom.window.dispatchEvent(new dom.window.StorageEvent('storage',{key:'kaz-interface-theme',newValue:'terminal'}));
-  assert.equal(dom.window.document.documentElement.dataset.theme,'terminal');
+  dom.window.dispatchEvent(new dom.window.StorageEvent('storage',{key:'kaz-interface-theme',newValue:'resident'}));
+  assert.equal(dom.window.document.documentElement.dataset.theme,'resident');
   assert.equal(dom.window.document.querySelector('main'),before);dom.window.close();
 });
 test('menu opens and Escape restores focus', () => {

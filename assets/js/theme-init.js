@@ -1,10 +1,11 @@
-/* Runs before first paint. Storage can be blocked, so a preference must never
-   prevent a page from loading. Themes only change the root attribute. */
+/* Apply a stored preference before first paint, including V5.1 migration. */
 (() => {
   'use strict';
-  const themes = ['halo', 'resident', 'balanced', 'terminal', 'sunset', 'paper'];
+  const themes = ['halo', 'resident', 'balanced'];
+  const legacy = { paper: 'balanced', terminal: 'resident', sunset: 'balanced' };
   try {
     const saved = localStorage.getItem('kaz-interface-theme');
-    if (themes.includes(saved)) document.documentElement.dataset.theme = saved;
-  } catch { /* Keep the readable default when storage is unavailable. */ }
+    const theme = legacy[saved] || saved;
+    if (themes.includes(theme)) document.documentElement.dataset.theme = theme;
+  } catch { /* The default remains readable with storage blocked. */ }
 })();

@@ -192,3 +192,20 @@ PC before resuming local work.
 
 Committing website source does not automatically upload it to Fasthosts. The
 [publishing guide](PUBLISHING.md) explains that separate step.
+
+## V5.2: write from the browser
+
+After pulling and installing the existing requirements, run `python tools/site.py studio`
+with your virtual environment's Python. Open http://127.0.0.1:8000/__studio/.
+The writing desk saves into `content/`; include those files in your normal commit.
+`Build site` refreshes `dist/`, which remains generated output.
+
+For this redesign branch, fetch and switch with a clean working tree:
+
+```bash
+git fetch origin
+git switch --track origin/codex/v5.2-writing-themes
+```
+
+If the branch already exists locally, use `git switch codex/v5.2-writing-themes`.
+After the pull request is merged, switch back to main and run `git pull --ff-only`.

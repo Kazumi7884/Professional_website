@@ -6,7 +6,7 @@
   const menu = document.querySelector('.nav-toggle');
   const navigation = document.querySelector('#site-navigation');
   const theme = document.querySelector('#theme-select');
-  const themes = ['halo', 'resident', 'balanced', 'terminal', 'sunset', 'paper'];
+  const themes = ['halo', 'resident', 'balanced'];
   const mobile = window.matchMedia('(max-width: 620px)');
 
   function closeMenu(restoreFocus = false) {
@@ -32,7 +32,7 @@
     mobile.addEventListener('change', () => closeMenu());
   }
   if (theme) {
-    theme.value = themes.includes(root.dataset.theme) ? root.dataset.theme : 'halo';
+    theme.value = themes.includes(root.dataset.theme) ? root.dataset.theme : 'balanced';
     theme.addEventListener('change', () => {
       if (!themes.includes(theme.value)) return;
       root.dataset.theme = theme.value;
@@ -45,6 +45,12 @@
       }
     });
   }
+
+  document.querySelector('[data-reading-mode]')?.addEventListener('click', event => {
+    const enabled = root.classList.toggle('reading-mode');
+    event.currentTarget.setAttribute('aria-pressed', String(enabled));
+    event.currentTarget.textContent = enabled ? 'Show author panel' : 'Reading view';
+  });
 
   // Read each card once. Filtering touches only hidden state; sorting moves the
   // existing nodes so image state and article markup are preserved.

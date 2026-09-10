@@ -1,6 +1,10 @@
-# Kaz's website — V5.1
+# Kaz's website — V5.2
 
 The main website source lives in **Kazumi7884/Professional_website**, on **main**.
+
+V5.2 adds a local writing desk and three high-contrast themes.
+Run `python tools/site.py studio` to write posts in your browser.
+See [the writing guide](docs/WRITING.md) for the complete workflow.
 This is the refreshed V5 personal website: learning notebooks, blog posts,
 project pages and distinct hobby sections. It builds ordinary HTML, CSS and
 JavaScript. The web host does not need Python, Node, a database or containers.
@@ -57,6 +61,7 @@ Replace `python` below with `.venv\Scripts\python.exe` on Windows or
 
 | Command | What it does |
 | --- | --- |
+| `python tools/site.py studio` | Open the local writing desk at http://127.0.0.1:8000/__studio/ |
 | `python tools/site.py build` | Generate `dist/` from the source |
 | `python tools/site.py check` | Build and run 50 page-level review goals plus integrity checks |
 | `python tools/site.py preview` | Build and serve on this device at port 8000 |
@@ -70,6 +75,7 @@ Replace `python` below with `.venv\Scripts\python.exe` on Windows or
 | Folder/file | Purpose |
 | --- | --- |
 | `content/` | Authored Markdown pages and post metadata |
+| `studio/` and `tools/studio.py` | Local browser editor; excluded from public builds |
 | `templates/page.html` | Shared layouts and section rendering |
 | `assets/css/site.css` | Theme colours, layout, mobile and print styling |
 | `assets/js/` | Menus, theme preference, filters and search |
@@ -85,3 +91,5 @@ See [writing posts](docs/WRITING.md), [publishing](docs/PUBLISHING.md),
 
 The post layout resembles a classic forum. It is an authored website: it does
 not invent public accounts, replies, visitor counts or a working discussion backend.
+
+See [V5.2 design and repository decisions](docs/V5.2-DESIGN.md) for the theme system and evaluated open-source projects.

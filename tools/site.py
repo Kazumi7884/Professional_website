@@ -50,10 +50,10 @@ def read_pages():
     pages = []
     for source in sorted((ROOT / 'content').rglob('*.md')):
         raw = source.read_text(encoding='utf-8')
-        parts = raw.split('---', 2)
-        if len(parts) != 3 or parts[0].strip():
+        match = re.match(r'\A---\s*\n(.*?)\n---[ \t]*(?:\n|$)(.*)\Z', raw, re.S)
+        if not match:
             raise ValueError(f'Missing front matter: {source.relative_to(ROOT)}')
-        meta = yaml.safe_load(parts[1])
+        meta = yaml.safe_load(match[1])
         if not isinstance(meta, dict) or not meta.get('title'):
             raise ValueError(f'Missing title: {source}')
         if meta.get('draft') is True:
@@ -65,7 +65,7 @@ def read_pages():
         route = meta.get('url', route)
         route_path(route)
         engine = markdown.Markdown(extensions=['extra', 'toc', 'sane_lists'], output_format='html')
-        body = engine.convert(parts[2])
+        body = engine.convert(match[2])
         plain = BeautifulSoup(body, 'html.parser').get_text(' ', strip=True)
         pages.append({**meta, 'url': route, 'title': str(meta['title']),
                       'description': str(meta.get('description') or plain[:155] or meta['title']),
@@ -288,11 +288,16 @@ def main():
     for name in ('build','check','package'):commands.add_parser(name)
     preview = commands.add_parser('preview')
     preview.add_argument('--port', type=int, default=8000)
+    studio = commands.add_parser('studio')
+    studio.add_argument('--port', type=int, default=8000)
     new = commands.add_parser('new')
     new.add_argument('title')
     new.add_argument('--section', default='learning/c-sharp/posts')
     args = parser.parse_args()
     if args.command == 'new':return new_post(args.title, args.section)
+    if args.command == 'studio':
+        from studio import serve
+        return serve(args.port, build)
     build()
     if args.command in ('check','package'):
         from audit import run
