@@ -50,10 +50,10 @@ def read_pages():
     pages = []
     for source in sorted((ROOT / 'content').rglob('*.md')):
         raw = source.read_text(encoding='utf-8')
-        parts = raw.split('---', 2)
-        if len(parts) != 3 or parts[0].strip():
+        match = re.match(r'\A---\s*\n(.*?)\n---[ \t]*(?:\n|$)(.*)\Z', raw, re.S)
+        if not match:
             raise ValueError(f'Missing front matter: {source.relative_to(ROOT)}')
-        meta = yaml.safe_load(parts[1])
+        meta = yaml.safe_load(match[1])
         if not isinstance(meta, dict) or not meta.get('title'):
             raise ValueError(f'Missing title: {source}')
         if meta.get('draft') is True:
@@ -65,7 +65,7 @@ def read_pages():
         route = meta.get('url', route)
         route_path(route)
         engine = markdown.Markdown(extensions=['extra', 'toc', 'sane_lists'], output_format='html')
-        body = engine.convert(parts[2])
+        body = engine.convert(match[2])
         plain = BeautifulSoup(body, 'html.parser').get_text(' ', strip=True)
         pages.append({**meta, 'url': route, 'title': str(meta['title']),
                       'description': str(meta.get('description') or plain[:155] or meta['title']),
@@ -151,14 +151,14 @@ def optimise_html(document, route, aliases):
 
 def build():
     started = time.perf_counter()
-    config = json.loads((ROOT / 'site.json').read_text())
+    config = json.loads((ROOT / 'site.json').read_text(encoding='utf-8'))
     if not re.fullmatch(r'https://[a-zA-Z0-9.-]+(?::[0-9]+)?', config['url']):
         raise ValueError('site.json url must be an HTTPS origin without a trailing slash')
     pages = read_pages()
     urls = [p['url'] for p in pages]
     if len(urls) != len(set(urls)):
         raise ValueError('Duplicate page URL; choose unique titles/slugs for taxonomy entries')
-    aliases = json.loads((ROOT / 'data/legacy-routes.json').read_text()) if (ROOT / 'data/legacy-routes.json').exists() else {}
+    aliases = json.loads((ROOT / 'data/legacy-routes.json').read_text(encoding='utf-8')) if (ROOT / 'data/legacy-routes.json').exists() else {}
     for old, new in aliases.items():
         route_path(old)
         if new not in urls:raise ValueError(f'Legacy redirect destination does not exist: {new}')
@@ -185,7 +185,7 @@ def build():
         assets[source.name] = '/' + dest.as_posix()
     env = Environment(loader=FileSystemLoader(ROOT / 'templates'), autoescape=select_autoescape(['html']))
     env.filters['slug'] = slug
-    data = {name: json.loads((ROOT / path).read_text()) for name, path in {
+    data = {name: json.loads((ROOT / path).read_text(encoding='utf-8')) for name, path in {
         'steam': 'data/steam.json', 'pc': 'data/pc.json', 'anime': 'static/data/anime.json',
         'ghosts': 'data/phasmophobia/ghosts.json', 'maps': 'data/phasmophobia/maps.json',
         'items': 'data/phasmophobia/items.json', 'general': 'data/phasmophobia/general.json'}.items()}
@@ -288,11 +288,16 @@ def main():
     for name in ('build','check','package'):commands.add_parser(name)
     preview = commands.add_parser('preview')
     preview.add_argument('--port', type=int, default=8000)
+    studio = commands.add_parser('studio')
+    studio.add_argument('--port', type=int, default=8000)
     new = commands.add_parser('new')
     new.add_argument('title')
     new.add_argument('--section', default='learning/c-sharp/posts')
     args = parser.parse_args()
     if args.command == 'new':return new_post(args.title, args.section)
+    if args.command == 'studio':
+        from studio import serve
+        return serve(args.port, build)
     build()
     if args.command in ('check','package'):
         from audit import run
@@ -300,8 +305,16 @@ def main():
     if args.command == 'preview':
         from functools import partial
         handler = partial(http.server.SimpleHTTPRequestHandler, directory=str(OUT))
-        print(f'Preview: http://localhost:{args.port} — Ctrl+C to stop. Rebuild after edits.')
-        with http.server.ThreadingHTTPServer(('127.0.0.1',args.port), handler) as server:
+        try:
+            server = http.server.ThreadingHTTPServer(('127.0.0.1', args.port), handler)
+        except OSError as exc:
+            if args.port == 0:
+                raise
+            print(f'Port {args.port} is unavailable ({exc}); selecting an available localhost port.')
+            server = http.server.ThreadingHTTPServer(('127.0.0.1', 0), handler)
+        actual_port = server.server_address[1]
+        print(f'Preview: http://localhost:{actual_port} — Ctrl+C to stop. Rebuild after edits.')
+        with server:
             try:server.serve_forever()
             except KeyboardInterrupt:pass
     if args.command == 'package':

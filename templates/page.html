@@ -33,12 +33,12 @@
 </section>
 {%- endmacro %}
 <!DOCTYPE html>
-<html lang="en-GB" data-theme="halo" id="page-top">
+<html lang="en-GB" data-theme="balanced" id="page-top">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="dark light">
-  <meta name="theme-color" content="#261e30">
+  <meta name="theme-color" content="#edf0f4">
   <title>{{ page.title }} | {{ config.title }}</title>
   <meta name="description" content="{{ page.description }}">
   <meta name="author" content="{{ config.author }}">
@@ -66,9 +66,9 @@
 <a class="skip-link" href="#main-content">Skip to content</a>
 <header class="site-header">
   <div class="header-inner">
-    <a class="site-brand" href="/" aria-label="Kaz — home"><strong>Kaz<span>.</span></strong><small>My corner of the web</small></a>
+    <a class="site-brand" href="/" aria-label="Kaz — home"><strong>Kaz<span>.</span></strong><small>Computing &amp;<br>life beyond it</small></a>
     <form class="header-search" role="search" action="/search/" method="get"><label class="sr-only" for="site-query">Search the site</label><input id="site-query" name="q" type="search" placeholder="Find a post…" maxlength="200"><button type="submit">Search</button></form>
-    <label class="theme-control enhancement" for="theme-select" hidden>Theme <select id="theme-select"><option value="halo">Purple & green</option><option value="resident">Resident Evil</option><option value="balanced">Slate</option><option value="terminal">Terminal</option><option value="sunset">Sunset</option><option value="paper">Paper</option></select></label>
+    <label class="theme-control enhancement" for="theme-select" hidden>Theme <select id="theme-select"><option value="balanced">Balanced</option><option value="halo">Halo · Covenant</option><option value="resident">Resident Evil · Archive</option></select></label>
     <button class="nav-toggle enhancement" type="button" aria-expanded="false" aria-controls="site-navigation" hidden>Menu</button>
     <nav id="site-navigation" class="site-nav" aria-label="Primary navigation">
     {% for label, url in config.navigation %}<a href="{{ url }}"{% if page.url == url %} aria-current="page"{% elif url != '/' and page.url.startswith(url) %} aria-current="location"{% endif %}>{{ label }}</a>{% endfor %}
@@ -82,7 +82,7 @@
 {% if page.section == 'personal' %}
 <nav class="personal-tabs" aria-label="Personal sections">{% for label,url in [('Profile','/personal/'),('Anime','/personal/anime/'),('Games','/personal/games/'),('Journal','/personal/misc/writing/'),('Phasmophobia','/personal/misc/phasmophobia/'),('Reviews','/personal/reviews/')] %}<a href="{{ url }}"{% if page.url == url %} aria-current="page"{% endif %}>{{ label }}</a>{% endfor %}</nav>
 {% endif %}
-<header class="page-heading"><p class="eyebrow">{{ 'Personal website / notebook' if page.url == '/' else page.section|replace('-', ' ') }}</p><h1>{{ "Kaz's corner" if page.url == '/' else page.title }}</h1><p>{{ 'Code, games, and everything in between.' if page.url == '/' else page.description }}</p></header>
+<header class="page-heading{% if page.url == '/' %} home-heading{% endif %}"><p class="eyebrow">{{ 'Kaz / personal website' if page.url == '/' else page.section|replace('-', ' ') }}</p><h1>{{ "Kaz's corner" if page.url == '/' else page.title }}</h1><p>{{ 'Code, games, and everything in between.' if page.url == '/' else page.description }}</p>{% if page.url == '/' %}<div class="heading-links"><a class="button-link primary" href="/projects/">Explore my projects</a><a class="button-link" href="/about/">About me</a></div>{% endif %}</header>
 
 {% if page.url == '/' %}
 <div class="homepage-columns"><aside class="home-sidebar">{{ author() }}
@@ -126,7 +126,7 @@
 {{ board(children, 'Posts & entries', 'entries') }}
 {% else %}
 <article class="post-frame" aria-labelledby="post-heading"><div class="post-topline"><h2 id="post-heading">{{ 'Learning notebook' if page.section == 'learning' else 'Personal journal' if page.section == 'personal' else 'Notes' }}</h2>{% if page.date %}<time datetime="{{ page.date }}">Published {{ page.date }}</time>{% endif %}<a href="#post-body" aria-label="Link to this post">#1</a></div>
-<div class="post-layout">{{ author() }}<div class="post-content" id="post-body"><div class="post-tools"><span>{{ page.minutes }} min read</span>{% if page.lastmod and page.lastmod != page.date %}<span>Updated <time datetime="{{ page.lastmod }}">{{ page.lastmod }}</time></span>{% endif %}<button class="enhancement" type="button" data-copy-link hidden>Copy post link</button><span class="sr-only" data-copy-status role="status"></span></div>
+<div class="post-layout">{{ author() }}<div class="post-content" id="post-body"><div class="post-tools"><span>{{ page.minutes }} min read</span>{% if page.lastmod and page.lastmod != page.date %}<span>Updated <time datetime="{{ page.lastmod }}">{{ page.lastmod }}</time></span>{% endif %}<button class="enhancement" type="button" data-reading-mode aria-pressed="false" hidden>Reading view</button><button class="enhancement" type="button" data-copy-link hidden>Copy post link</button><span class="sr-only" data-copy-status role="status"></span></div>
 {% if page.toc %}<details class="post-contents"><summary>In this post</summary>{{ page.toc|safe }}</details>{% endif %}
 <div class="prose" data-article-body>{{ page.body|safe }}</div>
 <footer class="post-signature"><strong>{{ page.author|default(config.author) }}</strong><span>Learning as I go.</span>{% if page.tags %}<nav aria-label="Post tags">{% for tag in page.tags %}<a href="/tags/{{ tag|slug }}/">{{ tag }}</a>{% endfor %}</nav>{% endif %}</footer>
@@ -134,6 +134,6 @@
 {% if previous or following %}<nav class="post-navigation" aria-label="More posts">{% if previous %}<a href="{{ previous.url }}"><small>Older post</small>{{ previous.title }}</a>{% endif %}{% if following %}<a href="{{ following.url }}"><small>Newer post</small>{{ following.title }}</a>{% endif %}</nav>{% endif %}
 {% endif %}
 </main>
-<footer class="site-footer"><p><strong>Kaz</strong> · Learning as I go.</p><nav aria-label="Footer navigation"><a href="/about/">About</a><a href="/sitemap/">Site map</a><a href="/changelog/">Site updates</a><a href="/index.xml">RSS</a><a href="#page-top">Back to top</a></nav></footer>
+<footer class="site-footer"><p><strong>Kaz</strong> · Learning as I go.</p><nav aria-label="Footer navigation"><a href="/about/">About</a><a href="/sitemap/">Site map</a><a href="/changelog/">Site updates</a><a href="/index.xml">RSS</a><a href="#page-top">Back to top</a><a href="/writing/">Writing desk</a></nav></footer>
 </body>
 </html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en-GB" data-theme="balanced">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="studio-token" content="{{ token }}">
+  <title>Writing desk | Kaz</title>
+  <link rel="stylesheet" href="/__studio/site.css">
+  <link rel="stylesheet" href="/__studio/studio.css">
+  <script src="/__studio/purify.min.js" defer></script>
+  <script src="/__studio/studio.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#editor">Skip to editor</a>
+<header class="desk-header"><a class="site-brand" href="/">Kaz<span>.</span></a><h1>Writing desk</h1><span class="desk-local">On this computer</span><label for="desk-theme">Theme<select id="desk-theme"><option value="balanced">Balanced</option><option value="halo">Halo · Covenant</option><option value="resident">Resident Evil · Archive</option></select></label><a href="/" target="_blank" rel="noopener">View site</a></header>
+<div class="desk-layout">
+  <aside class="desk-library" aria-label="Your posts">
+    <button type="button" id="new-post" class="primary-action">+ New post</button>
+    <label for="post-search">Find a page<input id="post-search" type="search" placeholder="Title or folder"></label>
+    <label for="post-state">Show<select id="post-state"><option value="all">All pages</option><option value="draft">Drafts</option><option value="post">Posts</option></select></label>
+    <p id="library-count" class="desk-muted" role="status"></p><div id="post-list"></div>
+  </aside>
+  <main id="editor" class="desk-editor" tabindex="-1">
+    <div id="recovery" class="desk-notice" hidden><p>A browser recovery copy is available.</p><button type="button" id="recover">Restore unsaved work</button><button type="button" id="dismiss-recovery">Dismiss recovery copy</button></div>
+    <form id="post-form">
+      <div class="desk-form-heading"><div><p class="eyebrow" id="document-label">New post</p><h2 id="editor-heading">Put it into words.</h2></div><p id="save-status" role="status">Not yet saved</p></div>
+      <label for="post-title">Title<input id="post-title" name="title" maxlength="180" required placeholder="Give your post a title"></label>
+      <label for="post-summary">Summary<textarea id="post-summary" name="description" rows="2" maxlength="350" placeholder="A short introduction for the post list and search results."></textarea></label>
+      <div class="desk-fields">
+        <label for="post-section">Section<select id="post-section"><option value="blog">Blog</option><option value="personal/misc/writing/posts">Personal journal</option></select></label>
+        <label for="post-slug">Filename<input id="post-slug" pattern="[a-zA-Z0-9_-]+" required placeholder="my-new-post"></label>
+        <label for="post-date">Date<input id="post-date" type="date"></label>
+        <label for="post-kind">Entry type<select id="post-kind"><option value="post">Post</option><option value="project">Project</option><option value="resource">Resource</option><option value="page">Page</option><option value="section">Section</option></select></label>
+      </div>
+      <label for="post-tags">Tags <span class="desk-muted">— separate with commas</span><input id="post-tags" placeholder="C#, learning, console"></label>
+      <div class="desk-compose-heading"><label for="post-body">Post text</label><div class="view-buttons"><button type="button" id="write-view" aria-pressed="true">Write</button><button type="button" id="preview-view" aria-pressed="false">Preview</button><button type="button" id="split-view" aria-pressed="false">Side by side</button></div></div>
+      <div class="format-toolbar" aria-label="Formatting tools">
+        <button type="button" data-format="heading">Heading</button><button type="button" data-format="bold">Bold</button><button type="button" data-format="italic">Italic</button><button type="button" data-format="link">Link</button><button type="button" data-format="list">List</button><button type="button" data-format="quote">Quote</button><button type="button" data-format="code">Code</button><button type="button" data-format="table">Table</button>
+        <label for="starter" class="sr-only">Post template</label><select id="starter"><option value="">Insert a template…</option value="lesson">Learning note</option><option value="blog">Blog post</option><option value="review">Review</option></select>
+      </div>
+      <div class="compose-surface" data-view="write"><textarea id="post-body" spellcheck="true" aria-describedby="writing-help" placeholder="Start writing here…"></textarea><iframe id="post-preview" title="Post preview" sandbox="allow-popups allow-popups-to-escape-sandbox" hidden></iframe></div>
+      <div class="desk-compose-footer"><p id="word-count">0 words · 1 min read</p><p id="writing-help">Select text, then use a formatting button. Ctrl/Cmd+S saves.</p></div>
+      <details class="desk-help"><summary>Markdown quick reference</summary><p><code>## Heading</code> · <code>**bold**</code> · <code>*italic*</code> · <code>[label](https://example.com)</code></p><p>Leave a blank line between paragraphs. Use three backticks around code, with the language after the opening backticks.</p></details>
+      <div class="desk-savebar"><label for="post-draft">Status<select id="post-draft"><option value="draft">Draft — hidden from the site</option><option value="ready">Ready for publishing</option></select></label><button type="submit" id="save-post" class="primary-action">Save draft</button><button type="button" id="download-post">Download Markdown</button><button type="button" id="build-site">Build site</button></div>
+      <p class="desk-muted">Save writes to your website folder. Build updates the local site. Commit and push when you’re happy with the result.</p>
+    </form>
+    <noscript><p>The writing desk needs JavaScript. You can still edit the Markdown files in content/ using a text editor.</p></noscript>
+  </main>
+</div>
+</body>
+</html>

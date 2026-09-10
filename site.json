@@ -3,6 +3,6 @@
   "author": "Kaz",
   "url": "https://kazumi7884.co.uk",
   "description": "Kaz's personal website: computing projects, learning notebooks, games, anime and life outside the code.",
-  "version": "5.1.0",
+  "version": "5.2.0",
   "navigation": [["Home", "/"], ["Learning", "/learning/"], ["Blog", "/blog/"], ["Projects", "/projects/"], ["Resources", "/resources/"], ["Personal", "/personal/"], ["About", "/about/"]]
 }
