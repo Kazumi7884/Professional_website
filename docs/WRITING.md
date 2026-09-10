@@ -50,7 +50,7 @@ preserves existing aliases, custom URLs, layouts and other metadata that is
 not shown in the form. Existing filenames are locked to avoid breaking links.
 For a deliberate rename, use Git and add a redirect/alias as described below.
 
-The catalogue includes pages, resources and projects as well as posts. Preview
+The catalogue includes authored pages and posts. Preview
 shows the article text; specialised anime, hardware and games layouts should
 also be checked with **Build site**, then **View site**.
 
