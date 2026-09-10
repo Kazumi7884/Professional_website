@@ -33,7 +33,10 @@ class Conflict(ValueError):
 
 
 def content_path(relative):
-    if not isinstance(relative, str) or not re.fullmatch(r'[a-zA-Z0-9_\-]+(?:/[a-zA-Z0-9_\-]+)*\.md', relative):
+    parts = relative.split('/') if isinstance(relative, str) else []
+    valid_segment = re.compile(r'[A-Za-z0-9_-]+\Z')
+    if (not parts or len(relative) > 240 or any(not valid_segment.fullmatch(part) for part in parts[:-1])
+            or not parts[-1].endswith('.md') or not valid_segment.fullmatch(parts[-1][:-3])):
         raise ValueError('Choose a Markdown file inside content/.')
     root = (ROOT / 'content').resolve()
     path = root / relative
