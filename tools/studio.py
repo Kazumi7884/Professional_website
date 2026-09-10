@@ -37,7 +37,8 @@ def content_path(relative):
         raise ValueError('Choose a Markdown file inside content/.')
     root = (ROOT / 'content').resolve()
     path = root / relative
-    if not path.resolve().is_relative_to(root):
+    resolved = os.path.abspath(path)
+    if not resolved.startswith(str(root) + os.sep) or not path.resolve().is_relative_to(root):
         raise ValueError('File must stay inside content/.')
     # Reject symlinks even when their current target is inside the content tree.
     if any(p.is_symlink() for p in [path, *path.parents] if p != root and p.is_relative_to(root)):
@@ -133,7 +134,7 @@ def save_document(payload):
             finally:
                 if os.path.exists(temporary):
                     os.unlink(temporary)
-        return {'path': path.relative_to(ROOT / 'content').as_posix(), **read_document(path)}
+        return {'path': path.relative_to((ROOT / 'content').resolve()).as_posix(), **read_document(path)}
 
 
 def preview_html(body):
@@ -222,8 +223,14 @@ def make_handler(token, port, build_fn):
                     self.send_header('Content-Length', str(len(data)))
                     self.end_headers()
                     return self.wfile.write(data)
-                if route.path in ('/__studio/studio.css', '/__studio/studio.js', '/__studio/site.css'):
-                    path = ROOT / ('assets/css/site.css' if route.path.endswith('/site.css') else 'studio/' + route.path.rsplit('/', 1)[1])
+                asset_paths = {
+                    '/__studio/studio.css': ROOT / 'studio/studio.css',
+                    '/__studio/studio.js': ROOT / 'studio/studio.js',
+                    '/__studio/site.css': ROOT / 'assets/css/site.css',
+                    '/__studio/purify.min.js': ROOT / 'studio/vendor/purify.min.js',
+                }
+                if route.path in asset_paths:
+                    path = asset_paths[route.path]
                     data = path.read_bytes()
                     self.send_response(200)
                     self.send_header('Content-Type', 'text/css' if path.suffix == '.css' else 'text/javascript')

@@ -119,7 +119,8 @@
       const result = await api('preview', {body: draft.body});
       if (sequence !== previewSequence) return;
       const theme = $('desk-theme').value;
-      $('post-preview').srcdoc = `<!DOCTYPE html><html lang="en-GB" data-theme="${theme}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/__studio/site.css"><link rel="stylesheet" href="/__studio/studio.css"></head><body class="preview-document"><article class="prose"><p class="eyebrow">${draft.metadata.draft ? 'Draft preview' : 'Post preview'}</p><h1>${escape(draft.metadata.title || 'Untitled post')}</h1><p>${escape(draft.metadata.description || '')}</p><hr>${result.html}</article></body></html>`;
+      const safeBody = DOMPurify.sanitize(result.html, {USE_PROFILES: {html: true}, FORBID_TAGS: ['style', 'form', 'input', 'button', 'iframe'], FORBID_ATTR: ['style']});
+      $('post-preview').srcdoc = `<!DOCTYPE html><html lang="en-GB" data-theme="${theme}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="/__studio/site.css"><link rel="stylesheet" href="/__studio/studio.css"></head><body class="preview-document"><article class="prose"><p class="eyebrow">${draft.metadata.draft ? 'Draft preview' : 'Post preview'}</p><h1>${escape(draft.metadata.title || 'Untitled post')}</h1><p>${escape(draft.metadata.description || '')}</p><hr>${safeBody}</article></body></html>`;
     } catch (error) { status(`Preview failed: ${error.message}`, true); }
   }
   function view(mode) {
