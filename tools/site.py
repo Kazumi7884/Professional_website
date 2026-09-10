@@ -305,8 +305,16 @@ def main():
     if args.command == 'preview':
         from functools import partial
         handler = partial(http.server.SimpleHTTPRequestHandler, directory=str(OUT))
-        print(f'Preview: http://localhost:{args.port} — Ctrl+C to stop. Rebuild after edits.')
-        with http.server.ThreadingHTTPServer(('127.0.0.1',args.port), handler) as server:
+        try:
+            server = http.server.ThreadingHTTPServer(('127.0.0.1', args.port), handler)
+        except OSError as exc:
+            if args.port == 0:
+                raise
+            print(f'Port {args.port} is unavailable ({exc}); selecting an available localhost port.')
+            server = http.server.ThreadingHTTPServer(('127.0.0.1', 0), handler)
+        actual_port = server.server_address[1]
+        print(f'Preview: http://localhost:{actual_port} — Ctrl+C to stop. Rebuild after edits.')
+        with server:
             try:server.serve_forever()
             except KeyboardInterrupt:pass
     if args.command == 'package':
