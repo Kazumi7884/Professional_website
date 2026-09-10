@@ -1,6 +1,6 @@
 ---
 title: C#
-description: My C# learning notes, lessons, blog posts, and projects.
+description: My C# learning notes, lessons and blog posts.
 date: '2026-06-05'
 lastmod: '2026-06-05'
 aliases:
