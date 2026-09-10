@@ -188,9 +188,9 @@
     finally { busy = false; $('build-site').disabled = false; }
   });
   $('download-post').addEventListener('click', () => {
-    const document = payload();
+    const draft = payload();
     // A JSON object is valid YAML, preserving strings and punctuation exactly.
-    const text = `---\n${JSON.stringify(document.metadata, null, 2)}\n---\n\n${document.body}\n`;
+    const text = `---\n${JSON.stringify(draft.metadata, null, 2)}\n---\n\n${draft.body}\n`;
     const url = URL.createObjectURL(new Blob([text], {type: 'text/markdown;charset=utf-8'}));
     const link = document.createElement('a'); link.href = url; link.download = `${$('post-slug').value || 'untitled-post'}.md`; link.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
