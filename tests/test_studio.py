@@ -111,6 +111,55 @@ class StudioFiles(unittest.TestCase):
         self.assertTrue(soup.strong)
         self.assertFalse(soup.select('script, [onerror], a[href]'))
 
+    def test_projects_cannot_be_created(self):
+        data = {**self.data, 'metadata': {**self.data['metadata'], 'entryType': 'project'}}
+        with self.assertRaises(ValueError): studio.save_document(data)
+
+    def test_resources_cannot_be_created(self):
+        data = {**self.data, 'metadata': {**self.data['metadata'], 'entryType': 'resource'}}
+        with self.assertRaises(ValueError): studio.save_document(data)
+
+    def test_title_limit_is_enforced(self):
+        data = {**self.data, 'metadata': {**self.data['metadata'], 'title': 'x' * 181}}
+        with self.assertRaises(ValueError): studio.save_document(data)
+
+    def test_summary_limit_is_enforced(self):
+        data = {**self.data, 'metadata': {**self.data['metadata'], 'description': 'x' * 351}}
+        with self.assertRaises(ValueError): studio.save_document(data)
+
+    def test_tag_count_limit_is_enforced(self):
+        data = {**self.data, 'metadata': {**self.data['metadata'], 'tags': [str(i) for i in range(21)]}}
+        with self.assertRaises(ValueError): studio.save_document(data)
+
+    def test_tag_length_limit_is_enforced(self):
+        data = {**self.data, 'metadata': {**self.data['metadata'], 'tags': ['x' * 61]}}
+        with self.assertRaises(ValueError): studio.save_document(data)
+
+    def test_nested_new_post_directories_are_created(self):
+        data = {**self.data, 'path': 'personal/misc/writing/posts/new.md'}
+        result = studio.save_document(data)
+        self.assertEqual(result['path'], data['path'])
+        self.assertTrue((self.root / 'content/personal/misc/writing/posts/new.md').is_file())
+
+    def test_path_length_limit_is_enforced(self):
+        with self.assertRaises(ValueError): studio.content_path(('a/' * 120) + 'post.md')
+
+    def test_unicode_markdown_round_trip(self):
+        data = {**self.data, 'body': '## Café ☕\n\nKanpai — notes.'}
+        self.assertIn('Café', studio.save_document(data)['body'])
+
+    def test_preview_removes_iframe_and_style(self):
+        soup = BeautifulSoup(studio.preview_html('<iframe src="x"></iframe><div style="color:red">Safe</div>'), 'html.parser')
+        self.assertFalse(soup.select('iframe, [style]'))
+
+    def test_preview_keeps_safe_https_links(self):
+        soup = BeautifulSoup(studio.preview_html('[source](https://example.com)'), 'html.parser')
+        self.assertEqual(soup.a['href'], 'https://example.com')
+
+    def test_catalogue_reports_invalid_metadata_without_crashing(self):
+        path = self.root / 'content/broken.md'; path.parent.mkdir(parents=True)
+        path.write_text('not front matter', encoding='utf-8')
+        self.assertTrue(studio.catalogue()[0]['error'])
 
 class StudioHTTP(unittest.TestCase):
     @classmethod
@@ -145,6 +194,16 @@ class StudioHTTP(unittest.TestCase):
 
     def test_rebinding_host_rejected(self):
         self.assertEqual(self.request({'X-Studio-Token': 'test-token', 'Host': 'attacker.example'})[0], 403)
+
+    def test_non_json_requests_rejected(self):
+        connection = http.client.HTTPConnection('127.0.0.1', self.port)
+        connection.request('POST', '/__studio/api/preview', '{}', {'Content-Type': 'text/plain', 'X-Studio-Token': 'test-token'})
+        self.assertEqual(connection.getresponse().status, 415); connection.close()
+
+    def test_missing_body_rejected(self):
+        connection = http.client.HTTPConnection('127.0.0.1', self.port)
+        connection.request('POST', '/__studio/api/preview', '', {'Content-Type': 'application/json', 'X-Studio-Token': 'test-token'})
+        self.assertEqual(connection.getresponse().status, 413); connection.close()
 
 
 class ThemeContrast(unittest.TestCase):
