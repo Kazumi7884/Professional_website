@@ -30,7 +30,7 @@ class BuildRegression(unittest.TestCase):
 
     def test_all_authored_pages_migrated(self):
         authored = [p for p in self.pages if not p['synthetic']]
-        self.assertGreaterEqual(len(authored), 78)
+        self.assertGreaterEqual(len(authored), 30)
         for page in authored:
             with self.subTest(url=page['url']):
                 self.assertTrue((ROOT/'dist'/site.route_path(page['url'])).is_file())
@@ -41,11 +41,10 @@ class BuildRegression(unittest.TestCase):
         self.assertTrue(all(url.startswith('/learning/c-sharp/') for url in links))
         self.assertNotIn('/learning/python/projects/pc-metrics-logger/', links)
 
-    def test_project_aggregator_contains_projects_only(self):
-        types = {p['url']: p['entryType'] for p in self.pages}
-        links = [a['href'] for a in self.soup('/projects/').select('[data-filter-list] a')]
-        self.assertTrue(links)
-        self.assertTrue(all(types[url] == 'project' for url in links))
+    def test_site_does_not_publish_unclaimed_projects_or_resources(self):
+        self.assertFalse(any(p['entryType'] in {'project', 'resource'} for p in self.pages))
+        self.assertFalse((ROOT / 'dist' / 'projects').exists())
+        self.assertFalse((ROOT / 'dist' / 'resources').exists())
 
     def test_original_urls_have_working_redirects(self):
         for alias, target in self.report['aliases'].items():
