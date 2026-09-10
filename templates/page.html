@@ -11,7 +11,7 @@
 {%- endmacro %}
 {% macro row(item) -%}
 <article class="topic-row" data-filter-item data-title="{{ item.title|lower }}" data-date="{{ item.date }}">
-  <span class="topic-mark" aria-hidden="true">{{ '▤' if item.is_section else '¶' }}</span>
+  <span class="topic-mark" aria-hidden="true">{{ '▤' if item.is_section else '' }}</span>
   <div class="topic-copy"><h3><a href="{{ item.url }}">{{ item.title }}</a></h3><p>{{ item.description }}</p>
     <span class="entry-kind">{{ item.entryType|replace('-', ' ') }}{% if item.status is defined %} · {{ item.status }}{% endif %}</span>
   </div>
@@ -82,24 +82,24 @@
 {% if page.section == 'personal' %}
 <nav class="personal-tabs" aria-label="Personal sections">{% for label,url in [('Profile','/personal/'),('Anime','/personal/anime/'),('Games','/personal/games/'),('Journal','/personal/misc/writing/'),('Phasmophobia','/personal/misc/phasmophobia/'),('Reviews','/personal/reviews/')] %}<a href="{{ url }}"{% if page.url == url %} aria-current="page"{% endif %}>{{ label }}</a>{% endfor %}</nav>
 {% endif %}
-<header class="page-heading{% if page.url == '/' %} home-heading{% endif %}"><p class="eyebrow">{{ 'Kaz / personal website' if page.url == '/' else page.section|replace('-', ' ') }}</p><h1>{{ "Kaz's corner" if page.url == '/' else page.title }}</h1><p>{{ 'Code, games, and everything in between.' if page.url == '/' else page.description }}</p>{% if page.url == '/' %}<div class="heading-links"><a class="button-link primary" href="/projects/">Explore my projects</a><a class="button-link" href="/about/">About me</a></div>{% endif %}</header>
+<header class="page-heading{% if page.url == '/' %} home-heading{% endif %}"><p class="eyebrow">{{ 'Kaz / personal website' if page.url == '/' else page.section|replace('-', ' ') }}</p><h1>{{ "Kaz's corner" if page.url == '/' else page.title }}</h1><p>{{ 'Notes, experiments, and life beyond the code.' if page.url == '/' else page.description }}</p>{% if page.url == '/' %}<div class="heading-links"><a class="button-link primary" href="/learning/c-sharp/">Open the C# notebook</a><a class="button-link" href="/about/">About me</a></div>{% endif %}</header>
 
 {% if page.url == '/' %}
 <div class="homepage-columns"><aside class="home-sidebar">{{ author() }}
-  <section class="side-box"><h2>Find your way around</h2>{% for label,url in [('About me','/about/'),('Skills & experience','/skills-matrix/'),('Useful resources','/resources/'),('What I’m working towards','/roadmap/')] %}<a href="{{ url }}">{{ label }}</a>{% endfor %}</section>
+  <section class="side-box"><h2>Find your way around</h2>{% for label,url in [('About me','/about/'),('C# notebook','/learning/c-sharp/'),('Misc writing','/personal/misc/writing/'),('What I’m working towards','/roadmap/')] %}<a href="{{ url }}">{{ label }}</a>{% endfor %}</section>
   <section class="side-box"><h2>Outside the code</h2><p>Anime, PC tinkering, games, music and cycling.</p><a href="/personal/">Visit my personal page</a></section>
 </aside><div class="home-main">
-  <section class="welcome-note"><h2>Hello, I'm Kaz.</h2><p>I'm a computing graduate working towards a career in tech. This is where I keep my projects, learning notes and the things I get interested in along the way.</p><p>Start with the <a href="/learning/c-sharp/">C# notebook</a>, have a look at my <a href="/projects/">projects</a>, or wander through the <a href="/personal/">personal side</a>.</p></section>
+  <section class="welcome-note"><h2>Hello, I'm Kaz.</h2><p>I'm a computing graduate working towards a career in tech. This is where I keep the things I have actually written, tested, played with, or learned along the way.</p><p>Start with the <a href="/learning/c-sharp/">C# notebook</a>, read the <a href="/personal/misc/writing/">misc writing</a>, or wander through the <a href="/personal/">personal side</a>.</p></section>
   {{ board(posts[:5], 'Recent posts', 'recent', false) }}<p class="board-footer"><a href="/blog/">All posts</a> · <a href="/index.xml">Subscribe via RSS</a></p>
   <figure class="work-sample"><a href="/learning/c-sharp/posts/c-sharp-blog-1/"><img src="/assets/images/csharp/blog-1/console-output-example.webp" alt="Example console output from my C# notes" width="1152" height="648"></a><figcaption><strong>From the notebook</strong><a href="/learning/c-sharp/posts/c-sharp-blog-1/">Getting comfortable with the console</a><span>A screenshot, the code, and the notes behind it.</span></figcaption></figure>
-  <section class="board"><div class="board-heading"><h2>Learning boards</h2><a href="/learning/">All learning</a></div><div class="learning-directory">{% for item in pages|sort(attribute='title') if item.is_section and item.url.startswith('/learning/') and item.url.strip('/').split('/')|length == 2 %}<a href="{{ item.url }}">{{ item.title }}</a>{% endfor %}</div></section>
+  <section class="board"><div class="board-heading"><h2>Learning notebook</h2><a href="/learning/">Open notebook</a></div><div class="learning-directory"><a href="/learning/c-sharp/">C#</a></div></section>
 </div></div>
 {% elif page.url == '/personal/' %}
 <div class="homepage-columns"><aside class="home-sidebar">{{ author() }}<section class="side-box"><h2>On this page</h2><p>Watch lists, game collections and things that don't belong in a lesson.</p><a href="/personal/misc/writing/posts/misc-blog-3/">A long overdue return</a></section></aside><div class="home-main">
 <section class="welcome-note"><h2>Away from the code</h2><p>This part of the site is a bit more personal. Have a look around my shelves, notes and journal.</p></section>
 <section class="side-box"><h2>On the stereo</h2><p>Veritas — the track from my original site.</p><audio controls preload="none" aria-label="Play Veritas"><source src="/assets/audio/veritas.mp3" type="audio/mpeg"><a href="/assets/audio/veritas.mp3">Download the audio</a></audio></section>
 <div class="hobby-directory">{% for name,url,kind,copy in [('Anime shelf','/personal/anime/','anime','What I’ve watched, what I’m watching, and what’s still on the list.'),('Games & Steam','/personal/games/','games','Playtime, library charts and a closer look at the collection.'),('The journal','/personal/misc/writing/','journal','Life updates, reviews and the occasional long post.'),('Phasmophobia','/personal/misc/phasmophobia/','phasmo','Ghosts, evidence, maps, equipment and investigation notes.')] %}<section class="hobby-room hobby-{{ kind }}"><p class="eyebrow">{{ kind }}</p><h2><a href="{{ url }}">{{ name }}</a></h2><p>{{ copy }}</p></section>{% endfor %}</div>
-<section class="side-box"><h2>The PC corner</h2><p>Hardware and the workstation behind the projects.</p><a href="/setup/">Look through my setup</a> · <a href="/personal/reviews/">Reviews</a></section>
+<section class="side-box"><h2>The PC corner</h2><p>Hardware and the workstation behind the notes and visualisations.</p><a href="/setup/">Look through my setup</a> · <a href="/personal/reviews/">Reviews</a></section>
 <div class="prose">{{ page.body|safe }}</div></div></div>
 {% elif page.url == '/search/' %}
 <section class="board"><div class="board-heading"><h2>Search the notebook</h2></div><form class="search-form" id="search-form" role="search" action="/search/"><label for="search-query">Words, topic or post title<input id="search-query" name="q" type="search" maxlength="200" required></label><button type="submit">Find posts</button></form><p id="search-status" class="empty-note" role="status">Enter a few words to find a page.</p><div id="search-results"></div><noscript><p class="empty-note">Search needs JavaScript. Browse the <a href="/sitemap/">complete site map</a> or <a href="/learning/">learning boards</a>.</p></noscript></section>
