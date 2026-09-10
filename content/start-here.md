@@ -1,6 +1,6 @@
 ---
 title: Start here
-description: Best first routes through Kaz's projects, skills, setup, and learning notes.
+description: Best first routes through Kaz's C# notes, misc writing and personal research.
 date: '2026-06-05'
 lastmod: '2026-07-15'
 aliases:
@@ -12,18 +12,18 @@ entryType: "page"
 legacy_path: "/pages/start-here/"
 ---
 
-Best entry points for recruiters, first-time visitors, and anyone trying to understand what this site proves.
+Best entry points for first-time visitors and anyone trying to understand what this site actually contains.
 
 ## Recommended route
 
-1. [Read About](/about/) for the short background, education, current focus, and contact slots.
-2. [Open Projects](/projects/) to see practical work grouped from the learning tracks.
-3. [Check the Skills matrix](/skills-matrix/) for current confidence levels and evidence links.
-4. [Browse the PC setup](/setup/) to see the current Windows workstation and tooling baseline.
-5. [Search notes](/search/) if you are looking for a specific technology, project, or post.
+1. [Read About](/about/) for the short background and current focus.
+2. [Open the C# notebook](/learning/c-sharp/) for the authored learning notes.
+3. [Read the misc writing](/personal/misc/writing/) for blogs and Steam visualisations.
+4. [Browse Phasmophobia](/personal/misc/phasmophobia/) for the field guide.
+5. [Search notes](/search/) if you are looking for a specific post.
 
 ## What to look for
 
-- Evidence over claims: project pages, notes, and dashboards should show what was built or learned.
-- Current trajectory: the site is a public record of learning into software, systems, data, and web work.
-- Separation of context: personal dashboards are available, but the professional route is projects, skills, About, and learning notes.
+- Evidence over claims: the site only lists material Kaz has actually authored.
+- Current trajectory: the site is a public record of learning, writing and personal research.
+- Separation of context: personal dashboards remain available, but invented project claims do not.
