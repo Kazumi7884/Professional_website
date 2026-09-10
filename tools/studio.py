@@ -43,7 +43,7 @@ def content_path(relative):
     # Reject symlinks even when their current target is inside the content tree.
     if any(p.is_symlink() for p in [path, *path.parents] if p != root and p.is_relative_to(root)):
         raise ValueError('Symbolic links cannot be edited in the writing desk.')
-    return path
+    return Path(resolved)
 
 
 def read_document(path):
@@ -185,7 +185,8 @@ def make_handler(token, port, build_fn):
             super().end_headers()
 
         def send_json(self, value, status=200):
-            data = json.dumps(value, ensure_ascii=False, default=str).encode()
+            # Escaping markup also makes the JSON inert if embedded by a client.
+            data = json.dumps(value, ensure_ascii=False, default=str).replace('<', '\\u003c').replace('>', '\\u003e').replace('&', '\\u0026').encode()
             self.send_response(status)
             self.send_header('Content-Type', 'application/json; charset=utf-8')
             self.send_header('Content-Length', str(len(data)))

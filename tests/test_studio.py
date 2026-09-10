@@ -134,7 +134,8 @@ class StudioHTTP(unittest.TestCase):
 
     def test_local_preview_with_token(self):
         status, body = self.request({'X-Studio-Token': 'test-token'})
-        self.assertEqual(status, 200); self.assertIn(b'<strong>Hello</strong>', body)
+        self.assertEqual(status, 200); self.assertIn('<strong>Hello</strong>', json.loads(body)['html'])
+        self.assertNotIn(b'<', body)
 
     def test_missing_token_rejected(self):
         self.assertEqual(self.request({})[0], 403)
