@@ -1,0 +1,220 @@
+{
+  "categories": [
+    {
+      "id": "evidence-tools",
+      "items": [
+        {
+          "id": "emf-reader",
+          "insanityTips": [
+            "Use EMF to confirm room location and interaction frequency, then switch to behaviour testing.",
+            "Don’t over-commit to EMF 5 unless you’ve seen consistent spikes after clear interactions."
+          ],
+          "name": "EMF Reader",
+          "nightmareTips": [
+            "Treat EMF as 'support' evidence: pair it with behaviour, not just a single reading.",
+            "Confirm the interaction first (audio/visual), then read EMF immediately."
+          ],
+          "summary": "Use this to confirm interactions (doors, throws, switches) and to hunt for EMF Level 5.",
+          "tips": [
+            "Sweep common touch points: doors, light switches, and thrown items.",
+            "If activity is spiking but EMF keeps landing on 2/3, keep checking after fresh interactions.",
+            "On bigger maps, leave it on the floor in the room so you catch surprise EMF spikes."
+          ]
+        },
+        {
+          "id": "uv-light",
+          "insanityTips": [
+            "Use UV more as a behaviour tool (where it walks / where it touches) than as 'proof'.",
+            "If you’re getting consistent touches with no UV, start considering UV-less ghosts sooner."
+          ],
+          "name": "UV Light",
+          "nightmareTips": [
+            "Assume you will miss some UV if you arrive late; track touches with sound sensors if needed.",
+            "Use salt early so you can confirm footsteps even when evidence is limited."
+          ],
+          "summary": "Check doors, windows, and light switches for fingerprints and UV footsteps.",
+          "tips": [
+            "Check immediately after you hear a touch: UV evidence can time out.",
+            "Salt + UV is a strong combo for footprint confirmation.",
+            "Scan the door edge, not just the centre panel."
+          ]
+        },
+        {
+          "id": "thermometer",
+          "insanityTips": [
+            "Temps is your locator, not your identity tool; switch to behaviour tests quickly.",
+            "If it keeps changing, treat that movement as information (possible roamers) rather than a bug."
+          ],
+          "name": "Thermometer",
+          "nightmareTips": [
+            "Use temps to find the room, then stop relying on them as confirmation.",
+            "If the room feels inconsistent, use sensors to confirm roaming instead of re-sweeping forever."
+          ],
+          "summary": "Fastest way to narrow the ghost room once the building stabilises.",
+          "tips": [
+            "Give the building a moment to settle; temperatures stabilise after you’ve been inside.",
+            "Look for the cold 'pocket' rather than chasing one low reading.",
+            "Re-check after room changes; roaming can drag temps around."
+          ]
+        },
+        {
+          "id": "video-camera",
+          "insanityTips": [
+            "Use orbs as a fast rule-in/rule-out, then switch to hunt behaviour.",
+            "If you can’t confirm orbs, don’t stall—move on to interaction/wiki/Hunt testing."
+          ],
+          "name": "Video Camera (Orbs)",
+          "nightmareTips": [
+            "If orbs are possible, check early so you can reduce the suspect list fast.",
+            "Use a second angle on medium/large maps; one camera can miss the room."
+          ],
+          "summary": "Used to check for Ghost Orbs and to monitor the room safely from the truck.",
+          "tips": [
+            "Place the camera high and angled acrosss the room for better orb visibility.",
+            "Turn off lights in the room when checking for orbs.",
+            "If the room moves, move the camera—don’t assume orbs 'stopped'."
+          ]
+        },
+        {
+          "id": "writing-book",
+          "insanityTips": [
+            "Treat writing as a bonus; don’t let it stall your identification.",
+            "If you get lots of throws but no writing, start leaning into behaviour rules earlier."
+          ],
+          "name": "Ghost Writing Book",
+          "nightmareTips": [
+            "Writing can take time; keep other tests running while you wait.",
+            "If the ghost avoids the book, use motion sensors to catch where it actually walks."
+          ],
+          "summary": "Place in the room and wait for writing interaction.",
+          "tips": [
+            "Place it where the ghost is active (near throws or door touches).",
+            "Use two books if you can, spaced apart in bigger rooms.",
+            "If nothing happens for ages, reposition after new activity spikes."
+          ]
+        },
+        {
+          "id": "spirit-box",
+          "insanityTips": [
+            "If Spirit Box fails, don’t loop forever—switch to hunt pattern tests.",
+            "Use it as a room-confirm tool early, then rely on behaviour."
+          ],
+          "name": "Spirit Box",
+          "nightmareTips": [
+            "Spirit Box is best used right after you find the room, before hunts become frequent.",
+            "Combine with a motion sensor so you’re asking where the ghost actually is."
+          ],
+          "summary": "Ask questions in/near the ghost room (lights off) to check for responses.",
+          "tips": [
+            "Turn off the room light and ask short questions while near the activity.",
+            "Try both alone and together depending on settings/difficulty.",
+            "If you get no response, move to where the ghost touched recently and try again."
+          ]
+        },
+        {
+          "id": "dots",
+          "insanityTips": [
+            "Assume you won’t confirm DOTS quickly; keep behaviour tests active.",
+            "If you see consistent walking with no DOTS, consider DOTS-less ghosts sooner."
+          ],
+          "name": "D.O.T.S Projector",
+          "nightmareTips": [
+            "DOTS can be missed if coverage is poor—treat placement as a test you can improve.",
+            "Pair DOTS with sensors so you know if the ghost walked through the field."
+          ],
+          "summary": "Project in the room and watch for DOTS silhouettes.",
+          "tips": [
+            "Angle DOTS to cover the ghost's walking lanes, not just the centre.",
+            "Use a camera view to watch DOTS safely if hunts start.",
+            "Reposition after major activity shifts."
+          ]
+        }
+      ],
+      "title": "Evidence tools"
+    },
+    {
+      "id": "survival-support",
+      "items": [
+        {
+          "id": "crucifix",
+          "insanityTips": [
+            "Crucifix is your setup tool: stabilise the room, then gather behaviour during hunts.",
+            "Don’t waste it early in a random spot—anchor it on real activity."
+          ],
+          "name": "Crucifix",
+          "nightmareTips": [
+            "Use one crucifix to secure your test zone, the other to secure your escape route.",
+            "Watch for 'burns' to confirm the ghost is still using that area."
+          ],
+          "summary": "Prevents a hunt from starting within its radius.",
+          "tips": [
+            "Place it where the ghost is most active, not where you feel safe.",
+            "On larger rooms, cover doorways and high-traffic paths.",
+            "Use it to buy time for tests, not as a permanent shield."
+          ]
+        },
+        {
+          "id": "incense",
+          "insanityTips": [
+            "Smudge is your main survival tool; everything else is secondary.",
+            "If you’re testing speed, smudge only after you’ve observed the behaviour you needed."
+          ],
+          "name": "Incense (Smudge Sticks)",
+          "nightmareTips": [
+            "Treat smudge as 'one free escape'—plan the hiding spot first.",
+            "Don’t panic-smudge: use it when the ghost is close enough to matter."
+          ],
+          "summary": "Temporarily repels the ghost during a chase and helps you break line of sight.",
+          "tips": [
+            "Carry it when you’re doing riskier tests.",
+            "Use it to reset a chase: smudge, break line of sight, hide.",
+            "Practice the timing so it becomes muscle memory."
+          ]
+        },
+        {
+          "id": "salt",
+          "insanityTips": [
+            "Treat salt as information: it tells you where the ghost prefers to walk.",
+            "If your only evidence is uncertain, salt + hunts gives you reliable behavioural data."
+          ],
+          "name": "Salt",
+          "nightmareTips": [
+            "Salt helps you confirm roaming patterns quickly without committing to evidence.",
+            "Use salt lanes to force the ghost to show its route."
+          ],
+          "summary": "Confirms walking paths and pairs well with UV for footprints.",
+          "tips": [
+            "Place salt on chokepoints and doorways.",
+            "Use with UV immediately after a step for footprints.",
+            "Salt is also a great 'movement detector' when evidence is limited."
+          ]
+        },
+        {
+          "id": "sanity-meds",
+          "insanityTips": [
+            "Meds are your 'reset button' if you still need to observe a key hunt behaviour.",
+            "Don’t rely on meds—anchor on line-of-sight breaks and hiding spots."
+          ],
+          "name": "Sanity Medication",
+          "nightmareTips": [
+            "Use meds after a big sanity drain event so you stabilise the run.",
+            "If you need a long test (DOTS/writing), meds buys that time."
+          ],
+          "summary": "Buys you more setup time by keeping hunts from starting early.",
+          "tips": [
+            "Use meds to extend your setup phase if the ghost is aggressive.",
+            "If you’re already in late-game hunts, meds won’t save you alone—survival tools matter more.",
+            "Treat it as a pacing tool: meds = more time for controlled testing."
+          ]
+        }
+      ],
+      "title": "Survival / support"
+    }
+  ],
+  "sources": [
+    {
+      "label": "Equipment list (phasmophobia Wiki)",
+      "url": "https://phasmophobia.fandom.com/wiki/Equipment"
+    }
+  ]
+}

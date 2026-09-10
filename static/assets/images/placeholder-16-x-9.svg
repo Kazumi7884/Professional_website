@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+ <title id="title">Project evidence placeholder</title>
+ <desc id="desc">Placeholder image for project evidence gallery screenshots.</desc>
+ <defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+ <stop offset="0%" stop-color="#171022" />
+ <stop offset="100%" stop-color="#0b0813" />
+ </linearGradient>
+ <linearGradient id="line" x1="0" y1="0" x2="1" y2="0">
+ <stop offset="0%" stop-color="transparent" />
+ <stop offset="50%" stop-color="#5ae6c8" />
+ <stop offset="100%" stop-color="transparent" />
+ </linearGradient>
+ </defs>
+ <rect width="1280" height="720" fill="url(#bg)" />
+ <rect x="36" y="36" width="1208" height="648" rx="18" fill="none" stroke="#a88bff" stroke-opacity="0.45" stroke-width="4" />
+ <rect x="72" y="92" width="1136" height="10" fill="url(#line)" opacity="0.7" />
+ <text x="640" y="360" fill="#f5d76e" font-family="'JetBrains Mono', Consolas, monospace" font-size="46" text-anchor="middle">
+ Project Evidence Placeholder
+ </text>
+ <text x="640" y="408" fill="#e9e9ff" font-family="'JetBrains Mono', Consolas, monospace" font-size="24" text-anchor="middle" opacity="0.85">
+ Replace with screenshot + short context
+ </text>
+</svg>

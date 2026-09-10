@@ -1,0 +1,64 @@
+{
+  "status": "Operational / hardware snapshot",
+  "snapshot": {
+    "generated": "Tuesday, July 14, 2026"
+  },
+  "components": [
+    {"label": "Host", "value": "Kaz", "detail": "Windows workstation"},
+    {"label": "OS", "value": "Windows 11 Pro", "detail": "Build 26200 / x64"},
+    {"label": "CPU", "value": "AMD Ryzen 7 5800X", "detail": "8 cores / 16 threads / approx. 3.8 GHz max clock"},
+    {"label": "Motherboard", "value": "ASUS ROG CROSSHAIR VIII EXTREME", "detail": "Revision X.0x"},
+    {"label": "Memory", "value": "32 GB DDR4", "detail": "4 x 8 GB Corsair / 3600 MHz / DIMM_A1-A2-B1-B2"},
+    {"label": "GPU", "value": "NVIDIA GeForce RTX 3090", "detail": "24 GB VRAM / driver 32.0.16.1074 / compute capability 8.6"},
+    {"label": "Displays", "value": "MSI MAG401QR PBP + secondary display", "detail": "MAG401QR is vertical in picture-by-picture mode, acting as two display surfaces; profile reports 3 active paths total"},
+    {"label": "Storage", "value": "Approx. 15.9 TB total", "detail": "Eight SSD/NVMe drives detected"}
+  ],
+  "storage": [
+    {"model": "addlink M.2 PCIe G4x4 NVMe", "size": "~3.7 TB"},
+    {"model": "Samsung SSD 870 EVO", "size": "~3.7 TB"},
+    {"model": "Sabrent", "size": "~1.9 TB"},
+    {"model": "Samsung SSD 860 EVO", "size": "~0.9 TB"},
+    {"model": "Samsung SSD 980", "size": "~0.9 TB"},
+    {"model": "WD_BLACK SN850X HS 2000GB", "size": "~1.9 TB"},
+    {"model": "Sabrent", "size": "~0.9 TB"},
+    {"model": "Samsung SSD 870 EVO", "size": "~1.9 TB"}
+  ],
+  "audio": [
+    "Focusrite USB Audio",
+    "VB-Audio Voicemeeter VAIO",
+    "NVIDIA High Definition Audio",
+    "NVIDIA Broadcast",
+    "USB Audio 2.0 / Device",
+    "ASUS Utility"
+  ],
+  "development": [
+    "PowerShell 7.6.2 / 7.5.5",
+    "VS Code 1.126.0",
+    "Git 2.55.0.2 and GitHub CLI 2.96.0",
+    "Docker Desktop 4.81.0 / Docker Engine 29.6.1 / Compose v5.2.0",
+    "Podman CLI 6.0.0",
+    "Python 3.10 / 3.11 / 3.12 / 3.13 / 3.14",
+    "Node.js 26.3.1 / Bun 1.3.14 / pnpm 10.33.0",
+    "Go 1.26.5 / R 4.6.1 / .NET SDKs 8, 9, and 10",
+    "Kubernetes CLI 1.36.1 / Helm 4.2.2",
+    "Astro CLI 1.42.1 / Pandoc 3.10",
+    "AWS CLI 2.35.17 / Azure CLI 2.88.0"
+  ],
+  "creativeMedia": [
+    "OBS Studio 32.1.2 / Streamlabs Desktop 1.21.4",
+    "FFmpeg 8.1.1 / HandBrake 1.11.2 / mpv.net 7.1.2",
+    "GIMP 3.2.4 / Krita 5.3.2.1 / ImageMagick 7.1.2-26",
+    "Figma 126.6.9 / ONLYOFFICE 9.4.0 / Graphviz 15.1.0",
+    "Audacity 3.7.8 / REAPER 7.77 / Focusrite Control 3.26.0.248"
+  ],
+  "ai": [
+    "LM Studio 0.4.16+2",
+    "Ollama 0.18.3"
+  ],
+  "priorities": [
+    {"state": "Detected baseline", "title": "Windows-first workstation", "description": "Windows 11 Pro is the current active operating system with a broad local development stack installed."},
+    {"state": "Hardware strength", "title": "GPU-heavy local capability", "description": "An RTX 3090 with 24 GB VRAM supports local AI experiments, creative/media workloads, and a three-path display layout including the MSI MAG401QR in vertical PBP."},
+    {"state": "Storage shape", "title": "Large local SSD workspace", "description": "About 15.9 TB of detected SSD/NVMe capacity supports games, projects, media, dashboards, and local archives."},
+    {"state": "Separate build notes", "title": "Custom-loop details are self-reported", "description": "Case, PSU, watercooling, peripherals, and NAS plans are kept as separate build notes rather than detected hardware facts."}
+  ]
+}

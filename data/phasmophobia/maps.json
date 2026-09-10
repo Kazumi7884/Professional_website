@@ -1,0 +1,557 @@
+[
+  {
+    "challenges": [
+      "‘No sprint’/slow speed runs feel manageable here — practice line-of-sight breaks around the kitchen island."
+    ],
+    "exits": 1,
+    "floors": 2,
+    "id": "tanglewood",
+    "insanityTips": [
+      "Use sound cues: with limited evidence, listen for double-steps vs normal pacing during hunts.",
+      "If you can’t confirm orbs, keep an eye on hallway corners — orbs can be easy to miss in small rooms.",
+      "Bring a motion sensor early; tiny map means one sensor can cover multiple rooms."
+    ],
+    "name": "6 Tanglewood Drive",
+    "nightmareTips": [
+      "Sprint the first sweep: kitchen → garage → living room is the fastest ‘power search’ route.",
+      "If the ghost is in the basement, stage gear at the stairs to reduce back-and-forth.",
+      "Listen for step sounds: the hallway is short, so footsteps + door touches narrow location fast."
+    ],
+    "rooms": "10 (1F) 1 (B)",
+    "roomsByFloor": [
+      {
+        "label": "1F",
+        "rooms": 7
+      },
+      {
+        "label": "2F",
+        "rooms": 4
+      }
+    ],
+    "roomsTotal": 11,
+    "size": "Small",
+    "sizeGroup": "small",
+    "summary": "A tight starter house with quick routes between rooms. Great for fast evidence runs and learning early hunt behavior.",
+    "tips": [
+      "Keep the fuse box on early and keep lights on near the ghost room to stabilise sanity.",
+      "Use the central hallway as your main 'spine' for quick sweeps with EMF and UV."
+    ]
+  },
+  {
+    "challenges": [
+      "Try a ‘stairs-only’ gear rule: everything staged at the stairs forces clean search discipline."
+    ],
+    "exits": 1,
+    "floors": 3,
+    "id": "edgefield",
+    "insanityTips": [
+      "If evidence is scarce, use hunt pathing: Edgefield’s long corridors make speed tells easier to spot.",
+      "Keep lights on in your search path to slow sanity drain while you narrow the favourite room.",
+      "Use salt + UV in choke points (stairs landing / hallway) to confirm footprints quickly."
+    ],
+    "name": "42 Edgefield Road",
+    "nightmareTips": [
+      "Treat it like two halves: clear downstairs quickly, then commit upstairs rather than bouncing.",
+      "The long upstairs hallway is dangerous in hunts — pre-plan a closet/hide route.",
+      "Stage extra gear at the bottom of the stairs to keep trips efficient."
+    ],
+    "rooms": "11 (1F) 5 (2F) 1 (B)",
+    "roomsByFloor": [
+      {
+        "label": "1F",
+        "rooms": 7
+      },
+      {
+        "label": "2F",
+        "rooms": 8
+      },
+      {
+        "label": "Basement",
+        "rooms": 1
+      }
+    ],
+    "roomsTotal": 16,
+    "size": "Small",
+    "sizeGroup": "small",
+    "summary": "A narrow house with a basement. Hallways get congested but you're rarely far from a door or room to duck into.",
+    "tips": [
+      "Use sound sensors to watch for movement between floors if the ghost feels like it’s roaming.",
+      "During hunts, break line-of-sight quickly by cutting into a nearby room rather than committing to long hallways."
+    ]
+  },
+  {
+    "challenges": [
+      "‘One floor at a time’ runs: you may only bring gear upstairs after confirming downstairs is cold-free."
+    ],
+    "exits": 1,
+    "floors": 3,
+    "id": "ridgeview",
+    "insanityTips": [
+      "Use line-of-sight breaks: the living area is open, so identify safe corners before provoking hunts.",
+      "If freezing is unclear, check adjacent rooms — Ridgeview’s airflow makes temps ‘feel’ wider.",
+      "Keep a crucifix near stair approaches if you’re unsure where the ghost roams."
+    ],
+    "name": "10 Ridgeview Court",
+    "nightmareTips": [
+      "Prioritise the open-plan living/dining/kitchen first — activity spreads and can mislead you.",
+      "If the ghost is upstairs, keep one person watching stair audio/steps to avoid surprise hunts.",
+      "Garage ghosts are common pain: temperature + sound usually locates faster than running room-to-room."
+    ],
+    "rooms": "12 (1F) 6 (2F) 1 (B)",
+    "roomsByFloor": [
+      {
+        "label": "1F",
+        "rooms": 7
+      },
+      {
+        "label": "2F",
+        "rooms": 5
+      },
+      {
+        "label": "Basement",
+        "rooms": 3
+      }
+    ],
+    "roomsTotal": 15,
+    "size": "Small",
+    "sizeGroup": "small",
+    "summary": "A more open small house with a basement. You get decent sightlines, but hunts can still catch you mid-staircase.",
+    "tips": [
+      "If the ghost room is upstairs, set a camera on the landing so you can confirm DOTS / orbs quickly.",
+      "Use the basement stairs as a predictable route: plan your escape before you commit to evidence setup."
+    ]
+  },
+  {
+    "challenges": [
+      "Practice ‘speed locate’: first 2 minutes you only carry thermo + EMF, nothing else."
+    ],
+    "exits": 1,
+    "floors": 2,
+    "id": "willow",
+    "insanityTips": [
+      "Use audio: Willow has clear door-touch sound; use it to triangulate upstairs rooms.",
+      "Set up DOTS acrosss doorways; narrow bedrooms mean DOTS coverage is efficient.",
+      "If you suspect a roaming ghost, track where it interacts rather than where it hunts."
+    ],
+    "name": "13 Willow Street",
+    "nightmareTips": [
+      "The basement can waste time — only commit once you’ve checked power + listened for interactions.",
+      "The upstairs rooms are tight: a single motion sensor can cover multiple doors.",
+      "If you get early EMF in the garage, check adjacent storage quickly before assuming garage room."
+    ],
+    "rooms": "10 (1F) 6 (2F) 1 (B)",
+    "roomsByFloor": [
+      {
+        "label": "1F",
+        "rooms": 7
+      },
+      {
+        "label": "Basement",
+        "rooms": 5
+      }
+    ],
+    "roomsTotal": 12,
+    "size": "Small",
+    "sizeGroup": "small",
+    "summary": "A small house with a larger, more usable basement than most. Good for practising evidence setups and looping routes.",
+    "tips": [
+      "Basement ghosts can be fast to confirm with temps; keep a thermometer or temp-reading device on hand early.",
+      "Use the garage/utility areas as staging spots to avoid cluttering the ghost room."
+    ]
+  },
+  {
+    "challenges": [
+      "Try a ‘no attic until found’ rule — it stops the attic from eating your early sanity."
+    ],
+    "exits": 2,
+    "floors": 3,
+    "id": "grafton",
+    "insanityTips": [
+      "If evidence is limited, watch for mannequin/doll interactions in the work/child rooms — they’re strong tells.",
+      "Use sound sensors (if enabled) or careful listening: farmhouse creaks can hide footsteps.",
+      "Place salt at stair choke points to confirm wander patterns."
+    ],
+    "name": "Grafton Farmhouse",
+    "nightmareTips": [
+      "The foyer light is unreliable — bring a flashlight and avoid trusting the main light during hunts.",
+      "Attic/upper rooms can drain sanity fast; keep an eye on teammates when searching upstairs.",
+      "Stage gear in the foyer: every path routes through it, so it’s a perfect ‘hub’."
+    ],
+    "rooms": "8 (1F) 5 (2F) 1 (A)",
+    "roomsByFloor": [
+      {
+        "label": "1F",
+        "rooms": 9
+      },
+      {
+        "label": "2F",
+        "rooms": 6
+      },
+      {
+        "label": "Attic",
+        "rooms": 1
+      }
+    ],
+    "roomsTotal": 16,
+    "size": "Small",
+    "sizeGroup": "small",
+    "summary": "A farmhouse with a strong mood and a few awkward corners. Staircases and long lines of sight are the danger points.",
+    "tips": [
+      "Farmhouses punish over-roaming: confirm the ghost room before you scatter equipment everywhere.",
+      "Set a safe hiding plan near each staircase so you’re not caught sprinting acrosss open rooms."
+    ]
+  },
+  {
+    "challenges": [
+      "Fast-food panic: complete 2 objectives before confirming the ghost type.",
+      "No hiding: practise breaking line-of-sight and using furniture as cover instead of dedicated hiding spots."
+    ],
+    "exits": 1,
+    "floors": 1,
+    "id": "nells-diner",
+    "insanityTips": [
+      "Treat evidence as secondary; confirm with hunts, footsteps, and interaction patterns.",
+      "Keep the lights plan simple: one lit route for sanity, one dark route for hiding.",
+      "Mark hiding spots early so you can test speed/line of sight safely."
+    ],
+    "name": "Nell's Diner",
+    "nightmareTips": [
+      "Prioritise behaviour tells early: speed changes, hunt timing, and room roaming.",
+      "Place motion + sound sensors along the main route to confirm where activity is moving.",
+      "Use a safe loop (kitchen/island or hallway corners) before you risk cursed items."
+    ],
+    "roomsByFloor": [
+      {
+        "label": "Ground",
+        "rooms": 14
+      }
+    ],
+    "roomsTotal": 14,
+    "size": "Small",
+    "sizeGroup": "small",
+    "summary": "A compact, cluttered diner. Evidence can be quick, but hunts feel claustrophobic because the space is tight and noisy.",
+    "tips": [
+      "Use the truck cameras early if you suspect orbs or DOTS to avoid crowding the dining area.",
+      "Be careful with sound: small maps can mask ghost steps and object throws behind ambient noise."
+    ]
+  },
+  {
+    "challenges": [
+      "Time attack: identify ghost within 5 minutes — this map is perfect practice."
+    ],
+    "exits": 1,
+    "floors": 1,
+    "id": "camp-woodwind",
+    "insanityTips": [
+      "Use footsteps on gravel/wood to help identify approach direction during hunts.",
+      "If you can’t lock evidence, use hunting speed tells — Woodwind makes them very obvious.",
+      "Don’t over-commit to one ‘cold spot’ — outdoor temps can feel weird; confirm with interactions."
+    ],
+    "name": "Camp Woodwind",
+    "nightmareTips": [
+      "Treat it like a loop: sweep tent → picnic → firepit and you’ll find activity fast.",
+      "Hunts are line-of-sight heavy outdoors — break sight with props and keep moving.",
+      "Keep gear tight: you can carry less because distances are short."
+    ],
+    "rooms": "10 (Total)",
+    "roomsByFloor": [
+      {
+        "label": "Ground",
+        "rooms": 11
+      }
+    ],
+    "roomsTotal": 11,
+    "size": "Small",
+    "sizeGroup": "small",
+    "summary": "An ultra-compact outdoor map. The ghost feels close at all times, so movement and line-of-sight matter more than distance.",
+    "tips": [
+      "Keep your escape route in mind before you start a trigger-heavy objective (like photo runs).",
+      "Use a strong flashlight and stick to a consistent lap around the main tent area to track activity."
+    ]
+  },
+  {
+    "challenges": [
+      "‘One-smudge’ runs: you only get one smudge per player — forces better escape planning."
+    ],
+    "exits": 2,
+    "floors": 3,
+    "id": "bleasdale",
+    "insanityTips": [
+      "Use the narrow rooms to your advantage: DOTS + motion sensors cover lots of space with few placements.",
+      "If you’re unsure on evidence, trigger a safe hunt and read speed changes on stairs/hallways.",
+      "Keep a smudge in hand on attic investigations — it can trap you otherwise."
+    ],
+    "name": "Bleasdale Farmhouse",
+    "nightmareTips": [
+      "Bleasdale is vertical: confirm ground floor before committing to upstairs + attic.",
+      "The long central stairs are risky in hunts — know your nearest hiding spot before provoking.",
+      "If the ghost is in the attic, stage gear at the top landing and keep exits clear."
+    ],
+    "rooms": "11 (1F) 7 (2F) 1 (A)",
+    "roomsByFloor": [
+      {
+        "label": "1F",
+        "rooms": 11
+      },
+      {
+        "label": "2F",
+        "rooms": 8
+      },
+      {
+        "label": "Attic",
+        "rooms": 2
+      }
+    ],
+    "roomsTotal": 21,
+    "size": "Small",
+    "sizeGroup": "medium",
+    "summary": "A bigger farmhouse with multiple useful outdoor areas. Great for learning longer rotations, but it’s easy to waste time roaming.",
+    "tips": [
+      "Pick a staging room close to the ghost room so you’re not hauling equipment acrosss the entire house.",
+      "If the ghost is upstairs, put salt/UV at the top of the stairs to collect evidence during early activity."
+    ]
+  },
+  {
+    "challenges": [
+      "‘One-wing only’ runs: you must identify ghost without entering the other cell block."
+    ],
+    "exits": 2,
+    "floors": 2,
+    "id": "prison",
+    "insanityTips": [
+      "Hunts can be long: pre-plan a loop route around corners and avoid dead-end cells.",
+      "If evidence is scarce, use sound + motion sensors in hallways to track roam paths.",
+      "Keep sanity management tight — prison distance makes recovery trips expensive."
+    ],
+    "name": "Prison",
+    "nightmareTips": [
+      "Pick a wing and commit — prison wastes time if you bounce between blocks.",
+      "Stage gear in the central hall so you can pivot without returning to the truck.",
+      "Listen for cell door touches: they narrow location faster than random room checks."
+    ],
+    "rooms": "28 (Total)",
+    "roomsByFloor": [
+      {
+        "label": "1F",
+        "rooms": 18
+      },
+      {
+        "label": "2F",
+        "rooms": 16
+      }
+    ],
+    "roomsTotal": 34,
+    "size": "Medium",
+    "sizeGroup": "medium",
+    "summary": "A huge open interior split into wings. Long sightlines are dangerous, and evidence collection can be slow if you don't narrow the area fast.",
+    "tips": [
+      "Use sound sensors and motion sensors to isolate the wing before you start placing everything.",
+      "Keep a safe room in mind near each wing entrance; committing deep into cell blocks can trap you."
+    ]
+  },
+  {
+    "challenges": [
+      "‘No cabin’ challenge: you can’t hide in the cabin — forces outdoor escape planning."
+    ],
+    "exits": 2,
+    "floors": 1,
+    "id": "maple-lodge",
+    "insanityTips": [
+      "Use the cabin as a safe ‘reset’ point — set crucifix/smudges there to stabilise hunts.",
+      "When evidence is limited, rely on hunt speed and sanity thresholds; this map gives long chase lanes.",
+      "Use motion sensors along main paths to track roam direction."
+    ],
+    "name": "Maple Lodge Campsite",
+    "nightmareTips": [
+      "Split the map: cabin + dock area vs tents + firepit — clear one side fully before swapping.",
+      "Sound carries weird outdoors; confirm room with multiple interactions before committing gear.",
+      "Stage gear at the entrance path to cut long runs to the truck."
+    ],
+    "rooms": "23 (Total)",
+    "roomsByFloor": [
+      {
+        "label": "Ground",
+        "rooms": 27
+      }
+    ],
+    "roomsTotal": 27,
+    "size": "Medium",
+    "sizeGroup": "medium",
+    "summary": "An outdoor map with wide spaces and low cover. Weather and visibility matter, and hunts can be brutal if you misread distance.",
+    "tips": [
+      "Use the truck to confirm orbs/DOTS where possible; outdoor visibility can be inconsistent.",
+      "Place crucifixes earlier than you think — it’s easy to be too far away when a hunt starts."
+    ]
+  },
+  {
+    "challenges": [
+      "‘Top-down’ search: you start at the top floor and work down, staging gear as you go."
+    ],
+    "exits": 1,
+    "floors": 10,
+    "id": "point-hope",
+    "insanityTips": [
+      "With limited evidence, watch hunt pathing: tight stairs make speed/tell reading easier.",
+      "Keep smudge + lighter ready before going above mid floors — escapes are limited.",
+      "Use motion sensors on stair landings to track travel direction."
+    ],
+    "name": "Point Hope",
+    "nightmareTips": [
+      "Vertical map: stage gear on mid-floors so you don’t stair-run to the truck.",
+      "Narrow stairwells are risky in hunts — pick a ‘safe floor’ and retreat early.",
+      "Use sound cues: footsteps and door touches are easier to pinpoint than temps in a tall building."
+    ],
+    "rooms": "16 (Total)",
+    "roomsByFloor": [
+      {
+        "label": "Total",
+        "rooms": 16
+      }
+    ],
+    "roomsTotal": 16,
+    "size": "Medium",
+    "sizeGroup": "medium",
+    "summary": "A tall, narrow lighthouse. Escape routes are linear and tight, so planning matters more than raw speed.",
+    "tips": [
+      "Treat each floor as a checkpoint: identify where you can safely reset during a hunt.",
+      "Drop a spare flashlight or smudge on a mid-floor so you’re never empty-handed if you get trapped above."
+    ]
+  },
+  {
+    "challenges": [
+      "‘No sprint’ hunt practice: high school corridors teach line-of-sight discipline."
+    ],
+    "exits": 4,
+    "floors": 2,
+    "id": "brownstone",
+    "insanityTips": [
+      "If evidence is limited, provoke a controlled hunt and read speed in the long corridors.",
+      "Keep lights on in your travel path; sanity drains fast on large maps.",
+      "Place motion sensors at major intersections to catch roam direction."
+    ],
+    "name": "Brownstone High School",
+    "nightmareTips": [
+      "Drop a ‘gear pile’ near the closest entrance; the walk to truck is brutal otherwise.",
+      "Use sound + thermo to find the wing first; room-by-room is too slow.",
+      "Hallways aren’t ghost rooms — focus on classrooms/bathrooms and listen for door touches."
+    ],
+    "rooms": "64 (Total)",
+    "roomsByFloor": [
+      {
+        "label": "1F",
+        "rooms": 31
+      },
+      {
+        "label": "2F",
+        "rooms": 33
+      }
+    ],
+    "roomsTotal": 64,
+    "size": "Large",
+    "sizeGroup": "large",
+    "summary": "A massive, echoing school with long corridors. Finding the ghost room is the real fight — evidence comes later.",
+    "tips": [
+      "Use parabolic microphone and sound sensors to locate activity before you commit gear.",
+      "Keep the team spaced: too many people in one hallway wastes time and increases confusion during hunts."
+    ]
+  },
+  {
+    "challenges": [
+      "‘Wing lock’ runs: you may only investigate one wing for the entire contract."
+    ],
+    "exits": 4,
+    "floors": 2,
+    "id": "sunny-meadows",
+    "insanityTips": [
+      "With limited evidence, hunts are your best ‘data’ — Sunny Meadows gives long corridors for speed tells.",
+      "Don’t chase interactions acrosss floors; track consistent activity to avoid being baited by roaming.",
+      "Smudges are mandatory: plan a chain of safe rooms to rotate through."
+    ],
+    "name": "Sunny Meadows Mental Institution",
+    "nightmareTips": [
+      "Treat it as zones: only open the wing you intend to play to reduce search overwhelm.",
+      "Stage gear at the entrance of your chosen wing, not at the truck.",
+      "Use parabolic/audio to find the wing quickly before doing any detailed room checks."
+    ],
+    "rooms": "67 (Total)",
+    "roomsByFloor": [
+      {
+        "label": "1F",
+        "rooms": 34
+      },
+      {
+        "label": "2F",
+        "rooms": 35
+      }
+    ],
+    "roomsTotal": 69,
+    "size": "Large",
+    "sizeGroup": "large",
+    "summary": "The biggest and most punishing location. Navigation, sound, and time management matter as much as evidence.",
+    "tips": [
+      "Mark your path mentally: it’s easy to lose orientation in long corridors and repeated rooms.",
+      "Commit to one wing at a time. Roaming acrosss wings early is the fastest way to waste 20 minutes."
+    ]
+  },
+  {
+    "challenges": [
+      "Restricted rush: get first evidence within 3 minutes.",
+      "No truck: play as if you can't use the truck monitors for confirmations."
+    ],
+    "exits": 1,
+    "floors": 2,
+    "id": "sunny-meadows-restricted",
+    "insanityTips": [
+      "Bring sensors first so you can reduce guesswork when evidence is limited.",
+      "Test one behaviour at a time (speed, LOS, special tells) so you don't mix signals.",
+      "Keep comms clean: call out room changes and hunt starts immediately."
+    ],
+    "name": "Sunny Meadows Mental Institution (Restricted)",
+    "nightmareTips": [
+      "Split jobs: one person finds the room, one sets sensors to track roaming and hunts.",
+      "Use sound sensors to identify the active wing/area before committing gear.",
+      "Plan a retreat route from the ghost room to a confirmed hiding spot."
+    ],
+    "roomsByFloor": [
+      {
+        "label": "Varies",
+        "rooms": "16–18"
+      }
+    ],
+    "roomsTotal": null,
+    "size": "Medium",
+    "sizeGroup": "medium",
+    "summary": "A smaller variant of Sunny Meadows with a single wing layout. It keeps the vibe, but cuts down the time sink — still dangerous if you wander.",
+    "tips": [
+      "Treat it like a medium map: isolate the wing quickly and set up a single staging point.",
+      "Don’t over-extend: restricted layouts punish chasing noises into long dead ends."
+    ],
+    "variants": [
+      {
+        "floors": 2,
+        "name": "Restricted A",
+        "rooms": 18
+      },
+      {
+        "floors": 2,
+        "name": "Restricted B",
+        "rooms": 16
+      },
+      {
+        "floors": 2,
+        "name": "Restricted C",
+        "rooms": 17
+      },
+      {
+        "floors": 2,
+        "name": "Restricted D",
+        "rooms": 17
+      },
+      {
+        "floors": 2,
+        "name": "Restricted E",
+        "rooms": 16
+      }
+    ]
+  }
+]

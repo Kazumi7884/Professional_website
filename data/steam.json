@@ -1,0 +1,26 @@
+{
+  "categories": [
+    {"id": "playtime", "label": "Playtime"},
+    {"id": "deck", "label": "Steam Deck"},
+    {"id": "ratings", "label": "Ratings"},
+    {"id": "library", "label": "Library"},
+    {"id": "genres", "label": "Genres"}
+  ],
+  "charts": [
+    {"title": "Top playtime", "category": "playtime", "categoryLabel": "Playtime", "image": "/assets/images/steam-viz/01-top-playtime.webp", "alt": "Games ranked by total playtime", "description": "The games that have received the most time in my library."},
+    {"title": "Playtime distribution", "category": "playtime", "categoryLabel": "Playtime", "image": "/assets/images/steam-viz/02-playtime-distribution.webp", "alt": "Distribution of playtime across the Steam library", "description": "How hours are distributed across the complete collection."},
+    {"title": "Hours by release year", "category": "playtime", "categoryLabel": "Playtime", "image": "/assets/images/steam-viz/15-total-hours-by-year.webp", "alt": "Total hours played grouped by release year", "description": "A time-based view of where playtime accumulates."},
+    {"title": "Steam Deck status", "category": "deck", "categoryLabel": "Steam Deck", "image": "/assets/images/steam-viz/03-steam-deck-status.webp", "alt": "Steam Deck verification status", "description": "Verified, playable, unsupported, and unknown titles."},
+    {"title": "Hours by Deck compatibility", "category": "deck", "categoryLabel": "Steam Deck", "image": "/assets/images/steam-viz/11-hours-by-deck.webp", "alt": "Hours played by Steam Deck compatibility", "description": "How actual playtime aligns with portable compatibility."},
+    {"title": "Top games by Metascore", "category": "ratings", "categoryLabel": "Ratings", "image": "/assets/images/steam-viz/06-top-metascore.webp", "alt": "Highest-rated games by Metascore", "description": "The strongest critic-rated titles in the library."},
+    {"title": "Metascore distribution", "category": "ratings", "categoryLabel": "Ratings", "image": "/assets/images/steam-viz/05-metascore-distribution.webp", "alt": "Distribution of Metascore ratings", "description": "The shape of critic scores across the collection."},
+    {"title": "Metascore buckets", "category": "ratings", "categoryLabel": "Ratings", "image": "/assets/images/steam-viz/14-metascore-buckets.webp", "alt": "Games grouped into Metascore bands", "description": "A clearer grouped view of score ranges."},
+    {"title": "User score vs Metascore", "category": "ratings", "categoryLabel": "Ratings", "image": "/assets/images/steam-viz/07-userscore-vs-metascore.webp", "alt": "User scores compared with Metascores", "description": "Where players and critics agree—or diverge."},
+    {"title": "Hours vs Metascore", "category": "ratings", "categoryLabel": "Ratings", "image": "/assets/images/steam-viz/12-hours-vs-metascore.webp", "alt": "Hours played compared with Metascore", "description": "Whether critical reception predicts what I actually play."},
+    {"title": "Games by release year", "category": "library", "categoryLabel": "Library", "image": "/assets/images/steam-viz/04-release-years.webp", "alt": "Number of games grouped by release year", "description": "The age profile of the library."},
+    {"title": "Platform support", "category": "library", "categoryLabel": "Library", "image": "/assets/images/steam-viz/09-platform-support.webp", "alt": "Windows, macOS, and Linux support", "description": "Operating-system compatibility across the collection."},
+    {"title": "Game modes", "category": "library", "categoryLabel": "Library", "image": "/assets/images/steam-viz/10-modes.webp", "alt": "Single-player, multiplayer, and cooperative modes", "description": "The balance of solo, multiplayer, and co-op experiences."},
+    {"title": "Top genre tags", "category": "genres", "categoryLabel": "Genres", "image": "/assets/images/steam-viz/08-top-tags.webp", "alt": "Most common Steam genre tags", "description": "The dominant genres and descriptors in the library."},
+    {"title": "Heavy tag analysis", "category": "genres", "categoryLabel": "Genres", "image": "/assets/images/steam-viz/13-top-tags-heavy.webp", "alt": "Detailed breakdown of frequent genre tags", "description": "A deeper view of the collection's most prevalent tags."}
+  ]
+}

@@ -1,0 +1,542 @@
+[
+  {
+    "evidence": [
+      "EMF Level 5",
+      "Spirit Box",
+      "Writing"
+    ],
+    "id": "spirit",
+    "insanityTips": [
+      "Treat Spirit as a “rule-out” ghost: confirm what it is NOT (no special hunt traits, no unique abilities).",
+      "If you have incense, the long post-smudge cooldown is still your best confirmation even with 1 evidence.",
+      "If the ghost feels ordinary acrosss hunts/events and nothing else lines up, Spirit is a strong final call."
+    ],
+    "name": "Spirit",
+    "nightmareTips": [
+      "Use incense (smudge) timing: Spirit is blocked from hunting for ~180s (roughly double the usual).",
+      "If you can safely force/observe two hunts, the longer post-smudge cooldown is the main behavioural tell.",
+      "If everything else fits but there are no unique tells showing up, Spirit often becomes your “default” after ruling others out."
+    ],
+    "summary": "A baseline ghost type with no extreme behaviour. Use smudge tests and elimination when evidence overlaps."
+  },
+  {
+    "evidence": [
+      "EMF Level 5",
+      "Spirit Box",
+      "D.O.T.S"
+    ],
+    "id": "wraith",
+    "insanityTips": [
+      "Salt + UV is still one of the cleanest low-evidence checks: no UV footprints after stepping through salt strongly points to Wraith.",
+      "Keep an eye on interactions far from the ghost room; Wraith can make the investigation feel “spread out”.",
+      "If you can’t get a hunt tell, rely on salt behaviour and unusual movement/interaction patterns."
+    ],
+    "name": "Wraith",
+    "nightmareTips": [
+      "Salt test: Wraith will not leave UV footprints from salt (no footprint trails).",
+      "Watch for sudden “teleport-like” interactions near players (it can move to players and interact away from the room).",
+      "If you hear steps but never see footprint UV from salt, keep Wraith high on the list."
+    ],
+    "summary": "Known for mobility and avoiding salt. Pay attention to footsteps and UV behaviour when testing."
+  },
+  {
+    "evidence": [
+      "Spirit Box",
+      "UV",
+      "D.O.T.S"
+    ],
+    "id": "phantom",
+    "insanityTips": [
+      "Use the hunt blink rate: Phantom is often harder to track visually because it stays invisible longer.",
+      "A successful ghost photo causing an instant vanish is a strong behavioural confirmation.",
+      "If you’re stuck between Phantom and other DOTS/Spirit Box ghosts, hunt visibility is usually the decider."
+    ],
+    "name": "Phantom",
+    "nightmareTips": [
+      "Photo test: taking a ghost photo causes a Phantom to vanish briefly (events end fast).",
+      "During hunts it tends to blink less often (longer invisible periods) compared to many ghosts.",
+      "If DOTS is present, try taking a photo when it walks through DOTS: Phantom will not show in the photo."
+    ],
+    "summary": "Often tricky in photos. Use consistent checks and watch for interaction patterns."
+  },
+  {
+    "evidence": [
+      "Spirit Box",
+      "UV",
+      "Writing"
+    ],
+    "id": "poltergeist",
+    "insanityTips": [
+      "Set up a throw pile and listen: a burst of rapid throws is your best low-evidence confirmation.",
+      "If you’re getting constant object throws while other evidence refuses to appear, Poltergeist stays likely.",
+      "Keep sanity in mind: frequent throws can chip sanity fast, so don’t overstay while testing."
+    ],
+    "name": "Poltergeist",
+    "nightmareTips": [
+      "Watch for multi-throws: Poltergeist can throw several items almost at once.",
+      "Pile small objects in the ghost room; a “polty bomb” throw is a big giveaway.",
+      "Heavy item chaos early (lots of throws, lots of noise) usually isn’t subtle."
+    ],
+    "summary": "A throw-heavy ghost. Cluttered rooms become dangerous during hunts and events."
+  },
+  {
+    "evidence": [
+      "UV",
+      "Orbs",
+      "D.O.T.S"
+    ],
+    "id": "banshee",
+    "insanityTips": [
+      "If you have parabolic access, the Banshee scream remains one of the cleanest Insanity IDs.",
+      "Solo play removes the target gimmick, so rely more on parabolic and hunt behaviour than “target” feelings.",
+      "If it feels selective in multiplayer (one person gets punished), keep Banshee high."
+    ],
+    "name": "Banshee",
+    "nightmareTips": [
+      "In multiplayer, it can “pick a target” and behave oddly around non-target players.",
+      "Use the parabolic mic: Banshee has a unique scream that can identify it.",
+      "If one player is repeatedly pressured while others feel safe, suspect Banshee."
+    ],
+    "summary": "Target-focused behaviour can show up in multiplayer. Track the target and activity over time."
+  },
+  {
+    "evidence": [
+      "EMF Level 5",
+      "UV",
+      "Freezing"
+    ],
+    "id": "jinn",
+    "insanityTips": [
+      "Force a comparison: observe hunt speed with breaker ON vs OFF (Jinn loses its main advantage when power is off).",
+      "If you’re getting “fast LoS speed” without cold-speed behaviour (Hantu), Jinn becomes a strong pick.",
+      "Use safer tests: keep a known hiding route and don’t intentionally feed long LoS unless you’re ready."
+    ],
+    "name": "Jinn",
+    "nightmareTips": [
+      "Breaker on test: with the power on, Jinn can move faster when it has line-of-sight during hunts.",
+      "It cannot turn the breaker off directly; if the breaker stays on consistently, Jinn is more plausible.",
+      "If hunts feel unusually fast only when the breaker is on, that’s your strongest tell."
+    ],
+    "summary": "Power-dependent behaviour. Fuse box and line-of-sight decisions matter."
+  },
+  {
+    "evidence": [
+      "Spirit Box",
+      "Orbs",
+      "Writing"
+    ],
+    "id": "mare",
+    "insanityTips": [
+      "On Insanity, treat Mare as a “lighting pattern” ghost: test with room lights ON vs OFF and compare activity.",
+      "If hunts/events happen more in darkness and calm down in light, Mare stays high.",
+      "If you can’t prove a special hunt trait, consistent light preference is your best evidence."
+    ],
+    "name": "Mare",
+    "nightmareTips": [
+      "Light behaviour: Mare prefers darkness and can be more aggressive when lights are off.",
+      "If lights keep getting switched off quickly after you turn them on, that pattern can point toward Mare.",
+      "Try keeping the ghost room lit; if activity drops noticeably in light, Mare is more likely."
+    ],
+    "summary": "Light-sensitive behaviour. Manage lighting deliberately and watch for room changes."
+  },
+  {
+    "evidence": [
+      "Orbs",
+      "Freezing",
+      "Writing"
+    ],
+    "id": "revenant",
+    "insanityTips": [
+      "Use a safe speed test: get it to see you briefly, then break LoS and listen for the immediate slowdown.",
+      "If it stays fast even without seeing you, it’s probably not a Revenant.",
+      "This is one of the most reliable 1-evidence IDs because the speed difference is so extreme."
+    ],
+    "name": "Revenant",
+    "nightmareTips": [
+      "Hunt speed tell: Revenant is extremely fast when it detects a player, but slow when it does not.",
+      "Break line of sight and listen: the speed change is dramatic and very readable.",
+      "If it feels “unescapeable” when seen but manageable when hidden, Revenant is a prime suspect."
+    ],
+    "summary": "Movement speed is the big tell. Use safe loops and plan smudge timing."
+  },
+  {
+    "evidence": [
+      "EMF Level 5",
+      "Freezing",
+      "Writing"
+    ],
+    "id": "shade",
+    "insanityTips": [
+      "On Insanity, treat Shade as a behaviour pattern: “nothing happens when I’m there, things happen when I’m gone.”",
+      "If you get very little activity and a late hunt, Shade stays in the running.",
+      "If it is constantly active around players, it’s probably not a Shade."
+    ],
+    "name": "Shade",
+    "nightmareTips": [
+      "Shade is shy: less likely to do interactions/events when players are in the ghost room.",
+      "If you only get activity after leaving the room (or watching from a distance), Shade becomes more likely.",
+      "Camera/van watching can be more productive than provoking it directly."
+    ],
+    "summary": "Prefers solitude. Evidence can be slower if the room is crowded."
+  },
+  {
+    "evidence": [
+      "UV",
+      "Freezing",
+      "Writing"
+    ],
+    "id": "demon",
+    "insanityTips": [
+      "On Insanity, an unusually early hunt is often your biggest Demon clue—prioritise safety and crucifix placement.",
+      "If you can control it, compare hunt timing with other candidates; Demon tends to pressure you earlier.",
+      "If everything feels “too soon, too fast” and nothing else fits, don’t ignore Demon."
+    ],
+    "name": "Demon",
+    "nightmareTips": [
+      "Early hunt risk: Demon can hunt much earlier than most ghosts.",
+      "Crucifix range is more effective against Demon; place one early if you suspect it.",
+      "If you get aggressive behaviour very early with little setup time, Demon is a serious candidate."
+    ],
+    "summary": "Aggressive behaviour and early hunts are common tells. Stay disciplined with sanity and crucifixes."
+  },
+  {
+    "evidence": [
+      "Orbs",
+      "Freezing",
+      "D.O.T.S"
+    ],
+    "id": "yurei",
+    "insanityTips": [
+      "On Insanity, sanity drain + door behaviour becomes your main Yurei evidence.",
+      "If doors in/near the ghost room keep moving aggressively and sanity drops feel harsher than normal, keep Yurei high.",
+      "If you can’t get a hunt tell, track door patterns and sanity change over time."
+    ],
+    "name": "Yurei",
+    "nightmareTips": [
+      "Door behaviour: watch for strong door interactions (including fully closing doors) around the ghost room.",
+      "Yurei can heavily drain sanity with its ability—if sanity dips hard without obvious causes, suspect it.",
+      "Incense in the ghost room can “trap” it temporarily, making activity patterns easier to read."
+    ],
+    "summary": "Sanity pressure can feel stronger. Use room control and watch for door behaviour."
+  },
+  {
+    "evidence": [
+      "EMF Level 5",
+      "Freezing",
+      "D.O.T.S"
+    ],
+    "id": "oni",
+    "insanityTips": [
+      "If the ghost is constantly eventing and feels “loud”, Oni becomes more likely.",
+      "Use event types: repeated full manifestations (and no airball) help narrow toward Oni.",
+      "If activity is consistently low and shy, it’s probably not an Oni."
+    ],
+    "name": "Oni",
+    "nightmareTips": [
+      "Oni is very active and tends to show itself more (more frequent ghost events).",
+      "It cannot do the “airball” mist ghost event; lots of full-form events points toward Oni.",
+      "DOTS is easier to witness in person than from the van (Oni is more active when you’re nearby)."
+    ],
+    "summary": "Very active and visible. Strong on events — use them for identification."
+  },
+  {
+    "evidence": [
+      "Spirit Box",
+      "Orbs",
+      "D.O.T.S"
+    ],
+    "id": "yokai",
+    "insanityTips": [
+      "On Insanity, use a controlled “voice test”: talk near the ghost room and see if aggression spikes.",
+      "In hunts, stay quiet and compare its tracking; Yokai often feels dumber at range.",
+      "If it consistently tracks you through walls/at long range, it’s probably not Yokai."
+    ],
+    "name": "Yokai",
+    "nightmareTips": [
+      "Talking near the ghost can make it more aggressive—test by speaking near the room and watch response.",
+      "During hunts, Yokai has shorter detection range for electronics/voices than many ghosts.",
+      "If it struggles to find you while you’re quiet (even with electronics nearby), Yokai is plausible."
+    ],
+    "summary": "Audio can influence it. Be careful with voice and electronics when testing."
+  },
+  {
+    "evidence": [
+      "UV",
+      "Orbs",
+      "Freezing"
+    ],
+    "id": "hantu",
+    "insanityTips": [
+      "On Insanity, use “cold speed” as your main confirmation: compare speed in cold corridors vs warmer areas.",
+      "If turning the breaker ON noticeably weakens its speed profile over time, Hantu becomes more likely.",
+      "If it’s fast but not temperature-linked, look at Jinn/Raiju/Moroi instead."
+    ],
+    "name": "Hantu",
+    "nightmareTips": [
+      "Temperature speed tell: Hantu is faster in colder areas and slower in warmer areas.",
+      "With the breaker OFF, rooms cool down more—if hunts speed up over time as the building chills, suspect Hantu.",
+      "It can show visible cold breath in hunts when the breaker is off and the area is cold."
+    ],
+    "summary": "Cold-related behaviour. Track temps and use the breaker strategy."
+  },
+  {
+    "evidence": [
+      "EMF Level 5",
+      "UV",
+      "D.O.T.S"
+    ],
+    "id": "goryo",
+    "insanityTips": [
+      "On Insanity, treat Goryo as “camera DOTS + low roaming”: set cameras and check from safety.",
+      "If the ghost keeps interacting in the same room for a long time, Goryo becomes more likely.",
+      "If you’re seeing DOTS in person frequently, it’s probably not a Goryo."
+    ],
+    "name": "Goryo",
+    "nightmareTips": [
+      "DOTS camera test: Goryo DOTS is much easier (or only) to see through a video camera rather than in person.",
+      "It tends not to roam far; if the ghost stays very “room-locked”, that supports Goryo.",
+      "If DOTS refuses to show in person but appears on camera, keep Goryo high."
+    ],
+    "summary": "Often best confirmed via camera. Approach DOTS checks methodically."
+  },
+  {
+    "evidence": [
+      "EMF Level 5",
+      "UV",
+      "Writing"
+    ],
+    "id": "myling",
+    "insanityTips": [
+      "On Insanity, do a safe sound test in a hunt: if it “appears silently” until close, Myling is a strong call.",
+      "If you can clearly hear footsteps from far away during hunts, it’s probably not a Myling.",
+      "Use parabolic readings + hunt sound behaviour together for higher confidence."
+    ],
+    "name": "Myling",
+    "nightmareTips": [
+      "During hunts, you may hear footsteps only when it’s very close—Myling is quieter than most.",
+      "Use the flashlight blink vs footsteps: if lights blink but you don’t hear steps until it’s near, suspect Myling.",
+      "Parabolic mic can help because Myling tends to be more audible through it outside hunts."
+    ],
+    "summary": "Sound tells matter. Compare footsteps to hunting range and audio cues."
+  },
+  {
+    "evidence": [
+      "Spirit Box",
+      "Orbs",
+      "Freezing"
+    ],
+    "id": "onryo",
+    "insanityTips": [
+      "On Insanity, candles are both defence and evidence: repeated blowouts tied to hunts is your best Onryo tell.",
+      "If hunts happen without a pattern around flames, it might be another ghost.",
+      "If you can control the environment, the “candle first” behaviour is very readable."
+    ],
+    "name": "Onryo",
+    "nightmareTips": [
+      "Candle test: Onryo treats flames like a crucifix—candles can prevent hunts until they’re blown out.",
+      "If it repeatedly blows out candles and then hunts soon after, Onryo becomes very likely.",
+      "Try a cluster: candles + crucifix setup to see if candle blowouts line up with hunt attempts."
+    ],
+    "summary": "Fire and candles interact with its behaviour. Use candle tests carefully."
+  },
+  {
+    "evidence": [
+      "EMF Level 5",
+      "Spirit Box",
+      "Freezing"
+    ],
+    "id": "twins",
+    "insanityTips": [
+      "On Insanity, treat Twins as a pattern ghost: separate interactions, separate sounds, “two locations” feel.",
+      "If you can safely compare hunts, note any consistent speed variation between hunts.",
+      "If everything stays tightly centred in one room, Twins becomes less likely."
+    ],
+    "name": "The Twins",
+    "nightmareTips": [
+      "Watch for interactions in two places: Twins can interact from a wider combined area, making activity feel “split”.",
+      "Hunt speed can vary: one Twin can feel slightly different in speed during hunts.",
+      "If you get evidence-like interactions far apart in a short window, keep Twins high."
+    ],
+    "summary": "Split activity can mislead. Track multiple interaction points and timing."
+  },
+  {
+    "evidence": [
+      "EMF Level 5",
+      "Orbs",
+      "D.O.T.S"
+    ],
+    "id": "raiju",
+    "insanityTips": [
+      "On Insanity, do a controlled electronics test: run a hunt with electronics on vs off and compare speed.",
+      "If it feels “powered up” near gear, Raiju is a strong call.",
+      "If it’s fast everywhere regardless of electronics, consider Moroi/Jinn/Revenant instead."
+    ],
+    "name": "Raiju",
+    "nightmareTips": [
+      "Electronics speed tell: Raiju gets faster around active electronic equipment during hunts.",
+      "If hunts speed up near cameras, DOTS, flashlights, etc., suspect Raiju.",
+      "Try turning off/away electronics: if speed drops, Raiju becomes more likely."
+    ],
+    "summary": "Electronics affect its behaviour. Control your equipment placement and use."
+  },
+  {
+    "evidence": [
+      "EMF Level 5",
+      "UV",
+      "Orbs"
+    ],
+    "id": "obake",
+    "insanityTips": [
+      "On Insanity, UV becomes extra valuable: a single unique handprint can solve the case instantly.",
+      "If you observe hunt shapeshift behaviour (brief model changes), Obake becomes very likely.",
+      "If UV prints are always normal and there are no shapeshift hints, it may be another ghost."
+    ],
+    "name": "Obake",
+    "nightmareTips": [
+      "UV tell: Obake can leave a unique 6-finger handprint (or unusual UV evidence).",
+      "During hunts it can shapeshift briefly (model flicker/shift), which can be a giveaway.",
+      "If UV evidence is inconsistent or “odd”, keep Obake in mind."
+    ],
+    "summary": "UV behaviour and prints can help. Confirm with consistent UV checks."
+  },
+  {
+    "evidence": [
+      "Spirit Box",
+      "UV",
+      "Freezing"
+    ],
+    "id": "mimic",
+    "insanityTips": [
+      "On Insanity, treat Mimic as “inconsistent behaviour”: confirm orbs and then distrust single-trait IDs.",
+      "If you’re seeing strong traits from different ghosts in different moments, Mimic is a top candidate.",
+      "Use orbs + your one evidence as your anchor, then interpret behaviour second."
+    ],
+    "name": "The Mimic",
+    "nightmareTips": [
+      "Always check for ghost orbs: Mimic can show orbs even though they are not “true” evidence for it.",
+      "Behaviour can change (mimicking other ghosts), so don’t lock in too early based on one hunt.",
+      "If you have a set of evidence that fits Mimic but the ghost behaves like multiple types, suspect Mimic."
+    ],
+    "summary": "Tricky because it also shows Ghost Orbs. Treat orbs as a clue, not proof."
+  },
+  {
+    "evidence": [
+      "Spirit Box",
+      "Freezing",
+      "Writing"
+    ],
+    "id": "moroi",
+    "insanityTips": [
+      "On Insanity, track sanity and speed: if it feels faster the lower your sanity gets, Moroi is a strong call.",
+      "If you get cursed early, the investigation becomes a timer—prioritise tests quickly.",
+      "If speed is constant and not sanity-linked, look at other fast ghosts instead."
+    ],
+    "name": "Moroi",
+    "nightmareTips": [
+      "Curse clue: Moroi can “curse” you via Spirit Box/Parabolic, causing faster sanity drain.",
+      "Hunt speed increases as your sanity drops; later hunts can feel significantly faster.",
+      "If the ghost ramps up speed over time as sanity falls, Moroi becomes likely."
+    ],
+    "summary": "Cursed by voice responses. Manage sanity and watch speed changes over time."
+  },
+  {
+    "evidence": [
+      "Spirit Box",
+      "Writing",
+      "D.O.T.S"
+    ],
+    "id": "deogen",
+    "insanityTips": [
+      "On Insanity, Deogen is one of the safest confirmations if you know what to do: let it approach and listen for the slowdown.",
+      "If it cannot be shaken by hiding and always seems to path directly to you, Deogen rises quickly on the list.",
+      "If it loses you easily while you hide, it’s probably not Deogen."
+    ],
+    "name": "Deogen",
+    "nightmareTips": [
+      "Hide test: you can’t reliably hide from a Deogen—it will find you even in good hiding spots.",
+      "It is very fast when far away, but becomes very slow when it gets close to you.",
+      "If a hunt starts terrifying and then becomes easy to loop because it slows near you, suspect Deogen."
+    ],
+    "summary": "Chase behaviour is unique. Test by controlling distance and loop behaviour."
+  },
+  {
+    "evidence": [
+      "Orbs",
+      "Writing",
+      "D.O.T.S"
+    ],
+    "id": "thaye",
+    "insanityTips": [
+      "On Insanity, treat Thaye as “front-loaded danger”: early pressure followed by a clear drop in activity.",
+      "If hunts become slower/less frequent as time passes (without other explanations), Thaye is likely.",
+      "If it ramps up instead of calming down, it’s probably not Thaye."
+    ],
+    "name": "Thaye",
+    "nightmareTips": [
+      "Thaye “ages” during the investigation when players are near it: it starts very aggressive and gets weaker over time.",
+      "If early activity/wiki/Hunt are intense and later it calms down noticeably, suspect Thaye.",
+      "If you have a Ouija Board, its reported age can increase over time, confirming Thaye."
+    ],
+    "summary": "Changes over time. Early aggressiveness can fade — track it acrosss minutes."
+  },
+  {
+    "evidence": [
+      "EMF Level 5",
+      "Spirit Box",
+      "UV"
+    ],
+    "id": "gallu",
+    "insanityTips": [
+      "On Insanity, treat Gallu as a “state-cycle” ghost: note whether it gets worse after protective use, then eases later.",
+      "If you can control usage, test one protective action and watch for a noticeable behavioural shift.",
+      "If behaviour stays consistent regardless of protection, it may be a different ghost."
+    ],
+    "name": "Gallu",
+    "nightmareTips": [
+      "Gallu reacts strongly to protective gear: using items like incense/crucifix interaction can shift its behaviour cycle.",
+      "If it feels like it changes state over time (enraged → tired/weakened), keep Gallu in mind.",
+      "If “playing safe” early seems to make it scarier before it calms, that pattern fits Gallu."
+    ],
+    "summary": "A newer ghost type. Start with fast EMF/Spirit Box checks and confirm UV evidence reliably."
+  },
+  {
+    "evidence": [
+      "Orbs",
+      "Spirit Box",
+      "UV"
+    ],
+    "id": "dayan",
+    "insanityTips": [
+      "On Insanity, use a controlled movement test: move near the room, then stop completely and compare response.",
+      "If it consistently punishes movement but becomes calmer when you hold still, Dayan becomes very likely.",
+      "If movement has no impact on behaviour, it’s probably not Dayan."
+    ],
+    "name": "Dayan",
+    "nightmareTips": [
+      "Movement-based ghost: it gains strength when people move near it and weakens when players stand still nearby.",
+      "If activity spikes while you’re walking around the room but calms when you freeze, suspect Dayan.",
+      "Treat “stand still” as both a safety tool and an identification test."
+    ],
+    "summary": "A newer ghost type. Use orbs and Spirit Box early, then confirm UV to lock it in."
+  },
+  {
+    "evidence": [
+      "EMF Level 5",
+      "Orbs",
+      "UV"
+    ],
+    "id": "obambo",
+    "insanityTips": [
+      "On Insanity, treat Obambo as “mood swings”: don’t assume consistency—look for alternating calm/aggressive phases.",
+      "If you get sudden rapid hunts after a calm stretch, Obambo is a strong candidate.",
+      "If behaviour stays steady and predictable, it may be another ghost."
+    ],
+    "name": "Obambo",
+    "nightmareTips": [
+      "Obambo switches between calm and aggressive states, making it feel unpredictable.",
+      "If you notice bursts of early hunting/aggression followed by calmer tracking periods, suspect Obambo.",
+      "Team play helps: one person watching activity can spot the “mode shift” pattern more clearly."
+    ],
+    "summary": "A newer ghost type. Consistent EMF activity + orbs + UV is your cleanest confirmation path."
+  }
+]

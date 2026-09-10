@@ -1,0 +1,139 @@
+{% macro author() -%}
+<aside class="author-panel" aria-label="About the author">
+  <div class="author-badge" aria-hidden="true">K<span>AZ</span></div>
+  <a class="author-name" href="/about/">Kaz</a>
+  <p class="author-role">Site author</p>
+  <p>Computing graduate.<br>Learning as I go.</p>
+  <dl><dt>Interests</dt><dd>Code, PCs, anime</dd><dt>Elsewhere</dt><dd>Cycling & guitar</dd></dl>
+  <a href="/learning/">Learning notebook</a>
+  <a href="/personal/">Personal page</a>
+</aside>
+{%- endmacro %}
+{% macro row(item) -%}
+<article class="topic-row" data-filter-item data-title="{{ item.title|lower }}" data-date="{{ item.date }}">
+  <span class="topic-mark" aria-hidden="true">{{ '▤' if item.is_section else '¶' }}</span>
+  <div class="topic-copy"><h3><a href="{{ item.url }}">{{ item.title }}</a></h3><p>{{ item.description }}</p>
+    <span class="entry-kind">{{ item.entryType|replace('-', ' ') }}{% if item.status is defined %} · {{ item.status }}{% endif %}</span>
+  </div>
+  <div class="topic-meta"><span>Kaz</span>{% if item.date %}<time datetime="{{ item.date }}">{{ item.date }}</time>{% endif %}</div>
+</article>
+{%- endmacro %}
+{% macro board(items, title, identifier, filterable=true) -%}
+<section class="board" aria-labelledby="{{ identifier }}"{% if filterable %} data-filter-board{% endif %}>
+  <div class="board-heading"><h2 id="{{ identifier }}">{{ title }}</h2><span>{{ items|length }} entries</span></div>
+  {% if filterable %}
+  <div class="board-toolbar enhancement" hidden>
+    <label for="{{ identifier }}-query">Find a topic <input id="{{ identifier }}-query" type="search" data-filter-query autocomplete="off"></label>
+    <label for="{{ identifier }}-sort">Order <select id="{{ identifier }}-sort" data-filter-sort><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="title">Title A–Z</option></select></label>
+    <p role="status" data-filter-count>{{ items|length }} entries</p>
+  </div>
+  {% endif %}
+  <div data-filter-list>{% for item in items %}{{ row(item) }}{% else %}<p class="empty-note">No posts here yet. Check back after my next update.</p>{% endfor %}</div>
+  <p class="empty-note" data-filter-empty hidden>No matching entries. Try fewer words or clear your search.</p>
+</section>
+{%- endmacro %}
+<!DOCTYPE html>
+<html lang="en-GB" data-theme="halo" id="page-top">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark light">
+  <meta name="theme-color" content="#261e30">
+  <title>{{ page.title }} | {{ config.title }}</title>
+  <meta name="description" content="{{ page.description }}">
+  <meta name="author" content="{{ config.author }}">
+  <meta name="robots" content="{{ 'noindex, follow' if page.noindex or page.url == '/search/' else 'index, follow' }}">
+  <link rel="canonical" href="{{ config.url }}{{ page.url }}">
+  <meta property="og:type" content="{{ 'article' if page.entryType == 'post' else 'website' }}">
+  <meta property="og:title" content="{{ page.title }} | {{ config.title }}">
+  <meta property="og:description" content="{{ page.description }}">
+  <meta property="og:url" content="{{ config.url }}{{ page.url }}">
+  <meta property="og:site_name" content="{{ config.title }}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ page.title }} | {{ config.title }}">
+  <meta name="twitter:description" content="{{ page.description }}">
+  <meta property="og:image" content="{{ config.url }}/assets/images/social-card.svg">
+  <meta name="twitter:image" content="{{ config.url }}/assets/images/social-card.svg">
+  <link rel="icon" href="/favicon.ico">
+  <link rel="alternate" type="application/rss+xml" title="Kaz's posts" href="/index.xml">
+  <link rel="stylesheet" href="{{ assets['site.css'] }}">
+  <script src="{{ assets['theme-init.js'] }}"></script>
+  <script src="{{ assets['site.js'] }}" defer></script>
+  {% if page.url == '/search/' %}<script src="{{ assets['search.js'] }}" defer></script>{% endif %}
+  <script type="application/ld+json">{{ schema|tojson }}</script>
+</head>
+<body class="room-{{ room }}">
+<a class="skip-link" href="#main-content">Skip to content</a>
+<header class="site-header">
+  <div class="header-inner">
+    <a class="site-brand" href="/" aria-label="Kaz — home"><strong>Kaz<span>.</span></strong><small>My corner of the web</small></a>
+    <form class="header-search" role="search" action="/search/" method="get"><label class="sr-only" for="site-query">Search the site</label><input id="site-query" name="q" type="search" placeholder="Find a post…" maxlength="200"><button type="submit">Search</button></form>
+    <label class="theme-control enhancement" for="theme-select" hidden>Theme <select id="theme-select"><option value="halo">Purple & green</option><option value="resident">Resident Evil</option><option value="balanced">Slate</option><option value="terminal">Terminal</option><option value="sunset">Sunset</option><option value="paper">Paper</option></select></label>
+    <button class="nav-toggle enhancement" type="button" aria-expanded="false" aria-controls="site-navigation" hidden>Menu</button>
+    <nav id="site-navigation" class="site-nav" aria-label="Primary navigation">
+    {% for label, url in config.navigation %}<a href="{{ url }}"{% if page.url == url %} aria-current="page"{% elif url != '/' and page.url.startswith(url) %} aria-current="location"{% endif %}>{{ label }}</a>{% endfor %}
+    </nav>
+  </div>
+</header>
+<main id="main-content" class="page-shell" tabindex="-1">
+{% if page.url != '/' %}
+<nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li>{% for crumb in crumbs %}<li><a href="{{ crumb.url }}">{{ crumb.title }}</a></li>{% endfor %}<li><span aria-current="page">{{ page.title }}</span></li></ol></nav>
+{% endif %}
+{% if page.section == 'personal' %}
+<nav class="personal-tabs" aria-label="Personal sections">{% for label,url in [('Profile','/personal/'),('Anime','/personal/anime/'),('Games','/personal/games/'),('Journal','/personal/misc/writing/'),('Phasmophobia','/personal/misc/phasmophobia/'),('Reviews','/personal/reviews/')] %}<a href="{{ url }}"{% if page.url == url %} aria-current="page"{% endif %}>{{ label }}</a>{% endfor %}</nav>
+{% endif %}
+<header class="page-heading"><p class="eyebrow">{{ 'Personal website / notebook' if page.url == '/' else page.section|replace('-', ' ') }}</p><h1>{{ "Kaz's corner" if page.url == '/' else page.title }}</h1><p>{{ 'Code, games, and everything in between.' if page.url == '/' else page.description }}</p></header>
+
+{% if page.url == '/' %}
+<div class="homepage-columns"><aside class="home-sidebar">{{ author() }}
+  <section class="side-box"><h2>Find your way around</h2>{% for label,url in [('About me','/about/'),('Skills & experience','/skills-matrix/'),('Useful resources','/resources/'),('What I’m working towards','/roadmap/')] %}<a href="{{ url }}">{{ label }}</a>{% endfor %}</section>
+  <section class="side-box"><h2>Outside the code</h2><p>Anime, PC tinkering, games, music and cycling.</p><a href="/personal/">Visit my personal page</a></section>
+</aside><div class="home-main">
+  <section class="welcome-note"><h2>Hello, I'm Kaz.</h2><p>I'm a computing graduate working towards a career in tech. This is where I keep my projects, learning notes and the things I get interested in along the way.</p><p>Start with the <a href="/learning/c-sharp/">C# notebook</a>, have a look at my <a href="/projects/">projects</a>, or wander through the <a href="/personal/">personal side</a>.</p></section>
+  {{ board(posts[:5], 'Recent posts', 'recent', false) }}<p class="board-footer"><a href="/blog/">All posts</a> · <a href="/index.xml">Subscribe via RSS</a></p>
+  <figure class="work-sample"><a href="/learning/c-sharp/posts/c-sharp-blog-1/"><img src="/assets/images/csharp/blog-1/console-output-example.webp" alt="Example console output from my C# notes" width="1152" height="648"></a><figcaption><strong>From the notebook</strong><a href="/learning/c-sharp/posts/c-sharp-blog-1/">Getting comfortable with the console</a><span>A screenshot, the code, and the notes behind it.</span></figcaption></figure>
+  <section class="board"><div class="board-heading"><h2>Learning boards</h2><a href="/learning/">All learning</a></div><div class="learning-directory">{% for item in pages|sort(attribute='title') if item.is_section and item.url.startswith('/learning/') and item.url.strip('/').split('/')|length == 2 %}<a href="{{ item.url }}">{{ item.title }}</a>{% endfor %}</div></section>
+</div></div>
+{% elif page.url == '/personal/' %}
+<div class="homepage-columns"><aside class="home-sidebar">{{ author() }}<section class="side-box"><h2>On this page</h2><p>Watch lists, game collections and things that don't belong in a lesson.</p><a href="/personal/misc/writing/posts/misc-blog-3/">A long overdue return</a></section></aside><div class="home-main">
+<section class="welcome-note"><h2>Away from the code</h2><p>This part of the site is a bit more personal. Have a look around my shelves, notes and journal.</p></section>
+<section class="side-box"><h2>On the stereo</h2><p>Veritas — the track from my original site.</p><audio controls preload="none" aria-label="Play Veritas"><source src="/assets/audio/veritas.mp3" type="audio/mpeg"><a href="/assets/audio/veritas.mp3">Download the audio</a></audio></section>
+<div class="hobby-directory">{% for name,url,kind,copy in [('Anime shelf','/personal/anime/','anime','What I’ve watched, what I’m watching, and what’s still on the list.'),('Games & Steam','/personal/games/','games','Playtime, library charts and a closer look at the collection.'),('The journal','/personal/misc/writing/','journal','Life updates, reviews and the occasional long post.'),('Phasmophobia','/personal/misc/phasmophobia/','phasmo','Ghosts, evidence, maps, equipment and investigation notes.')] %}<section class="hobby-room hobby-{{ kind }}"><p class="eyebrow">{{ kind }}</p><h2><a href="{{ url }}">{{ name }}</a></h2><p>{{ copy }}</p></section>{% endfor %}</div>
+<section class="side-box"><h2>The PC corner</h2><p>Hardware and the workstation behind the projects.</p><a href="/setup/">Look through my setup</a> · <a href="/personal/reviews/">Reviews</a></section>
+<div class="prose">{{ page.body|safe }}</div></div></div>
+{% elif page.url == '/search/' %}
+<section class="board"><div class="board-heading"><h2>Search the notebook</h2></div><form class="search-form" id="search-form" role="search" action="/search/"><label for="search-query">Words, topic or post title<input id="search-query" name="q" type="search" maxlength="200" required></label><button type="submit">Find posts</button></form><p id="search-status" class="empty-note" role="status">Enter a few words to find a page.</p><div id="search-results"></div><noscript><p class="empty-note">Search needs JavaScript. Browse the <a href="/sitemap/">complete site map</a> or <a href="/learning/">learning boards</a>.</p></noscript></section>
+{% elif page.layout == 'anime' %}
+<p class="snapshot-note">MyAnimeList snapshot: <time datetime="{{ data.anime.syncedAt }}">{{ data.anime.syncedAt[:10] }}</time> · <a href="{{ data.anime.profileUrl }}">{{ data.anime.username }} on MyAnimeList</a></p>
+<section class="board anime-shelf" data-filter-board><div class="board-heading"><h2>My watch list</h2><span>{{ data.anime['items']|length }} titles</span></div><div class="board-toolbar enhancement" hidden><label for="anime-query">Find a title<input id="anime-query" type="search" data-filter-query></label><label for="anime-status">Status<select id="anime-status" data-filter-category><option value="all">All statuses</option>{% for val in ['watching','completed','on_hold','dropped','plan_to_watch'] %}<option value="{{ val }}">{{ val|replace('_',' ')|title }}</option>{% endfor %}</select></label><label for="anime-sort">Sort<select id="anime-sort" data-filter-sort><option value="newest">Recently updated</option><option value="title">Title A–Z</option><option value="score">My score</option></select></label><p data-filter-count role="status"></p></div>
+<div class="anime-grid" data-filter-list>{% for item in data.anime['items'] %}<article class="anime-entry" data-filter-item data-title="{{ item.title|lower }}" data-date="{{ item.updatedAt }}" data-score="{{ item.score }}" data-category="{{ item.status }}"><a href="{{ item.url }}"><img src="{{ item.image }}" alt="{{ item.title }} cover" width="225" height="320" loading="lazy"></a><div><h3><a href="{{ item.url }}">{{ item.title }}</a></h3><p class="entry-kind">{{ item.status|replace('_',' ') }} · {{ item.format|upper }}</p><p>{{ item.episodesWatched }}/{{ item.episodesTotal or '?' }} episodes</p><p>My score: {{ item.score if item.score else 'Not rated' }}</p></div></article>{% endfor %}</div><p class="empty-note" data-filter-empty hidden>No matching titles. Try another filter.</p></section>
+{% elif page.layout == 'games' %}
+<section data-filter-board><div class="board-toolbar enhancement" hidden><label for="chart-category">Chart category<select id="chart-category" data-filter-category><option value="all">All charts</option>{% for cat in data.steam.categories %}<option value="{{ cat.id }}">{{ cat.label }}</option>{% endfor %}</select></label><p role="status" data-filter-count></p></div><div class="chart-grid" data-filter-list>{% for chart in data.steam.charts %}<figure data-filter-item data-category="{{ chart.category }}" data-title="{{ chart.title|lower }}"><a href="{{ chart.image }}"><img src="{{ chart.image }}" alt="{{ chart.alt }}" width="1200" height="675" loading="lazy"></a><figcaption><h2>{{ chart.title }}</h2><p>{{ chart.description }}</p><a href="{{ chart.image }}">Open full-size chart</a></figcaption></figure>{% endfor %}</div><p class="empty-note" data-filter-empty hidden>No charts in this category.</p></section><div class="prose">{{ page.body|safe }}</div>
+{% elif page.layout == 'pc' %}
+<p class="snapshot-note">Hardware snapshot recorded {{ data.pc.snapshot.generated }}. This is a saved inventory, not live detection.</p><section class="spec-sheet"><h2>Workstation inventory</h2><dl>{% for part in data.pc.components %}<dt>{{ part.label }}</dt><dd><strong>{{ part.value }}</strong>{% if part.detail %}<small>{{ part.detail }}</small>{% endif %}</dd>{% endfor %}</dl></section>
+<section class="spec-sheet"><h2>Storage</h2><div class="table-scroll" tabindex="0" role="region" aria-label="Storage table"><table><caption>Drives in the saved snapshot</caption><thead><tr><th scope="col">Drive</th><th scope="col">Capacity</th></tr></thead><tbody>{% for part in data.pc.storage %}<tr><th scope="row">{{ part.model }}</th><td>{{ part.size }}</td></tr>{% endfor %}</tbody></table></div></section>
+<section class="spec-sheet"><h2>Tools in the snapshot</h2>{% for title,key in [('Development','development'),('Creative & media','creativeMedia'),('Audio','audio'),('AI','ai')] %}<details><summary>{{ title }}</summary><ul>{% for item in data.pc[key] %}<li>{{ item }}</li>{% endfor %}</ul></details>{% endfor %}</section><div class="prose">{{ page.body|safe }}</div>
+{% elif room == 'phasmo' %}
+<nav class="personal-tabs" aria-label="Investigation reference">{% for part in ['ghosts','maps','items','general-info','cursed-possessions'] %}<a href="/personal/misc/phasmophobia/{{ part }}/">{{ part|replace('-',' ')|title }}</a>{% endfor %}</nav><div class="prose">{{ page.body|safe }}</div>
+{% if page.url.endswith('/ghosts/') or page.url.endswith('/phasmophobia/') %}{% set entries = data.ghosts %}{% elif page.url.endswith('/maps/') %}{% set entries = data.maps %}{% elif page.url.endswith('/items/') %}{% set entries = data['items'].categories|map(attribute='items')|sum(start=[]) %}{% else %}{% set entries = [] %}{% endif %}
+{% if entries %}<section class="case-files" data-filter-board><div class="board-heading"><h2>Field reference</h2><span>{{ entries|length }} entries</span></div><div class="board-toolbar enhancement" hidden><label for="case-query">Find a case<input id="case-query" type="search" data-filter-query></label><p role="status" data-filter-count></p></div><div data-filter-list>{% for item in entries %}<details class="case-file" data-filter-item data-title="{{ item.name|lower }} {{ item.evidence|default([])|join(' ')|lower }}"><summary>{{ item.name }}{% if item.evidence %}<small>{{ item.evidence|join(' · ') }}</small>{% endif %}</summary><p>{{ item.summary }}</p>{% if item.size %}<p>{{ item.size }} · {{ item.floors }} floors · {{ item.rooms }} rooms</p>{% endif %}{% for key,title in [('tips','Notes'),('nightmareTips','Nightmare notes'),('insanityTips','Insanity notes'),('challenges','Challenges')] %}{% if item[key] %}<h3>{{ title }}</h3><ul>{% for tip in item[key] %}<li>{{ tip }}</li>{% endfor %}</ul>{% endif %}{% endfor %}</details>{% endfor %}</div><p class="empty-note" data-filter-empty hidden>No matching entries. Try the ghost name or an evidence type.</p></section>{% endif %}
+{% if page.url.endswith('/general-info/') %}{% for item in data.general.sections %}<section class="case-file"><h2>{{ item.title }}</h2><ul>{% for bullet in item.bullets %}<li>{{ bullet }}</li>{% endfor %}</ul>{% if item.note %}<p>{{ item.note }}</p>{% endif %}</section>{% endfor %}{% endif %}
+{% elif page.url == '/sitemap/' %}
+<section class="board"><div class="board-heading"><h2>All pages</h2></div><ul class="site-map">{% for item in pages|sort(attribute='url') if not item.synthetic %}<li><a href="{{ item.url }}">{{ item.title }}</a><small>{{ item.url }}</small></li>{% endfor %}</ul></section>
+{% elif page.is_section %}
+{% if page.body %}<div class="prose section-intro">{{ page.body|safe }}</div>{% endif %}
+{% if boards %}{{ board(boards, 'Boards in this section', 'boards', false) }}{% endif %}
+{{ board(children, 'Posts & entries', 'entries') }}
+{% else %}
+<article class="post-frame" aria-labelledby="post-heading"><div class="post-topline"><h2 id="post-heading">{{ 'Learning notebook' if page.section == 'learning' else 'Personal journal' if page.section == 'personal' else 'Notes' }}</h2>{% if page.date %}<time datetime="{{ page.date }}">Published {{ page.date }}</time>{% endif %}<a href="#post-body" aria-label="Link to this post">#1</a></div>
+<div class="post-layout">{{ author() }}<div class="post-content" id="post-body"><div class="post-tools"><span>{{ page.minutes }} min read</span>{% if page.lastmod and page.lastmod != page.date %}<span>Updated <time datetime="{{ page.lastmod }}">{{ page.lastmod }}</time></span>{% endif %}<button class="enhancement" type="button" data-copy-link hidden>Copy post link</button><span class="sr-only" data-copy-status role="status"></span></div>
+{% if page.toc %}<details class="post-contents"><summary>In this post</summary>{{ page.toc|safe }}</details>{% endif %}
+<div class="prose" data-article-body>{{ page.body|safe }}</div>
+<footer class="post-signature"><strong>{{ page.author|default(config.author) }}</strong><span>Learning as I go.</span>{% if page.tags %}<nav aria-label="Post tags">{% for tag in page.tags %}<a href="/tags/{{ tag|slug }}/">{{ tag }}</a>{% endfor %}</nav>{% endif %}</footer>
+</div></div></article>
+{% if previous or following %}<nav class="post-navigation" aria-label="More posts">{% if previous %}<a href="{{ previous.url }}"><small>Older post</small>{{ previous.title }}</a>{% endif %}{% if following %}<a href="{{ following.url }}"><small>Newer post</small>{{ following.title }}</a>{% endif %}</nav>{% endif %}
+{% endif %}
+</main>
+<footer class="site-footer"><p><strong>Kaz</strong> · Learning as I go.</p><nav aria-label="Footer navigation"><a href="/about/">About</a><a href="/sitemap/">Site map</a><a href="/changelog/">Site updates</a><a href="/index.xml">RSS</a><a href="#page-top">Back to top</a></nav></footer>
+</body>
+</html>

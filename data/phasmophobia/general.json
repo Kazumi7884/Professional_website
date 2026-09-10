@@ -1,0 +1,69 @@
+{
+  "intro": "This page is where I keep general mechanics, reminders, and quick investigation rules. I will keep this updated as the game changes.",
+  "sections": [
+    {
+      "bullets": [
+        "Most ghosts have a base hunt speed around 1.7 m/s.",
+        "Many ghosts speed up with line of sight and keep some speed briefly after losing you.",
+        "Player walk speed is slightly slower than a typical ghost, so sprinting, breaking line of sight, and hiding matter."
+      ],
+      "id": "hunts-and-speed",
+      "note": "Reminder: if the ghost can see you, it will usually get faster. Break line of sight early.",
+      "title": "Hunts and speed basics"
+    },
+    {
+      "bullets": [
+        "Sanity affects when hunts can start, depending on difficulty and ghost type.",
+        "Ghost events can drain sanity, so repeated events can push you into hunt range quickly.",
+        "On higher difficulties, evidence can be limited, so I rely more on behaviour and consistency checks."
+      ],
+      "id": "sanity",
+      "title": "Sanity notes"
+    },
+    {
+      "bullets": [
+        "Find the room: listen, check temperatures, watch for early interactions.",
+        "Set up evidence tools: writing, DOTS, orbs, spirit box, UV, EMF.",
+        "Confirm with behaviour: speed, events, abilities, and hunt patterns.",
+        "Only commit to cursed items when I understand the risk."
+      ],
+      "id": "flow",
+      "ordered": true,
+      "title": "Quick investigation flow"
+    },
+    {
+      "bullets": [
+        "Find the room quickly, then stop stalling on missing evidence.",
+        "Use behaviour tests: hunt speed, line of sight acceleration, special abilities, and roaming.",
+        "Use sensors to create 'proof' (motion/sound) when evidence is limited.",
+        "Plan a safe loop or a hiding route before you trigger risky actions."
+      ],
+      "id": "nightmare",
+      "title": "Nightmare focus (2 evidence)"
+    },
+    {
+      "bullets": [
+        "Treat your single evidence as a filter, not a full answer.",
+        "Confirm by behaviour under pressure: hunt thresholds, speed, and ability triggers.",
+        "Make the map work for you: pick a hiding route, then test safely and consistently.",
+        "If the ghost is confusing, slow down and gather more behavioural data before guessing."
+      ],
+      "id": "insanity",
+      "title": "Insanity focus (1 evidence)"
+    },
+    {
+      "id": "sources",
+      "links": [
+        {
+          "href": "https://phasmophobia.fandom.com/wiki/Hunt",
+          "label": "Hunt mechanics (phasmophobia Wiki)"
+        },
+        {
+          "href": "https://phasmophobia.fandom.com/wiki/Equipment",
+          "label": "Equipment list (phasmophobia Wiki)"
+        }
+      ],
+      "title": "Sources I use"
+    }
+  ]
+}
