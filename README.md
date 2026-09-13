@@ -93,3 +93,11 @@ The post layout resembles a classic forum. It is an authored website: it does
 not invent public accounts, replies, visitor counts or a working discussion backend.
 
 See [V5.2 design and repository decisions](docs/V5.2-DESIGN.md) for the theme system and evaluated open-source projects.
+
+## AI maintenance instructions
+
+Start with [AGENTS.md](AGENTS.md) for the model-neutral execution contract and exact project commands.
+The [expanded handbook](docs/agents/HANDBOOK.md) contains the detailed policy, 20 execution runbooks
+and 500 individually numbered audit scenarios. The [audit catalogue](docs/agents/audit-catalogue.json)
+is a machine-readable specification; its cases are NOT_RUN until separate evidence is recorded.
+These files guide a local agent but do not install or start a background monitor.
