@@ -502,6 +502,86 @@ audio { width: 100%; max-width: 480px; }
   .site-nav a, .personal-tabs a, .topic-row { transition: none; }
 }
 
+
+/* Pass 3 — real menus with the feel of a hand-built personal site. */
+.site-nav { align-items: stretch; }
+.nav-menu {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+.nav-menu-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  min-height: 44px;
+  padding: .8rem 1.1rem;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  color: inherit;
+  font-weight: 600;
+}
+.nav-menu-toggle span {
+  color: var(--green);
+  font-size: .75em;
+  transition: transform .15s ease;
+}
+.nav-menu.is-current .nav-menu-toggle,
+.nav-menu-toggle[aria-current] {
+  border-bottom-color: var(--accent);
+}
+.nav-menu.is-open .nav-menu-toggle,
+.nav-menu-toggle:hover,
+.nav-menu-toggle:focus-visible {
+  background: var(--inset);
+}
+.nav-menu.is-open .nav-menu-toggle span {
+  transform: rotate(180deg);
+}
+.nav-submenu {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% - 1px);
+  left: 0;
+  min-width: 220px;
+  padding: .45rem;
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--green);
+  background: var(--surface);
+  box-shadow: 5px 5px 0 color-mix(in srgb, var(--line) 24%, transparent);
+}
+.nav-submenu a {
+  display: block;
+  min-height: 40px;
+  padding: .55rem .7rem;
+  border: 0;
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.nav-submenu a:hover,
+.nav-submenu a:focus-visible {
+  background: var(--inset);
+  color: var(--accent);
+  text-decoration: underline;
+}
+.room-journal .nav-submenu {
+  border-radius: 0 0 5px 5px;
+}
+@media (max-width: 620px) {
+  .nav-menu { display: block; }
+  .nav-menu-toggle { width: 100%; justify-content: space-between; border: 1px solid var(--line); }
+  .nav-submenu {
+    position: static;
+    min-width: 0;
+    margin: -.2rem 0 .35rem;
+    border-top-width: 1px;
+    box-shadow: none;
+  }
+  .nav-submenu a { white-space: normal; }
+}
+
 @media (max-width: 900px) {
   .home-heading { display: block; }
   .home-heading .heading-links { margin-top: 1rem; }
