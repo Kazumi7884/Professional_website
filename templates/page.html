@@ -73,7 +73,7 @@
     <nav id="site-navigation" class="site-nav" aria-label="Primary navigation">
       {% for label, url in config.navigation %}
       {% if label == 'Learning' %}
-      <div class="nav-menu{% if page.url.startswith('/learning/') or page.url in ['/roadmap/','/projects/','/resources/'] %} is-current{% endif %}">
+      <div class="nav-menu{% if page.url.startswith('/learning/') or page.url in ['/roadmap/','/changelog/','/glossary/'] %} is-current{% endif %}">
         <button type="button" class="nav-menu-toggle" data-nav-dropdown aria-expanded="false" aria-controls="nav-learning-menu"{% if page.url.startswith('/learning/') or page.url in ['/roadmap/','/projects/','/resources/'] %} aria-current="location"{% endif %}>Learning <span aria-hidden="true">▾</span></button>
         <div id="nav-learning-menu" class="nav-submenu" hidden>
           {% for child_label, child_url in config.navigationGroups[label] %}<a href="{{ child_url }}">{{ child_label }}</a>{% endfor %}
