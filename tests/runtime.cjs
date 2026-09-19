@@ -60,6 +60,40 @@ test('menu opens and Escape restores focus', () => {
   d.dispatchEvent(new dom.window.KeyboardEvent('keydown',{key:'Escape'}));
   assert.equal(menu.getAttribute('aria-expanded'),'false');assert.equal(d.activeElement,menu);dom.window.close();
 });
+test('learning dropdown opens and exposes its links', () => {
+  const dom=page();start(dom);const d=dom.window.document;
+  const button=d.querySelector('[data-nav-dropdown]');
+  const submenu=d.querySelector('#nav-learning-menu');
+  button.click();
+  assert.equal(button.getAttribute('aria-expanded'),'true');
+  assert.equal(submenu.hidden,false);
+  assert.ok(submenu.querySelectorAll('a').length >= 4);
+  dom.window.close();
+});
+test('dropdown Escape restores focus and closes outside the menu', () => {
+  const dom=page();start(dom);const d=dom.window.document;
+  const button=d.querySelector('[data-nav-dropdown]');
+  const submenu=d.querySelector('#nav-learning-menu');
+  button.click();
+  submenu.querySelector('a').focus();
+  submenu.dispatchEvent(new dom.window.KeyboardEvent('keydown',{key:'Escape',bubbles:true}));
+  assert.equal(button.getAttribute('aria-expanded'),'false');
+  assert.equal(d.activeElement,button);
+  button.click();
+  d.querySelector('h1').click();
+  assert.equal(submenu.hidden,true);
+  dom.window.close();
+});
+test('dropdown arrow navigation moves through links', () => {
+  const dom=page();start(dom);const d=dom.window.document;
+  const button=d.querySelector('[data-nav-dropdown]');
+  const submenu=d.querySelector('#nav-learning-menu');
+  button.dispatchEvent(new dom.window.KeyboardEvent('keydown',{key:'ArrowDown',bubbles:true}));
+  assert.equal(d.activeElement,submenu.querySelector('a'));
+  d.activeElement.dispatchEvent(new dom.window.KeyboardEvent('keydown',{key:'ArrowDown',bubbles:true}));
+  assert.equal(d.activeElement,submenu.querySelectorAll('a')[1]);
+  dom.window.close();
+});
 test('outside click closes mobile navigation', () => {
   const dom=page();start(dom);const d=dom.window.document;d.querySelector('.nav-toggle').click();
   d.querySelector('h1').click();assert.equal(d.querySelector('.nav-toggle').getAttribute('aria-expanded'),'false');dom.window.close();
