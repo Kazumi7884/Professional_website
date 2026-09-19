@@ -88,6 +88,10 @@
     if (!event.target.closest('.nav-menu')) closeDropdowns();
   });
 
+  // The template leaves submenu links visible without JS; once enhancement is ready,
+  // initialise the disclosure state and keep the no-script fallback intact.
+  closeDropdowns();
+
   if (theme) {
     theme.value = themes.includes(root.dataset.theme) ? root.dataset.theme : 'balanced';
     theme.addEventListener('change', () => {
