@@ -60,6 +60,13 @@ test('menu opens and Escape restores focus', () => {
   d.dispatchEvent(new dom.window.KeyboardEvent('keydown',{key:'Escape'}));
   assert.equal(menu.getAttribute('aria-expanded'),'false');assert.equal(d.activeElement,menu);dom.window.close();
 });
+test('submenu links remain visible before JavaScript enhancement', () => {
+  const dom=page();const submenu=dom.window.document.querySelector('#nav-learning-menu');
+  assert.equal(submenu.hidden,false);
+  start(dom);
+  assert.equal(submenu.hidden,true);
+  dom.window.close();
+});
 test('learning dropdown opens and exposes its links', () => {
   const dom=page();start(dom);const d=dom.window.document;
   const button=d.querySelector('[data-nav-dropdown]');
