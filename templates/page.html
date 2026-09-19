@@ -42,6 +42,8 @@
   <title>{{ page.title }} | {{ config.title }}</title>
   <meta name="description" content="{{ page.description }}">
   <meta name="author" content="{{ config.author }}">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="generator" content="Kaz static notebook">
   <meta name="robots" content="{{ 'noindex, follow' if page.noindex or page.url == '/search/' else 'index, follow' }}">
   <link rel="canonical" href="{{ config.url }}{{ page.url }}">
   <meta property="og:type" content="{{ 'article' if page.entryType == 'post' else 'website' }}">
@@ -54,6 +56,8 @@
   <meta name="twitter:description" content="{{ page.description }}">
   <meta property="og:image" content="{{ config.url }}/assets/images/social-card.svg">
   <meta name="twitter:image" content="{{ config.url }}/assets/images/social-card.svg">
+  <meta property="og:image:alt" content="Kaz's personal notebook and computing notes">
+  <link rel="manifest" href="/site.webmanifest">
   <link rel="icon" href="/favicon.ico">
   <link rel="alternate" type="application/rss+xml" title="Kaz's posts" href="/index.xml">
   <link rel="stylesheet" href="{{ assets['site.css'] }}">
@@ -98,7 +102,7 @@
 <nav class="breadcrumbs" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li>{% for crumb in crumbs %}<li><a href="{{ crumb.url }}">{{ crumb.title }}</a></li>{% endfor %}<li><span aria-current="page">{{ page.title }}</span></li></ol></nav>
 {% endif %}
 {% if page.section == 'personal' %}
-<nav class="personal-tabs" aria-label="Personal sections">{% for label,url in [('Profile','/personal/'),('Anime','/personal/anime/'),('Games','/personal/games/'),('Journal','/personal/misc/writing/'),('Phasmophobia','/personal/misc/phasmophobia/'),('Reviews','/personal/reviews/')] %}<a href="{{ url }}"{% if page.url == url %} aria-current="page"{% endif %}>{{ label }}</a>{% endfor %}</nav>
+<nav class="personal-tabs" aria-label="Personal sections">{% for label,url in [('Profile','/personal/'),('Anime','/personal/anime/'),('Games','/personal/games/'),('Journal','/personal/misc/writing/'),('Phasmophobia','/personal/misc/phasmophobia/'),('Reviews','/personal/reviews/')] %}<a href="{{ url }}"{% if page.url == url %} aria-current="page"{% elif page.url.startswith(url) and url != '/personal/' %} aria-current="location"{% endif %}>{{ label }}</a>{% endfor %}</nav>
 {% endif %}
 <header class="page-heading{% if page.url == '/' %} home-heading{% endif %}"><p class="eyebrow">{{ 'Kaz / personal website' if page.url == '/' else page.section|replace('-', ' ') }}</p><h1>{{ "Kaz's corner" if page.url == '/' else page.title }}</h1><p>{{ 'Notes, experiments, and life beyond the code.' if page.url == '/' else page.description }}</p>{% if page.url == '/' %}<div class="heading-links"><a class="button-link primary" href="/learning/c-sharp/">Open the C# notebook</a><a class="button-link" href="/about/">About me</a></div>{% endif %}</header>
 
@@ -121,7 +125,7 @@
 <section class="side-box"><h2>The PC corner</h2><p>Hardware and the workstation behind the notes and visualisations.</p><a href="/setup/">Look through my setup</a> · <a href="/personal/reviews/">Reviews</a></section>
 <div class="prose">{{ page.body|safe }}</div></div></div>
 {% elif page.url == '/search/' %}
-<section class="board"><div class="board-heading"><h2>Search the notebook</h2><span>Find something you remember</span></div><form class="search-form" id="search-form" role="search" action="/search/"><label for="search-query">Words, topic or post title<input id="search-query" name="q" type="search" maxlength="200" required></label><div class="search-actions"><button type="submit">Find posts</button><button type="button" class="button-link" data-search-clear>Clear</button></div></form><p id="search-status" class="empty-note" role="status" aria-live="polite">Enter a few words to find a page.</p><div id="search-results"></div><noscript><p class="empty-note">Search needs JavaScript. Browse the <a href="/sitemap/">complete site map</a> or <a href="/learning/">learning boards</a>.</p></noscript></section>
+<section class="board"><div class="board-heading"><h2>Search the notebook</h2><span>Find something you remember</span></div><form class="search-form" id="search-form" role="search" action="/search/"><label for="search-query">Words, topic or post title<input id="search-query" name="q" type="search" maxlength="200" required></label><div class="search-actions"><button type="submit">Find posts</button><button type="button" class="button-link" data-search-clear>Clear</button></div></form><p id="search-status" class="empty-note" role="status" aria-live="polite">Enter a few words to find a page.</p><div id="search-results" aria-live="polite" aria-busy="false"></div><noscript><p class="noscript-note">JavaScript is off, so interactive filters are hidden. Search needs JavaScript. Browse the <a href="/sitemap/">complete site map</a> or <a href="/learning/">learning boards</a>.</p></noscript></section>
 {% elif page.layout == 'anime' %}
 <p class="snapshot-note">MyAnimeList snapshot: <time datetime="{{ data.anime.syncedAt }}">{{ data.anime.syncedAt[:10] }}</time> · <a href="{{ data.anime.profileUrl }}">{{ data.anime.username }} on MyAnimeList</a></p>
 <section class="board anime-shelf" data-filter-board><div class="board-heading"><h2>My watch list</h2><span>{{ data.anime['items']|length }} titles</span></div><div class="board-toolbar enhancement" hidden><label for="anime-query">Find a title<input id="anime-query" type="search" data-filter-query></label><label for="anime-status">Status<select id="anime-status" data-filter-category><option value="all">All statuses</option>{% for val in ['watching','completed','on_hold','dropped','plan_to_watch'] %}<option value="{{ val }}">{{ val|replace('_',' ')|title }}</option>{% endfor %}</select></label><label for="anime-sort">Sort<select id="anime-sort" data-filter-sort><option value="newest">Recently updated</option><option value="title">Title A–Z</option><option value="score">My score</option></select></label><p data-filter-count role="status"></p></div>

@@ -1,0 +1,10 @@
+{
+  "name": "Kaz — computing and life beyond it",
+  "short_name": "Kaz",
+  "start_url": "/",
+  "display": "minimal-ui",
+  "background_color": "#f1eee7",
+  "theme_color": "#123e62",
+  "description": "Kaz's personal notebook of computing notes, writing, games and life beyond the code.",
+  "lang": "en-GB"
+}

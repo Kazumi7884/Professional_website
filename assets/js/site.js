@@ -109,11 +109,23 @@
     });
   }
 
-  document.querySelector('[data-reading-mode]')?.addEventListener('click', event => {
-    const enabled = root.classList.toggle('reading-mode');
-    event.currentTarget.setAttribute('aria-pressed', String(enabled));
-    event.currentTarget.textContent = enabled ? 'Show author panel' : 'Reading view';
-  });
+  const readingButton = document.querySelector('[data-reading-mode]');
+  if (readingButton) {
+    let readingEnabled = false;
+    try { readingEnabled = localStorage.getItem('kaz-reading-mode') === 'true'; } catch { /* Optional preference. */ }
+    const syncReadingMode = enabled => {
+      root.classList.toggle('reading-mode', enabled);
+      readingButton.setAttribute('aria-pressed', String(enabled));
+      readingButton.textContent = enabled ? 'Show author panel' : 'Reading view';
+    };
+    syncReadingMode(readingEnabled);
+    readingButton.addEventListener('click', event => {
+      const enabled = !root.classList.contains('reading-mode');
+      syncReadingMode(enabled);
+      try { localStorage.setItem('kaz-reading-mode', String(enabled)); } catch { /* Session mode still works. */ }
+      event.currentTarget.focus();
+    });
+  }
 
   // Read each card once. Filtering touches only hidden state; sorting moves the
   // existing nodes so image state and article markup are preserved.
@@ -195,6 +207,16 @@
     window.addEventListener('resize', requestProgress);
     requestProgress();
   }
+  document.addEventListener('keydown', event => {
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+      const field = document.querySelector('#search-query, #site-query');
+      if (field) {
+        event.preventDefault();
+        field.focus();
+        field.select?.();
+      }
+    }
+  });
   document.querySelectorAll('.prose pre').forEach(pre => {
     pre.tabIndex = 0;
     pre.setAttribute('aria-label', 'Code example; scroll horizontally if needed');

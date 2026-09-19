@@ -12,6 +12,7 @@
     const current = ++sequence;
     const query = input.value.trim().slice(0, 200);
     output.replaceChildren();
+    output.setAttribute('aria-busy', 'false');
     if (!query) { status.textContent = 'Enter a few words to find a page.'; return; }
     if (updateUrl) {
       const url = new URL(window.location.href);
@@ -19,6 +20,7 @@
       history.replaceState(null, '', url);
     }
     status.textContent = 'Searching…';
+    output.setAttribute('aria-busy', 'true');
     try {
       dataPromise ||= fetch('/search-index.json', {credentials: 'same-origin'}).then(response => {
         if (!response.ok) throw new Error('Index unavailable');
@@ -54,8 +56,10 @@
         fragment.append(article);
       });
       output.append(fragment);
+      output.setAttribute('aria-busy', 'false');
       if (!results.length) status.textContent += ' Try fewer words, a language name, or the site map.';
     } catch {
+      output.setAttribute('aria-busy', 'false');
       if (current === sequence) status.textContent = 'Search could not load. Submit again to retry, or browse the site map below.';
     }
   }

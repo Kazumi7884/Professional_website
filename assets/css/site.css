@@ -712,3 +712,56 @@ audio { width: 100%; max-width: 480px; }
   img, figure, tr { break-inside: avoid; }
   h2, h3 { break-after: avoid; }
 }
+
+
+/* V5.4 — twenty small refinements for a warmer, more useful personal site. */
+:target { scroll-margin-top: 1.5rem; }
+.post-content .prose > :is(h2, h3):target {
+  background: color-mix(in srgb, var(--green) 10%, transparent);
+  box-shadow: inset 3px 0 var(--green);
+  padding-inline: .65rem;
+}
+.search-result { transition: background-color .15s ease, border-color .15s ease; }
+.search-result:focus-within { background: var(--inset); border-left-color: var(--accent); }
+.external-link::after { content: ' ↗'; font-size: .75em; text-decoration: none; }
+.noscript-note {
+  border: 1px dashed var(--line);
+  background: var(--inset);
+  color: var(--muted);
+  padding: .65rem .9rem;
+  font-size: .875rem;
+}
+details > summary::marker { color: var(--green); }
+details[open] > summary { color: var(--green); }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+@media print {
+  :root { color-scheme: light; --bg: #fff; --surface: #fff; --inset: #fff; --bar: #fff; --ink: #000; --muted: #333; --line: #777; }
+  .site-header, .site-footer, .skip-link, .theme-control, .header-search, .nav-toggle,
+  .post-tools button, .post-navigation, .reading-progress, .personal-tabs, .site-signal { display: none !important; }
+  .page-shell { max-width: none; padding: 0; }
+  .post-frame, .board, .author-panel, .side-box, .welcome-note { border-color: #777; box-shadow: none; }
+  a { color: inherit; text-decoration: underline; }
+  a[href^='http']::after { content: ' (' attr(href) ')'; font-size: .8em; overflow-wrap: anywhere; }
+  .prose, .post-content { max-width: none; }
+}
+@media (max-width: 620px) {
+  .page-shell { padding-inline: 1rem; }
+  .header-inner { padding-inline: 1rem; }
+  .site-brand strong { font-size: 2.3rem; }
+  .site-brand small { display: none; }
+  .topic-row { grid-template-columns: 20px minmax(0, 1fr); }
+  .topic-meta { grid-column: 2; text-align: left; }
+  .site-signal { grid-template-columns: 1fr; }
+  .post-content { padding: 1.25rem 1rem; }
+  .search-form { align-items: stretch; }
+  .search-form label, .search-actions { width: 100%; }
+  .search-actions > * { flex: 1; }
+}

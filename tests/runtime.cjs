@@ -189,3 +189,16 @@ test('latest query wins when the search index arrives late', async () => {
   submit('old');submit('new');resolve({ok:true,json:async()=>[{title:'Old post',description:'old',text:'old',url:'/about/'},{title:'New post',description:'new',text:'new',url:'/blog/'}]});await pause(0);
   assert.match(d.querySelector('#search-results').textContent,/New post/);assert.doesNotMatch(d.querySelector('#search-results').textContent,/Old post/);dom.window.close();
 });
+
+
+test('command-k focuses the most useful search field', () => {
+  const dom=page();start(dom);const d=dom.window.document;
+  d.dispatchEvent(new dom.window.KeyboardEvent('keydown',{key:'k',ctrlKey:true,bubbles:true}));
+  assert.equal(d.activeElement,d.querySelector('#site-query'));dom.window.close();
+});
+test('reading mode preference survives enhancement', () => {
+  const dom=page('/learning/c-sharp/posts/c-sharp-blog-1/');
+  dom.window.localStorage.setItem('kaz-reading-mode','true');start(dom);
+  assert.equal(dom.window.document.documentElement.classList.contains('reading-mode'),true);
+  dom.window.close();
+});

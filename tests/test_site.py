@@ -99,6 +99,12 @@ class BuildRegression(unittest.TestCase):
             for link in self.soup(page['url']).select('.post-navigation a'):
                 self.assertEqual(page['url'].rsplit('/',2)[0],link['href'].rsplit('/',2)[0])
 
+    def test_document_head_carries_share_and_referrer_metadata(self):
+        soup = self.soup('/about/')
+        self.assertEqual(soup.select_one('meta[name="referrer"]')['content'], 'strict-origin-when-cross-origin')
+        self.assertEqual(soup.select_one('meta[property="og:image:alt"]')['content'], "Kaz's personal notebook and computing notes")
+        self.assertEqual(soup.select_one('link[rel="manifest"]')['href'], '/site.webmanifest')
+
     def test_canonical_remains_absolute(self):
         soup=self.soup('/learning/c-sharp/posts/c-sharp-blog-1/')
         self.assertEqual(soup.select_one('link[rel="canonical"]')['href'],
