@@ -46,7 +46,7 @@
         const article=document.createElement('article');article.className='search-result';
         const heading=document.createElement('h2'),link=document.createElement('a');link.href=target.pathname;link.textContent = page.title;heading.append(link);
         const meta=document.createElement('small');meta.className='search-meta';meta.textContent=[page.section,page.entryType?.replaceAll('-',' '),page.date,page.minutes?(page.minutes+' min read'):''].filter(Boolean).join(' · ');
-        const description=document.createElement('p');description.append(highlight(page.description,terms));article.append(heading,meta,description);fragment.append(article);
+        const description=document.createElement('p');description.textContent = page.description;article.append(heading,meta,description);fragment.append(article);
       });
       output.append(fragment);output.setAttribute('aria-busy','false');status.textContent=results.length+' matching '+(results.length===1?'page':'pages')+'.';
       if(!results.length)status.textContent+=' Try fewer words, a language name, or the site map.';
