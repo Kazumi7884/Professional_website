@@ -11,6 +11,7 @@
 
   function closeMenu(restoreFocus = false) {
     navigation?.classList.remove('is-open');
+    document.body.classList.remove('nav-open');
     menu?.setAttribute('aria-expanded', 'false');
     if (restoreFocus) menu?.focus();
   }
@@ -19,6 +20,7 @@
       const expanded = menu.getAttribute('aria-expanded') !== 'true';
       menu.setAttribute('aria-expanded', String(expanded));
       navigation.classList.toggle('is-open', expanded);
+      document.body.classList.toggle('nav-open', expanded);
     });
     navigation.addEventListener('click', event => {
       if (event.target.closest('a')) closeMenu();

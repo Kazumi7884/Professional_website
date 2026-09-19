@@ -480,6 +480,25 @@ audio { width: 100%; max-width: 480px; }
   background: var(--inset);
   border: 1px solid var(--line);
 }
+/* Iterations 4–6 — search feels like a small personal index, not a blank utility page. */
+.search-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .65rem;
+  align-items: center;
+}
+.search-actions .button-link {
+  min-height: 44px;
+  background: var(--surface);
+}
+.search-meta {
+  display: block;
+  margin: .2rem 0 .35rem;
+  color: var(--green);
+  font: .72rem ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
 .search-result {
   border-left: 3px solid var(--green);
 }
@@ -578,6 +597,19 @@ audio { width: 100%; max-width: 480px; }
 .room-journal .nav-submenu {
   border-radius: 0 0 5px 5px;
 }
+/* Iterations 7–8 — mobile navigation behaves like a deliberate drawer. */
+@media (max-width: 620px) {
+  body.nav-open { overflow: hidden; }
+  body.nav-open::after {
+    content: '';
+    position: fixed;
+    z-index: 8;
+    inset: 0;
+    background: color-mix(in srgb, var(--ink) 22%, transparent);
+    pointer-events: none;
+  }
+  .site-header { position: relative; z-index: 10; }
+}
 @media (max-width: 620px) {
   .nav-menu { display: block; }
   .nav-menu-toggle { width: 100%; justify-content: space-between; border: 1px solid var(--line); }
@@ -590,6 +622,19 @@ audio { width: 100%; max-width: 480px; }
   }
   .nav-submenu a { white-space: normal; }
 }
+
+/* Iterations 1–2 — recovery page that feels like part of the notebook. */
+.room-not-found .page-heading { max-width: 760px; margin-inline: auto; }
+.not-found-note { max-width: 760px; margin: 0 auto 2rem; }
+.not-found-code {
+  margin: 0 0 .6rem;
+  color: var(--green);
+  font: .75rem ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.not-found-actions { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.3rem; }
+.room-not-found .site-footer { max-width: 760px; }
 
 @media (max-width: 900px) {
   .home-heading { display: block; }

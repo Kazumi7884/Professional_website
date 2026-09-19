@@ -237,7 +237,7 @@ def build():
             continue
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_text(f'<!DOCTYPE html><html lang="en-GB"><head><meta charset="utf-8"><title>Page moved | Kaz</title><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0;url={html.escape(new)}"><link rel="canonical" href="{config["url"]}{html.escape(new)}"></head><body><a href="{html.escape(new)}">Continue to the page</a></body></html>', encoding='utf-8')
-    index = [{'title':p['title'], 'url':p['url'], 'description':p['description'], 'text':p['text'], 'section':p['section']}
+    index = [{'title':p['title'], 'url':p['url'], 'description':p['description'], 'text':p['text'], 'section':p['section'], 'entryType':p['entryType'], 'date':p['date'], 'minutes':p['minutes']}
              for p in pages if not p.get('noindex') and p.get('searchable', True) and not p['synthetic']]
     (OUT / 'search-index.json').write_text(json.dumps(index, ensure_ascii=False), encoding='utf-8')
     root = ET.Element('urlset', xmlns='http://www.sitemaps.org/schemas/sitemap/0.9')

@@ -64,6 +64,19 @@ class BuildRegression(unittest.TestCase):
         ghosts = json.loads((ROOT/'data/phasmophobia/ghosts.json').read_text(encoding='utf-8'))
         self.assertEqual(len(self.soup('/personal/misc/phasmophobia/ghosts/').select('details.case-file')),len(ghosts))
 
+    def test_search_index_carries_human_context(self):
+        index = json.loads((ROOT/'dist/search-index.json').read_text(encoding='utf-8'))
+        self.assertTrue(index)
+        self.assertTrue(all({'section', 'entryType', 'minutes'} <= set(item) for item in index))
+        self.assertTrue(all(item['minutes'] >= 1 for item in index))
+
+    def test_404_offers_only_recoverable_internal_links(self):
+        soup = BeautifulSoup((ROOT/'dist/404.html').read_text(encoding='utf-8'), 'html.parser')
+        self.assertEqual(
+            {a['href'] for a in soup.select('.not-found-actions a')},
+            {'/', '/search/', '/sitemap/'},
+        )
+
     def test_nonsearchable_pages_stay_out_of_search(self):
         index = json.loads((ROOT/'dist/search-index.json').read_text(encoding='utf-8'))
         self.assertNotIn('/maintenance/',{p['url'] for p in index})
