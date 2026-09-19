@@ -11,7 +11,8 @@ const script = name => fs.readFileSync(path.join(root, 'assets/js', name), 'utf8
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 function page(route = '/') {
-  const filename = route === '/' ? 'index.html' : route.replace(/^\//,'') + 'index.html';
+  const pathname = new URL(route, 'https://kazumi7884.co.uk').pathname;
+  const filename = pathname === '/' ? 'index.html' : pathname.replace(/^\//,'') + 'index.html';
   const dom = new JSDOM(fs.readFileSync(path.join(root,'dist',filename),'utf8'),
     {url:'https://kazumi7884.co.uk'+route, runScripts:'outside-only', pretendToBeVisual:true});
   const media = {matches:false,addEventListener(type,fn){this.changed=fn;}};
