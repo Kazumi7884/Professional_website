@@ -480,6 +480,25 @@ audio { width: 100%; max-width: 480px; }
   background: var(--inset);
   border: 1px solid var(--line);
 }
+/* Iterations 4–6 — search feels like a small personal index, not a blank utility page. */
+.search-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .65rem;
+  align-items: center;
+}
+.search-actions .button-link {
+  min-height: 44px;
+  background: var(--surface);
+}
+.search-meta {
+  display: block;
+  margin: .2rem 0 .35rem;
+  color: var(--green);
+  font: .72rem ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
 .search-result {
   border-left: 3px solid var(--green);
 }
