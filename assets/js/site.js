@@ -31,6 +31,63 @@
     });
     mobile.addEventListener('change', () => closeMenu());
   }
+  // Disclosure navigation keeps the old-web tab feel while remaining usable
+  // with a keyboard, touch, and screen readers.
+  const dropdowns = Array.from(document.querySelectorAll('[data-nav-dropdown]'));
+  const closeDropdowns = (restoreButton = null) => {
+    dropdowns.forEach(button => {
+      const menu = document.getElementById(button.getAttribute('aria-controls'));
+      button.setAttribute('aria-expanded', 'false');
+      button.closest('.nav-menu')?.classList.remove('is-open');
+      if (menu) menu.hidden = true;
+    });
+    restoreButton?.focus();
+  };
+  const openDropdown = (button, focusFirst = false) => {
+    closeDropdowns();
+    const menu = document.getElementById(button.getAttribute('aria-controls'));
+    if (!menu) return;
+    button.setAttribute('aria-expanded', 'true');
+    button.closest('.nav-menu')?.classList.add('is-open');
+    menu.hidden = false;
+    if (focusFirst) menu.querySelector('a')?.focus();
+  };
+  dropdowns.forEach(button => {
+    const menu = document.getElementById(button.getAttribute('aria-controls'));
+    button.addEventListener('click', () => {
+      if (button.getAttribute('aria-expanded') === 'true') closeDropdowns();
+      else openDropdown(button);
+    });
+    button.addEventListener('keydown', event => {
+      if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openDropdown(button, true);
+      } else if (event.key === 'Escape') {
+        event.preventDefault();
+        closeDropdowns(button);
+      }
+    });
+    menu?.addEventListener('keydown', event => {
+      const links = Array.from(menu.querySelectorAll('a'));
+      const index = links.indexOf(document.activeElement);
+      if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+        event.preventDefault();
+        const next = (index + (event.key === 'ArrowDown' ? 1 : -1) + links.length) % links.length;
+        links[next]?.focus();
+      } else if (event.key === 'Home' || event.key === 'End') {
+        event.preventDefault();
+        links[event.key === 'Home' ? 0 : links.length - 1]?.focus();
+      } else if (event.key === 'Escape') {
+        event.preventDefault();
+        closeDropdowns(button);
+      }
+    });
+    menu?.addEventListener('click', () => closeDropdowns());
+  });
+  document.addEventListener('click', event => {
+    if (!event.target.closest('.nav-menu')) closeDropdowns();
+  });
+
   if (theme) {
     theme.value = themes.includes(root.dataset.theme) ? root.dataset.theme : 'balanced';
     theme.addEventListener('change', () => {
