@@ -11,7 +11,7 @@
   const cacheIndex=pages=>{try{localStorage.setItem(cacheKey,JSON.stringify(pages));}catch{}};
   const cachedIndex=()=>{try{return JSON.parse(localStorage.getItem(cacheKey)||'null');}catch{return null;}};
   async function loadIndex(){
-    dataPromise ||= fetch('/search-index.json',{credentials:'same-origin'}).then(response=>{if(!response.ok)throw new Error('Index unavailable');return response.json();})
+    dataPromise ||= fetch('/search-index.json', {credentials: 'same-origin'}).then(response=>{if(!response.ok)throw new Error('Index unavailable');return response.json();})
       .then(pages=>{cacheIndex(pages);return pages;}).catch(error=>{dataPromise=undefined;const cached=cachedIndex();if(cached)return cached;throw error;});
     return dataPromise;
   }
@@ -44,7 +44,7 @@
       results.forEach(({page})=>{
         const target=new URL(page.url,location.origin);if(target.origin!==location.origin)return;
         const article=document.createElement('article');article.className='search-result';
-        const heading=document.createElement('h2'),link=document.createElement('a');link.href=target.pathname;link.append(highlight(page.title,terms));heading.append(link);
+        const heading=document.createElement('h2'),link=document.createElement('a');link.href=target.pathname;link.textContent = page.title;heading.append(link);
         const meta=document.createElement('small');meta.className='search-meta';meta.textContent=[page.section,page.entryType?.replaceAll('-',' '),page.date,page.minutes?(page.minutes+' min read'):''].filter(Boolean).join(' · ');
         const description=document.createElement('p');description.append(highlight(page.description,terms));article.append(heading,meta,description);fragment.append(article);
       });
