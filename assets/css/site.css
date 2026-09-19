@@ -591,6 +591,19 @@ audio { width: 100%; max-width: 480px; }
   .nav-submenu a { white-space: normal; }
 }
 
+/* Iterations 1–2 — recovery page that feels like part of the notebook. */
+.room-not-found .page-heading { max-width: 760px; margin-inline: auto; }
+.not-found-note { max-width: 760px; margin: 0 auto 2rem; }
+.not-found-code {
+  margin: 0 0 .6rem;
+  color: var(--green);
+  font: .75rem ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.not-found-actions { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.3rem; }
+.room-not-found .site-footer { max-width: 760px; }
+
 @media (max-width: 900px) {
   .home-heading { display: block; }
   .home-heading .heading-links { margin-top: 1rem; }
