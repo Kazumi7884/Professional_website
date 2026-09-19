@@ -45,9 +45,12 @@
         link.href = target.pathname;
         link.textContent = page.title;
         heading.append(link);
+        const meta = document.createElement('small');
+        meta.className = 'search-meta';
+        meta.textContent = [page.section, page.entryType && page.entryType.replaceAll('-', ' '), page.minutes ? `${page.minutes} min read` : ''].filter(Boolean).join(' · ');
         const description = document.createElement('p');
         description.textContent = page.description;
-        article.append(heading, description);
+        article.append(heading, meta, description);
         fragment.append(article);
       });
       output.append(fragment);
@@ -57,6 +60,16 @@
     }
   }
   form.addEventListener('submit', event => { event.preventDefault(); run(); });
+  document.querySelector('[data-search-clear]')?.addEventListener('click', () => {
+    sequence++;
+    input.value = '';
+    output.replaceChildren();
+    status.textContent = 'Enter a few words to find a page.';
+    const url = new URL(window.location.href);
+    url.searchParams.delete('q');
+    history.replaceState(null, '', url);
+    input.focus();
+  });
   input.value = new URLSearchParams(location.search).get('q')?.slice(0,200) || '';
   if (input.value.trim()) run(false);
 })();
