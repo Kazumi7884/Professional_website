@@ -101,6 +101,12 @@ test('dropdown arrow navigation moves through links', () => {
   assert.equal(d.activeElement,submenu.querySelectorAll('a')[1]);
   dom.window.close();
 });
+test('mobile navigation locks and restores page scrolling', () => {
+  const dom=page();start(dom);const d=dom.window.document;const menu=d.querySelector('.nav-toggle');
+  menu.click();assert.equal(d.body.classList.contains('nav-open'),true);
+  d.querySelector('h1').click();assert.equal(d.body.classList.contains('nav-open'),false);
+  dom.window.close();
+});
 test('outside click closes mobile navigation', () => {
   const dom=page();start(dom);const d=dom.window.document;d.querySelector('.nav-toggle').click();
   d.querySelector('h1').click();assert.equal(d.querySelector('.nav-toggle').getAttribute('aria-expanded'),'false');dom.window.close();
@@ -156,6 +162,16 @@ test('search renders results as text and never inserts index markup', async () =
   assert.equal(d.querySelectorAll('#search-results img').length,0);
   assert.equal(d.querySelectorAll('#search-results article').length,1);
   assert.equal(new URL(dom.window.location.href).searchParams.get('q'),'console');dom.window.close();
+});
+test('search clear action removes the query and returns focus', async () => {
+  const dom=page('/search/?q=console');const d=dom.window.document;
+  dom.window.fetch=async()=>({ok:true,json:async()=>[]});
+  dom.window.eval(script('search.js'));await pause(0);
+  d.querySelector('[data-search-clear]').click();
+  assert.equal(d.querySelector('#search-query').value,'');
+  assert.equal(new URL(dom.window.location.href).search,'');
+  assert.equal(d.activeElement,d.querySelector('#search-query'));
+  dom.window.close();
 });
 test('search network failure is retryable', async () => {
   const dom=page('/search/');const d=dom.window.document;let calls=0;
