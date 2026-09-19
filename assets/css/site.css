@@ -375,6 +375,133 @@ audio { width: 100%; max-width: 480px; }
   border-top: 2px solid var(--accent);
 }
 
+
+/* Human-wide polish: the site should feel authored, browsed and lived-in
+   across the home page, notebook, hobbies, search and long-form posts. */
+:root[data-theme="balanced"] body {
+  background-image:
+    radial-gradient(circle at 10% 12%, color-mix(in srgb, var(--green) 7%, transparent) 0 1px, transparent 1px),
+    linear-gradient(90deg, transparent 0, transparent calc(100% - 1px), color-mix(in srgb, var(--line) 9%, transparent) calc(100% - 1px));
+  background-size: 19px 19px, 4rem 100%;
+}
+.site-header {
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--green) 26%, transparent);
+}
+.site-brand strong span { color: var(--green); }
+.site-nav a, .personal-tabs a {
+  transition: background-color .15s ease, color .15s ease, transform .15s ease;
+}
+.site-nav a:hover, .personal-tabs a:hover {
+  background: var(--inset);
+  transform: translateY(-1px);
+}
+.breadcrumbs {
+  font: .78rem ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: .025em;
+}
+.breadcrumbs li:last-child { color: var(--muted); }
+.personal-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .45rem;
+  margin: 0 0 1.25rem;
+}
+.personal-tabs a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: .45rem .8rem;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  text-decoration: none;
+  font-size: .875rem;
+}
+.personal-tabs a[aria-current] {
+  border-color: var(--accent);
+  box-shadow: 3px 3px 0 color-mix(in srgb, var(--green) 35%, transparent);
+  color: var(--accent);
+  font-weight: 700;
+}
+.side-box, .snapshot-note, .empty-note {
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--surface) 82%, var(--inset));
+}
+.side-box {
+  padding: 1rem 1.1rem;
+}
+.side-box h2 {
+  margin-top: 0;
+  font: 700 .78rem ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  color: var(--green);
+}
+.side-box a { display: block; margin-top: .4rem; }
+.welcome-note {
+  position: relative;
+}
+.welcome-note::after {
+  content: '— Kaz';
+  display: block;
+  margin-top: 1rem;
+  color: var(--muted);
+  font: italic 1rem Georgia, 'Times New Roman', serif;
+}
+.board-heading {
+  border-bottom-color: var(--green);
+}
+.topic-row {
+  transition: background-color .15s ease, padding-left .15s ease;
+}
+.topic-row:hover {
+  background: color-mix(in srgb, var(--inset) 72%, transparent);
+  padding-left: 1.35rem;
+}
+.board-footer {
+  margin: .7rem 0 1.8rem;
+  color: var(--muted);
+  font-size: .875rem;
+}
+.hobby-room {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  box-shadow: 4px 4px 0 color-mix(in srgb, var(--line) 14%, transparent);
+}
+.hobby-room .eyebrow { color: var(--green); }
+.work-sample {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  box-shadow: 5px 5px 0 color-mix(in srgb, var(--line) 16%, transparent);
+}
+.work-sample figcaption {
+  border-top: 1px dashed var(--line);
+}
+.search-form {
+  background: var(--inset);
+  border: 1px solid var(--line);
+}
+.search-result {
+  border-left: 3px solid var(--green);
+}
+.snapshot-note {
+  padding: .7rem 1rem;
+  font-size: .875rem;
+}
+.post-navigation {
+  border-top: 1px dashed var(--line);
+  border-bottom: 1px dashed var(--line);
+}
+.post-tools button, .code-copy {
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+.site-footer {
+  border-top: 2px solid var(--green);
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-nav a, .personal-tabs a, .topic-row { transition: none; }
+}
+
 @media (max-width: 900px) {
   .home-heading { display: block; }
   .home-heading .heading-links { margin-top: 1rem; }
