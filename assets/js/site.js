@@ -227,6 +227,18 @@
     button.addEventListener('click', () => copy(pre.textContent, button));
     pre.before(button);
   });
+  const networkStatus = document.querySelector('[data-network-status]');
+  const renderNetworkStatus = () => {
+    if (!networkStatus) return;
+    const online = navigator.onLine !== false;
+    networkStatus.hidden = online;
+    networkStatus.dataset.state = online ? 'online' : 'offline';
+    networkStatus.textContent = online ? '' : 'You appear to be offline. Saved pages may still be available.';
+  };
+  window.addEventListener('online', renderNetworkStatus);
+  window.addEventListener('offline', renderNetworkStatus);
+  renderNetworkStatus();
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js', {updateViaCache:'none'}).catch(() => {});
   // Hide compact navigation only after its handlers are ready.
   document.querySelectorAll('.enhancement').forEach(node => { node.hidden = false; });
   root.classList.add('js');

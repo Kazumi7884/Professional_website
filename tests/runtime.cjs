@@ -202,3 +202,6 @@ test('reading mode preference survives enhancement', () => {
   assert.equal(dom.window.document.documentElement.classList.contains('reading-mode'),true);
   dom.window.close();
 });
+
+test('reader controls change scale and announce the action',()=>{const dom=page('/learning/c-sharp/posts/c-sharp-blog-1/');start(dom);dom.window.eval(script('reader.js'));dom.window.document.querySelector('[data-font-increase]').click();assert.equal(dom.window.document.documentElement.style.getPropertyValue('--reading-scale'),'1.05');assert.match(dom.window.document.querySelector('[data-reader-status]').textContent,/Reading size/);dom.window.close();});
+test('command-k still focuses search on article pages',()=>{const dom=page('/learning/c-sharp/posts/c-sharp-blog-1/');start(dom);const d=dom.window.document;d.dispatchEvent(new dom.window.KeyboardEvent('keydown',{key:'k',ctrlKey:true,bubbles:true}));assert.equal(d.activeElement,d.querySelector('#site-query'));dom.window.close();});

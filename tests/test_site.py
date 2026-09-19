@@ -105,6 +105,20 @@ class BuildRegression(unittest.TestCase):
         self.assertEqual(soup.select_one('meta[property="og:image:alt"]')['content'], "Kaz's personal notebook and computing notes")
         self.assertEqual(soup.select_one('link[rel="manifest"]')['href'], '/site.webmanifest')
 
+    def test_posts_have_related_content_and_keywords(self):
+        post = self.soup('/learning/c-sharp/posts/c-sharp-blog-1/')
+        self.assertTrue(post.select('.related-posts li'))
+        self.assertIn('keywords', post.select_one('script[type="application/ld+json"]').text)
+
+    def test_publication_support_files_exist(self):
+        self.assertTrue((ROOT / 'dist' / 'humans.txt').is_file())
+        self.assertTrue((ROOT / 'dist' / 'site.webmanifest').is_file())
+        self.assertTrue((ROOT / 'dist' / 'sw.js').is_file())
+
+    def test_search_index_carries_tags(self):
+        index = json.loads((ROOT/'dist/search-index.json').read_text(encoding='utf-8'))
+        self.assertTrue(all('tags' in item for item in index))
+
     def test_canonical_remains_absolute(self):
         soup=self.soup('/learning/c-sharp/posts/c-sharp-blog-1/')
         self.assertEqual(soup.select_one('link[rel="canonical"]')['href'],

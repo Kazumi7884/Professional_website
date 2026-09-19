@@ -214,15 +214,24 @@ def build():
         schema = {'@context': 'https://schema.org', '@type': 'BlogPosting' if page['entryType'] == 'post' else 'WebPage',
                   'name': page['title'], 'headline': page['title'], 'description': page['description'],
                   'url': config['url'] + page['url'], 'inLanguage': 'en-GB',
-                  'author': {'@type': 'Person', 'name': page.get('author', config['author'])}}
+                  'author': {'@type': 'Person', 'name': page.get('author', config['author'])},
+                  'keywords': ', '.join(page.get('tags') or [])}
         if page['entryType'] == 'post' and page['date']:
             schema['datePublished'] = page['date']
             schema['dateModified'] = page['lastmod'] or page['date']
+        related = []
+        if page['entryType'] == 'post':
+            candidates = [candidate for candidate in posts if candidate['url'] != page['url']]
+            current_tags = set(page.get('tags') or [])
+            related = sorted(candidates, key=lambda candidate: (
+                len(current_tags.intersection(candidate.get('tags') or [])) * -10,
+                0 if candidate['section'] == page['section'] else 1,
+                candidate['date'], candidate['title']), reverse=True)[:3]
         room = ('phasmo' if '/phasmophobia' in page['url'] else 'anime' if page.get('layout') == 'anime'
                 else 'games' if page.get('layout') == 'games' else 'journal' if '/writing' in page['url']
                 else 'pc' if page.get('layout') == 'pc' else page['section'])
         doc = env.get_template('page.html').render(page=page, pages=pages, config=config, assets=assets,
-            data=data, posts=posts, children=sorted(children, key=lambda p:(p['date'],p['title']), reverse=True),
+            data=data, posts=posts, related=related, children=sorted(children, key=lambda p:(p['date'],p['title']), reverse=True),
             boards=sorted(boards, key=lambda p:p['title']), crumbs=crumbs, schema=schema, room=room,
             previous=siblings[pos+1] if 0 <= pos < len(siblings)-1 else None,
             following=siblings[pos-1] if pos > 0 else None)
@@ -237,7 +246,7 @@ def build():
             continue
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_text(f'<!DOCTYPE html><html lang="en-GB"><head><meta charset="utf-8"><title>Page moved | Kaz</title><meta name="robots" content="noindex"><meta http-equiv="refresh" content="0;url={html.escape(new)}"><link rel="canonical" href="{config["url"]}{html.escape(new)}"></head><body><a href="{html.escape(new)}">Continue to the page</a></body></html>', encoding='utf-8')
-    index = [{'title':p['title'], 'url':p['url'], 'description':p['description'], 'text':p['text'], 'section':p['section'], 'entryType':p['entryType'], 'date':p['date'], 'minutes':p['minutes']}
+    index = [{'title':p['title'], 'url':p['url'], 'description':p['description'], 'text':p['text'], 'section':p['section'], 'entryType':p['entryType'], 'date':p['date'], 'minutes':p['minutes'], 'tags':p.get('tags') or []}
              for p in pages if not p.get('noindex') and p.get('searchable', True) and not p['synthetic']]
     (OUT / 'search-index.json').write_text(json.dumps(index, ensure_ascii=False), encoding='utf-8')
     root = ET.Element('urlset', xmlns='http://www.sitemaps.org/schemas/sitemap/0.9')
@@ -255,12 +264,15 @@ def build():
         item = ET.SubElement(channel, 'item')
         for key, value in [('title', p['title']), ('link', config['url'] + p['url']), ('guid', config['url'] + p['url']), ('description', p['description'])]:
             ET.SubElement(item, key).text = value
+        for tag in p.get('tags') or []:
+            ET.SubElement(item, 'category').text = tag
         if p['date']:
             from email.utils import format_datetime
             from datetime import datetime, timezone
             ET.SubElement(item, 'pubDate').text = format_datetime(datetime.fromisoformat(p['date']).replace(tzinfo=timezone.utc))
     ET.ElementTree(rss).write(OUT / 'index.xml', encoding='utf-8', xml_declaration=True)
     (OUT / 'robots.txt').write_text(f'User-agent: *\nAllow: /\nSitemap: {config["url"]}/sitemap.xml\n', encoding='utf-8')
+    (OUT / 'humans.txt').write_text('/* TEAM */\nCreator: ' + config['author'] + '\nSite: ' + config['url'] + '\n\n/* SITE */\nStandards: HTML, CSS, JavaScript\nGenerated: static notebook builder\n', encoding='utf-8')
     notfound = env.get_template('404.html').render(config=config, assets=assets)
     (OUT / '404.html').write_text(notfound, encoding='utf-8')
     report = {'pages': rendered, 'aliases': aliases, 'assets': assets, 'seconds': round(time.perf_counter()-started,3)}
