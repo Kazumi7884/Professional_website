@@ -288,6 +288,93 @@ audio { width: 100%; max-width: 480px; }
 [data-theme="resident"] .post-tools, [data-theme="resident"] .post-signature { font-family: var(--body-font); }
 [data-theme="resident"] .prose p, [data-theme="resident"] .prose li { font-size: 1.075rem; }
 [data-theme="resident"] body { background-image: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(216,195,141,.025) 4px); }
+/* Personal journal: a warmer early-web blog rhythm with tabs, paper and visible borders. */
+.room-journal .site-header {
+  border-top-width: 8px;
+  background: var(--surface);
+}
+.room-journal .header-inner { max-width: 1120px; }
+.room-journal .site-brand strong {
+  font-family: Georgia, 'Times New Roman', serif;
+  letter-spacing: -.075em;
+}
+.room-journal .site-nav { gap: .35rem; }
+.room-journal .site-nav a {
+  background: var(--inset);
+  border: 1px solid var(--line);
+  border-bottom: 0;
+  border-radius: 6px 6px 0 0;
+  padding-inline: .9rem;
+}
+.room-journal .site-nav a[aria-current] {
+  background: var(--surface);
+  color: var(--accent);
+  box-shadow: 0 -3px 0 var(--green) inset;
+}
+.room-journal .page-shell { max-width: 1120px; }
+.room-journal .page-heading {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--green);
+  box-shadow: 5px 5px 0 color-mix(in srgb, var(--line) 22%, transparent);
+  padding: 1.25rem 1.4rem;
+}
+.room-journal .page-heading h1 {
+  font-family: Georgia, 'Times New Roman', serif;
+  letter-spacing: -.025em;
+}
+.room-journal .board,
+.room-journal .post-frame {
+  box-shadow: 5px 5px 0 color-mix(in srgb, var(--line) 18%, transparent);
+}
+.room-journal .post-topline {
+  font-family: Georgia, 'Times New Roman', serif;
+  background: var(--inset);
+}
+.room-journal .post-content { background: var(--surface); }
+.room-journal .post-signature {
+  background: var(--inset);
+  padding: .8rem;
+}
+
+/* Learning notebook: clearer evidence hierarchy and a more professional study surface. */
+.room-learning .page-heading {
+  border-left: 5px solid var(--accent);
+  padding-left: 1.25rem;
+}
+.room-learning .page-heading h1 {
+  font-family: var(--body-font);
+  font-weight: 700;
+  letter-spacing: -.025em;
+}
+.room-learning .post-frame {
+  border-top: 5px solid var(--accent);
+  box-shadow: 0 8px 0 color-mix(in srgb, var(--accent) 14%, transparent);
+}
+.room-learning .post-topline h2::before {
+  content: 'STUDY NOTE';
+  display: block;
+  color: var(--green);
+  font: .7rem ui-monospace, monospace;
+  letter-spacing: .12em;
+  margin-bottom: .2rem;
+}
+.room-learning .post-contents {
+  border-left: 4px solid var(--accent);
+  background: var(--inset);
+}
+.room-learning .prose h2 {
+  color: var(--accent);
+  font-family: var(--body-font);
+  font-weight: 700;
+}
+.room-learning .prose pre {
+  box-shadow: inset 4px 0 var(--green);
+}
+.room-learning .post-signature {
+  border-top: 2px solid var(--accent);
+}
+
 @media (max-width: 900px) {
   .home-heading { display: block; }
   .home-heading .heading-links { margin-top: 1rem; }
