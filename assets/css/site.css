@@ -503,6 +503,15 @@ audio { width: 100%; max-width: 480px; }
 }
 
 
+/* Research-backed link language: external destinations are visible as
+   destinations, while internal navigation stays quiet and notebook-like. */
+.external-link::after {
+  content: ' ↗';
+  display: inline-block;
+  color: var(--green);
+  font-size: .8em;
+  text-decoration: none;
+}
 /* Pass 3 — real menus with the feel of a hand-built personal site. */
 .site-nav { align-items: stretch; }
 .nav-menu {

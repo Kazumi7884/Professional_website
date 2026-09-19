@@ -115,6 +115,9 @@ def optimise_html(document, route, aliases):
         if path in aliases:
             value = aliases[path] + (sep + fragment if sep else '')
         node[attr] = value
+        if node.name == 'a' and parsed.scheme in ('http', 'https') and parsed.netloc and parsed.netloc != 'kazumi7884.co.uk':
+            node['data-external-link'] = 'true'
+            node['class'] = node.get('class', []) + ['external-link']
         if parsed.scheme and parsed.scheme not in ('http', 'https', 'mailto', 'tel'):
             raise ValueError(f'Unsafe URL in {route}: {value}')
         if node.get('target') == '_blank':

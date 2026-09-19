@@ -97,6 +97,18 @@ class BuildRegression(unittest.TestCase):
         self.assertTrue(soup.select('.align-right'))
 
 
+class LinkPresentationTests(unittest.TestCase):
+    def test_external_links_are_explicitly_annotated(self):
+        document = '<p><a href="https://example.com/notes">External notes</a> <a href="/about/">About</a></p>'
+        rendered = site.optimise_html(document, "/", {})
+        soup = BeautifulSoup(rendered, "html.parser")
+        external = soup.select_one('a[href="https://example.com/notes"]')
+        internal = soup.select_one('a[href="/about/"]')
+        self.assertEqual(external.get("data-external-link"), "true")
+        self.assertIn("external-link", external.get("class", []))
+        self.assertIsNone(internal.get("data-external-link"))
+
+
 class AuthoringSafety(unittest.TestCase):
     def test_home_route_stays_inside_output(self):
         self.assertEqual(site.route_path('/'),Path('index.html'))
