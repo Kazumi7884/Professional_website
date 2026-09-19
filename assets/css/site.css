@@ -597,6 +597,19 @@ audio { width: 100%; max-width: 480px; }
 .room-journal .nav-submenu {
   border-radius: 0 0 5px 5px;
 }
+/* Iterations 7–8 — mobile navigation behaves like a deliberate drawer. */
+@media (max-width: 620px) {
+  body.nav-open { overflow: hidden; }
+  body.nav-open::after {
+    content: '';
+    position: fixed;
+    z-index: 8;
+    inset: 0;
+    background: color-mix(in srgb, var(--ink) 22%, transparent);
+    pointer-events: none;
+  }
+  .site-header { position: relative; z-index: 10; }
+}
 @media (max-width: 620px) {
   .nav-menu { display: block; }
   .nav-menu-toggle { width: 100%; justify-content: space-between; border: 1px solid var(--line); }
