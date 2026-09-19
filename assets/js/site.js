@@ -242,4 +242,12 @@
   // Hide compact navigation only after its handlers are ready.
   document.querySelectorAll('.enhancement').forEach(node => { node.hidden = false; });
   root.classList.add('js');
+  document.body.classList.add('js');
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', () => {
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) target.classList.add('anchor-arrival');
+      window.setTimeout(() => target?.classList.remove('anchor-arrival'), 900);
+    });
+  });
 })();
