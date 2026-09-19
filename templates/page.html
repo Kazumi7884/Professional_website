@@ -58,15 +58,18 @@
   <meta name="twitter:image" content="{{ config.url }}/assets/images/social-card.svg">
   <meta property="og:image:alt" content="Kaz's personal notebook and computing notes">
   <link rel="manifest" href="/site.webmanifest">
+  {% if previous %}<link rel="prev" href="{{ config.url }}{{ previous.url }}">{% endif %}{% if following %}<link rel="next" href="{{ config.url }}{{ following.url }}">{% endif %}
   <link rel="icon" href="/favicon.ico">
   <link rel="alternate" type="application/rss+xml" title="Kaz's posts" href="/index.xml">
   <link rel="stylesheet" href="{{ assets['site.css'] }}">
   <script src="{{ assets['theme-init.js'] }}"></script>
   <script src="{{ assets['site.js'] }}" defer></script>
+  {% if page.entryType == 'post' %}<script src="{{ assets['reader.js'] }}" defer></script>{% endif %}
   {% if page.url == '/search/' %}<script src="{{ assets['search.js'] }}" defer></script>{% endif %}
   <script type="application/ld+json">{{ schema|tojson }}</script>
 </head>
 <body class="room-{{ room }}">
+<div class="offline-status" data-network-status data-state="online" hidden role="status" aria-live="polite"></div>
 <a class="skip-link" href="#main-content">Skip to content</a>
 <header class="site-header">
   <div class="header-inner">
@@ -149,11 +152,12 @@
 {{ board(children, 'Posts & entries', 'entries') }}
 {% else %}
 <article class="post-frame" aria-labelledby="post-heading"><div class="reading-progress" data-reading-progress role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"></div><div class="post-topline"><h2 id="post-heading">{{ 'Learning notebook' if page.section == 'learning' else 'Personal journal' if page.section == 'personal' else 'Notes' }}</h2>{% if page.date %}<time datetime="{{ page.date }}">Published {{ page.date }}</time>{% endif %}<a href="#post-body" aria-label="Link to this post">Permalink</a></div>
-<div class="post-layout">{{ author() }}<div class="post-content" id="post-body"><div class="post-tools"><span>{{ page.minutes }} min read</span>{% if page.lastmod and page.lastmod != page.date %}<span>Updated <time datetime="{{ page.lastmod }}">{{ page.lastmod }}</time></span>{% endif %}<button class="enhancement" type="button" data-reading-mode aria-pressed="false" hidden>Reading view</button><button class="enhancement" type="button" data-copy-link hidden>Copy post link</button><span class="sr-only" data-copy-status role="status"></span></div>
+<div class="post-layout">{{ author() }}<div class="post-content" id="post-body"><div class="post-tools"><span>{{ page.minutes }} min read</span><div class="reader-tools" aria-label="Reading tools"><button type="button" data-font-decrease title="Make text smaller">A−</button><span class="reader-size" data-font-value aria-live="polite">100%</span><button type="button" data-font-increase title="Make text larger">A+</button><button type="button" data-font-reset title="Reset text size">Reset</button><button type="button" data-share-post>Share</button><button type="button" data-print-post>Print</button></div>{% if page.lastmod and page.lastmod != page.date %}<span>Updated <time datetime="{{ page.lastmod }}">{{ page.lastmod }}</time></span>{% endif %}<button class="enhancement" type="button" data-reading-mode aria-pressed="false" hidden>Reading view</button><button class="enhancement" type="button" data-copy-link hidden>Copy post link</button><span class="sr-only" data-copy-status role="status"></span><span class="sr-only" data-reader-status role="status" aria-live="polite"></span></div>
 {% if page.toc %}<details class="post-contents"><summary>In this post</summary>{{ page.toc|safe }}</details>{% endif %}
 <div class="prose" data-article-body>{{ page.body|safe }}</div>
 <footer class="post-signature"><strong>{{ page.author|default(config.author) }}</strong><span>Learning as I go.</span>{% if page.tags %}<nav aria-label="Post tags">{% for tag in page.tags %}<a href="/tags/{{ tag|slug }}/">{{ tag }}</a>{% endfor %}</nav>{% endif %}</footer>
 </div></div></article>
+{% if related %}<section class="related-posts" aria-labelledby="related-heading"><h2 id="related-heading">More from this notebook</h2><ul>{% for item in related %}<li><a href="{{ item.url }}">{{ item.title }}</a><small>{{ item.description }}</small></li>{% endfor %}</ul></section>{% endif %}
 {% if previous or following %}<nav class="post-navigation" aria-label="More posts">{% if previous %}<a href="{{ previous.url }}"><small>Older post</small>{{ previous.title }}</a>{% endif %}{% if following %}<a href="{{ following.url }}"><small>Newer post</small>{{ following.title }}</a>{% endif %}</nav>{% endif %}
 {% endif %}
 </main>
