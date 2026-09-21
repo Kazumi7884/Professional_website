@@ -110,3 +110,24 @@ Never include Git metadata in downloadable ZIPs. Public upload packages must exc
 Each handoff must identify repository and candidate, dirty state, tasks and files changed, actual checks and results, evidence locations, limitations, integration/deployment state, rollback or preserved patch, next eligible task and stop reason. Do not expose secrets in logs or send notifications through an unauthorised channel.
 
 A task is complete when acceptance is met, relevant evidence applies to the final candidate, documentation is accurate and the integration state is explicit. A run is complete when it has a recoverable handoff and has released its owned resources. Continuous maintenance means returning to real needs; it does not require perpetual rewrites.
+
+## Field-notes operating discipline
+
+These rules adapt the practical agent lessons in [unicodef1wn/grokbot-field-notes](https://github.com/unicodef1wn/grokbot-field-notes). They supplement this repository's stricter project-specific rules; they do not replace them.
+
+- **Verification is part of implementation.** A change is not complete until the relevant real workflow has been exercised and the evidence matches the final candidate.
+- **Reproduce before repairing.** For bugs and regressions, establish the failure first. Record the shortest reliable reproduction and then repeat the same path after the fix.
+- **Define acceptance before coding.** Restate the scoped task, important non-goals and the concrete observation that would prove completion.
+- **Keep changes narrow.** Prefer one reviewable concern at a time. Do not mix opportunistic rewrites with a targeted fix unless they are required to solve the root cause.
+- **Run the thing, not only static checks.** Type checks, linting and unit tests are supporting evidence; exercise the application, CLI, service or user flow affected by the change.
+- **Fix causes rather than symptoms.** If a workaround is truly necessary, document why the underlying repair is outside scope and what would remove the workaround later.
+- **Prefer established tools already suited to the job.** Do not hand-roll infrastructure or utilities when the existing stack or a well-established dependency solves the requirement more safely.
+- **Do not invent user-facing facts or data.** Real endpoints, names, claims, compatibility statements and measurements require real evidence.
+- **Keep internal agent language out of the product.** Reasoning notes, temporary labels, debug text, codenames and TODO language must not leak into user-facing output.
+- **Attach proof appropriate to the change.** UI work needs visual/interaction evidence; bug fixes need before/after reproduction; performance work needs measured before/after results; refactors need evidence that behaviour stayed stable.
+- **Remove temporary scaffolding.** Delete debug panels, logs, throwaway flags and commented-out code before completion.
+- **Write comments for non-obvious reasons, not to narrate obvious code.** Prefer clearer structure over explanatory clutter.
+- **Treat corrections as reusable learning.** When a correction exposes a recurring class of failure, encode the general principle in durable documentation or tests; do not memorialise only the one incident.
+- **Do not repeat a failed approach indefinitely.** After two materially similar failed attempts, change the approach and report the evidence rather than looping.
+- **Status must be factual.** Report what is done, what is in progress, what failed or remains unverified, and what is blocked. Never manufacture progress.
+
