@@ -68,6 +68,20 @@ test('submenu links remain visible before JavaScript enhancement', () => {
   assert.equal(submenu.hidden,true);
   dom.window.close();
 });
+test('navigation disclosures expose explicit component state', () => {
+  const dom=page('/learning/c-sharp/');start(dom);const d=dom.window.document;
+  const button=d.querySelector('[data-nav-dropdown]');
+  const submenu=d.querySelector('#nav-learning-menu');
+  assert.equal(button.dataset.state,'closed');
+  assert.equal(submenu.dataset.state,'closed');
+  button.click();
+  assert.equal(button.dataset.state,'open');
+  assert.equal(submenu.dataset.state,'open');
+  assert.equal(button.getAttribute('aria-haspopup'),'true');
+  assert.ok(submenu.querySelector('[aria-current]'));
+  dom.window.close();
+});
+
 test('learning dropdown opens and exposes its links', () => {
   const dom=page();start(dom);const d=dom.window.document;
   const button=d.querySelector('[data-nav-dropdown]');
@@ -125,6 +139,51 @@ test('board filtering is case-insensitive and reports empty results', async () =
   assert.equal(board.querySelector('[data-filter-empty]').hidden,false);
   change(dom,input,'','input');await pause(160);assert.equal(board.querySelector('[data-filter-empty]').hidden,true);dom.window.close();
 });
+test('filter reset restores defaults and its disabled state', async () => {
+  const dom=page('/learning/c-sharp/');start(dom);const d=dom.window.document;
+  const board=d.querySelector('[data-filter-board]');
+  const input=board.querySelector('[data-filter-query]');
+  const sort=board.querySelector('[data-filter-sort]');
+  const reset=board.querySelector('[data-filter-reset]');
+  assert.equal(reset.disabled,true);
+  change(dom,input,'console','input');await pause(160);
+  assert.equal(board.dataset.filterState,'active');
+  assert.equal(reset.disabled,false);
+  change(dom,sort,'title');
+  reset.click();
+  assert.equal(input.value,'');
+  assert.equal(sort.value,'newest');
+  assert.equal(board.dataset.filterState,'default');
+  assert.equal(reset.disabled,true);
+  assert.equal(d.activeElement,input);
+  dom.window.close();
+});
+
+test('anime reset clears category and sort controls', () => {
+  const dom=page('/personal/anime/');start(dom);const d=dom.window.document;
+  const board=d.querySelector('[data-filter-board]');
+  const category=board.querySelector('[data-filter-category]');
+  const sort=board.querySelector('[data-filter-sort]');
+  change(dom,category,'completed');
+  change(dom,sort,'score');
+  const reset=board.querySelector('[data-filter-reset]');
+  assert.equal(reset.disabled,false);
+  reset.click();
+  assert.equal(category.value,'all');
+  assert.equal(sort.value,'newest');
+  assert.equal(reset.disabled,true);
+  dom.window.close();
+});
+
+test('filter controls describe the list they update', () => {
+  const dom=page('/learning/c-sharp/');const d=dom.window.document;
+  const input=d.querySelector('[data-filter-query]');
+  const list=d.querySelector('[data-filter-list]');
+  assert.ok(list.id);
+  assert.equal(input.getAttribute('aria-controls'),list.id);
+  dom.window.close();
+});
+
 test('sorting preserves the original article nodes', () => {
   const dom=page('/learning/c-sharp/');start(dom);const d=dom.window.document;
   const board=d.querySelector('[data-filter-board]');
