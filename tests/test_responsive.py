@@ -83,12 +83,15 @@ class SearchContracts(unittest.TestCase):
     def test_search_script_uses_same_origin_index(self):
         script = (ROOT / 'assets/js/search.js').read_text(encoding='utf-8')
         self.assertIn("fetch('/search-index.json'", script)
-        self.assertIn("credentials: 'same-origin'", script)
+        self.assertRegex(script, r"credentials\s*:\s*['\"]same-origin['\"]")
 
     def test_search_results_are_dom_text_not_html(self):
         script = (ROOT / 'assets/js/search.js').read_text(encoding='utf-8')
-        self.assertIn('link.textContent = page.title', script)
-        self.assertIn('description.textContent = page.description', script)
+        self.assertIn('document.createTextNode', script)
+        self.assertIn('mark.textContent=part', script)
+        self.assertIn('link.append(highlight(page.title', script)
+        self.assertIn('description.append(highlight(page.description', script)
+        self.assertNotIn('innerHTML', script)
 
 
 if __name__ == '__main__':

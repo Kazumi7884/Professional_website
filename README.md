@@ -1,8 +1,10 @@
-# Kaz's website — V5.2
+# Kaz's website — V5.7
 
 The main website source lives in **Kazumi7884/Professional_website**, on **main**.
 
-V5.2 adds a local writing desk and three high-contrast themes.
+V5.7 strengthens local search, offline resilience, accessibility regression coverage and front-end performance budgets through a fifteen-repository integration pass. See [the V5.7 integration record](docs/V5.7-REPO-INTEGRATION.md) for the exact upstream projects and changes.
+
+V5.2 introduced the local writing desk and three high-contrast themes.
 Run `python tools/site.py studio` to write posts in your browser.
 See [the writing guide](docs/WRITING.md) for the complete workflow.
 This is the refreshed V5 personal website: C# learning notes, misc blog posts,
@@ -92,7 +94,7 @@ See [writing posts](docs/WRITING.md), [publishing](docs/PUBLISHING.md),
 The post layout resembles a classic forum. It is an authored website: it does
 not invent public accounts, replies, visitor counts or a working discussion backend.
 
-See [V5.2 design and repository decisions](docs/V5.2-DESIGN.md) for the theme system and evaluated open-source projects.
+See [V5.2 design and repository decisions](docs/V5.2-DESIGN.md) for the theme system and the [V5.7 repository integration record](docs/V5.7-REPO-INTEGRATION.md) for the latest research-backed improvements.
 
 ## AI maintenance instructions
 

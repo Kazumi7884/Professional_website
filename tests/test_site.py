@@ -130,6 +130,54 @@ class BuildRegression(unittest.TestCase):
         self.assertTrue(soup.select('.align-right'))
 
 
+    def test_home_content_image_is_prioritised(self):
+        image = self.soup('/').select_one('main img')
+        self.assertIsNotNone(image)
+        self.assertEqual(image.get('loading'), 'eager')
+        self.assertEqual(image.get('fetchpriority'), 'high')
+
+    def test_search_help_describes_the_real_query_behaviour(self):
+        soup = self.soup('/search/')
+        query = soup.select_one('#search-query')
+        help_text = soup.select_one('#search-help')
+        self.assertEqual(query.get('aria-describedby'), 'search-help')
+        self.assertIn('quoted phrases', help_text.get_text(' ', strip=True).lower())
+        self.assertIn('typos', help_text.get_text(' ', strip=True).lower())
+
+    def test_generated_pages_avoid_positive_tabindex_and_nested_controls(self):
+        interactive = 'a[href], button, input, select, textarea'
+        for page in self.pages:
+            soup = self.soup(page['url'])
+            with self.subTest(url=page['url']):
+                for node in soup.select('[tabindex]'):
+                    self.assertLessEqual(int(node['tabindex']), 0)
+                for node in soup.select(interactive):
+                    self.assertFalse(node.select_one(interactive))
+
+    def test_disclosure_controls_reference_real_targets(self):
+        for page in self.pages:
+            soup = self.soup(page['url'])
+            for control in soup.select('[aria-expanded][aria-controls]'):
+                with self.subTest(url=page['url'], control=control.get('aria-controls')):
+                    self.assertIsNotNone(soup.find(id=control['aria-controls']))
+
+    def test_front_end_asset_budgets_stay_small(self):
+        css_files = list((ROOT / 'dist' / 'assets' / 'css').glob('*.css'))
+        js_files = list((ROOT / 'dist' / 'assets' / 'js').glob('*.js'))
+        self.assertTrue(css_files)
+        self.assertTrue(js_files)
+        self.assertTrue(all(path.stat().st_size < 128 * 1024 for path in css_files))
+        self.assertTrue(all(path.stat().st_size < 64 * 1024 for path in js_files))
+        self.assertLess((ROOT / 'dist' / 'search-index.json').stat().st_size, 2 * 1024 * 1024)
+
+    def test_service_worker_uses_scoped_cache_cleanup_and_offline_navigation(self):
+        worker = (ROOT / 'static' / 'sw.js').read_text(encoding='utf-8')
+        self.assertIn("key.startsWith(CACHE_PREFIX)", worker)
+        self.assertIn("request.mode==='navigate'", worker)
+        self.assertIn("caches.match('/offline.html')", worker)
+        self.assertIn("staleWhileRevalidate", worker)
+
+
 class LinkPresentationTests(unittest.TestCase):
     def test_external_links_are_explicitly_annotated(self):
         document = '<p><a href="https://example.com/notes">External notes</a> <a href="/about/">About</a></p>'

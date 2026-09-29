@@ -208,3 +208,57 @@ test('command-k still focuses search on article pages',()=>{const dom=page('/lea
 
 test('front-end welcome panel gives visitors clear starting routes',()=>{const dom=page('/');const d=dom.window.document;assert.ok(d.querySelector('.visitor-welcome'));assert.equal(d.querySelectorAll('.welcome-aside a').length,3);dom.window.close();});
 test('anchor links add a temporary arrival cue',()=>{const dom=page('/learning/c-sharp/posts/c-sharp-blog-1/');start(dom);const d=dom.window.document;const link=d.querySelector('a[href="#post-body"]');link.click();assert.ok(d.querySelector('#post-body').classList.contains('anchor-arrival'));dom.window.close();});
+
+test('search prefix matching prioritises title hits and highlights them', async () => {
+  const dom=page('/search/');const d=dom.window.document;
+  dom.window.fetch=async()=>({ok:true,json:async()=>[
+    {title:'Console logging',description:'A C# note',text:'terminal output',url:'/learning/c-sharp/'},
+    {title:'Other note',description:'Mentions console later',text:'console',url:'/about/'}
+  ]});
+  dom.window.eval(script('search.js'));change(dom,d.querySelector('#search-query'),'consol');
+  d.querySelector('#search-form').dispatchEvent(new dom.window.Event('submit',{cancelable:true}));await pause(0);
+  const results=Array.from(d.querySelectorAll('#search-results article'));
+  assert.equal(results.length,2);
+  assert.match(results[0].textContent,/Console logging/);
+  assert.ok(results[0].querySelector('h2 mark'));
+  dom.window.close();
+});
+
+test('search tolerates one small typo in a title or tag', async () => {
+  const dom=page('/search/');const d=dom.window.document;
+  dom.window.fetch=async()=>({ok:true,json:async()=>[
+    {title:'Console logging',description:'A C# note',text:'terminal output',tags:['csharp'],url:'/learning/c-sharp/'},
+    {title:'Unrelated',description:'No match',text:'nothing useful',tags:[],url:'/about/'}
+  ]});
+  dom.window.eval(script('search.js'));change(dom,d.querySelector('#search-query'),'consle');
+  d.querySelector('#search-form').dispatchEvent(new dom.window.Event('submit',{cancelable:true}));await pause(0);
+  assert.equal(d.querySelectorAll('#search-results article').length,1);
+  assert.match(d.querySelector('#search-results').textContent,/Console logging/);
+  dom.window.close();
+});
+
+test('quoted search phrases stay together', async () => {
+  const dom=page('/search/');const d=dom.window.document;
+  dom.window.fetch=async()=>({ok:true,json:async()=>[
+    {title:'Steam visualisations',description:'Charts from my library',text:'steam visualisations charts',url:'/personal/games/'},
+    {title:'Steam notes',description:'Visualisations from another topic',text:'steam notes and separate visualisations',url:'/about/'}
+  ]});
+  dom.window.eval(script('search.js'));change(dom,d.querySelector('#search-query'),'"steam visualisations"');
+  d.querySelector('#search-form').dispatchEvent(new dom.window.Event('submit',{cancelable:true}));await pause(0);
+  assert.equal(d.querySelectorAll('#search-results article').length,1);
+  assert.match(d.querySelector('#search-results').textContent,/Steam visualisations/);
+  dom.window.close();
+});
+
+test('search progressively updates after typing without requiring submit', async () => {
+  const dom=page('/search/');const d=dom.window.document;
+  dom.window.fetch=async()=>({ok:true,json:async()=>[
+    {title:'Phasmophobia reference',description:'Ghost notes',text:'phasmo ghost evidence',url:'/personal/misc/phasmophobia/'}
+  ]});
+  dom.window.eval(script('search.js'));change(dom,d.querySelector('#search-query'),'phasmo','input');
+  await pause(240);
+  assert.equal(d.querySelectorAll('#search-results article').length,1);
+  assert.equal(new URL(dom.window.location.href).searchParams.get('q'),'phasmo');
+  dom.window.close();
+});
+
