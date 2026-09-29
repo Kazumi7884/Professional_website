@@ -133,6 +133,11 @@ def optimise_html(document, route, aliases):
             if not img.has_attr('width'): img['width'] = '225'
             if not img.has_attr('height'): img['height'] = '320'
         if not img.has_attr('alt'): img['alt'] = ''
+    if route == '/':
+        first_content_image = soup.select_one('main img')
+        if first_content_image:
+            first_content_image['loading'] = 'eager'
+            first_content_image['fetchpriority'] = 'high'
     for table in soup.select('.prose table'):
         wrapper = soup.new_tag('div', attrs={'class': 'table-scroll', 'tabindex': '0', 'role': 'region', 'aria-label': 'Scrollable data table'})
         table.wrap(wrapper)
