@@ -102,6 +102,22 @@ def empty_page(url, title, description):
                 date='', lastmod='', minutes=1, entryType='section', synthetic=True)
 
 
+def validate_configured_routes(config, pages):
+    """Navigation may only point at explicit source-backed pages.
+
+    Synthetic directory boards remain useful for taxonomy/legacy structure, but
+    they must never silently replace Learning or Personal destinations.
+    """
+    authored = {page['url']: page for page in pages if not page['synthetic'] and page['source']}
+    configured = list(config.get('navigation', []))
+    for group in config.get('navigationGroups', {}).values():
+        configured.extend(group)
+    missing = [(label, url) for label, url in configured if url not in authored]
+    if missing:
+        details = ', '.join(f'{label}: {url}' for label, url in missing)
+        raise ValueError(f'Configured navigation requires real content pages: {details}')
+
+
 def optimise_html(document, route, aliases):
     """Resolve retained links and reserve image space in the actual final markup."""
     soup = BeautifulSoup(document, 'html.parser')
@@ -163,6 +179,7 @@ def build():
     if not re.fullmatch(r'https://[a-zA-Z0-9.-]+(?::[0-9]+)?', config['url']):
         raise ValueError('site.json url must be an HTTPS origin without a trailing slash')
     pages = read_pages()
+    validate_configured_routes(config, pages)
     urls = [p['url'] for p in pages]
     if len(urls) != len(set(urls)):
         raise ValueError('Duplicate page URL; choose unique titles/slugs for taxonomy entries')
