@@ -189,6 +189,55 @@ test('filter controls describe the list they update', () => {
   dom.window.close();
 });
 
+test('filter state is reflected in the URL and restored on reload', async () => {
+  const dom=page('/learning/c-sharp/');start(dom);const d=dom.window.document;
+  const board=d.querySelector('[data-filter-board]');
+  const input=board.querySelector('[data-filter-query]');
+  change(dom,input,'console','input');await pause(160);
+  const key=board.dataset.filterKey;
+  assert.equal(new URL(dom.window.location.href).searchParams.get(key+'-q'),'console');
+  dom.window.close();
+
+  const restored=page('/learning/c-sharp/?'+key+'-q=console');
+  start(restored);
+  const restoredBoard=restored.window.document.querySelector('[data-filter-board]');
+  assert.equal(restoredBoard.querySelector('[data-filter-query]').value,'console');
+  assert.equal(restoredBoard.dataset.filterState,'active');
+  restored.window.close();
+});
+
+test('filter reset removes its URL state', async () => {
+  const dom=page('/learning/c-sharp/');start(dom);const d=dom.window.document;
+  const board=d.querySelector('[data-filter-board]');
+  const input=board.querySelector('[data-filter-query]');
+  change(dom,input,'console','input');await pause(160);
+  board.querySelector('[data-filter-reset]').click();
+  const key=board.dataset.filterKey;
+  assert.equal(new URL(dom.window.location.href).searchParams.has(key+'-q'),false);
+  dom.window.close();
+});
+
+test('header search advertises the existing keyboard shortcut', () => {
+  const dom=page();const d=dom.window.document;
+  assert.equal(d.querySelector('#site-query').getAttribute('aria-keyshortcuts'),'Control+K Meta+K');
+  assert.match(d.querySelector('.shortcut-hint').textContent,/Ctrl K/);
+  dom.window.close();
+});
+
+test('back to top appears after scrolling and uses browser scrolling', () => {
+  const dom=page();let call;
+  Object.defineProperty(dom.window,'scrollY',{value:700,writable:true});
+  dom.window.scrollTo=options=>{call=options;};
+  start(dom);const d=dom.window.document;
+  const button=d.querySelector('[data-back-to-top]');
+  dom.window.dispatchEvent(new dom.window.Event('scroll'));
+  assert.equal(button.hidden,false);
+  button.click();
+  assert.equal(call.top,0);
+  assert.ok(['smooth','auto'].includes(call.behavior));
+  dom.window.close();
+});
+
 test('sorting preserves the original article nodes', () => {
   const dom=page('/learning/c-sharp/');start(dom);const d=dom.window.document;
   const board=d.querySelector('[data-filter-board]');
