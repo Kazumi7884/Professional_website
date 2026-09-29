@@ -1349,3 +1349,136 @@ pre {
   body::before, .page-shell::before { display: none; }
 }
 
+/* V5.10 — UI GATE
+   Component-state pass informed by 15 UI repositories. These rules stay on
+   controls and interactive affordances; V5.9 remains the visual token layer. */
+button, .button-link, input, select, summary, .site-nav a, .personal-tabs a {
+  -webkit-tap-highlight-color: transparent;
+}
+button, .button-link {
+  transition:
+    background-color var(--motion-fast) ease,
+    border-color var(--motion-fast) ease,
+    box-shadow var(--motion-fast) ease,
+    transform var(--motion-fast) ease;
+}
+button:hover:not(:disabled), .button-link:hover {
+  border-color: var(--accent);
+}
+button:focus-visible, .button-link:focus-visible,
+input:focus-visible, select:focus-visible, summary:focus-visible {
+  box-shadow: var(--shadow-focus);
+}
+button:disabled, .button-link[aria-disabled="true"] {
+  box-shadow: none;
+  transform: none;
+  filter: saturate(.55);
+}
+button[aria-expanded="true"],
+button[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--accent) 12%, var(--bar));
+  border-color: var(--accent);
+}
+.nav-menu-toggle[data-state="open"] {
+  box-shadow: inset 0 -3px var(--green);
+}
+.nav-submenu[data-state="open"] {
+  animation: ui-popover-in var(--motion-fast) ease-out both;
+}
+@keyframes ui-popover-in {
+  from { opacity: 0; transform: translateY(-.3rem); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.nav-submenu a {
+  position: relative;
+  padding-right: 2rem;
+}
+.nav-submenu a[aria-current] {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 750;
+}
+.nav-submenu a[aria-current]::after {
+  content: '•';
+  position: absolute;
+  right: .75rem;
+  color: var(--green);
+}
+.board-toolbar[data-filter-toolbar] {
+  gap: var(--space-3);
+  align-items: end;
+}
+.board-toolbar[data-filter-toolbar] label {
+  min-width: min(14rem, 100%);
+}
+.board-toolbar[data-filter-toolbar] :is(input, select) {
+  width: 100%;
+}
+.filter-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-left: auto;
+}
+.filter-actions [data-filter-count] {
+  margin: 0;
+  min-width: 8.5rem;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.filter-reset {
+  white-space: nowrap;
+}
+[data-filter-board][data-filter-state="active"] [data-filter-toolbar] {
+  box-shadow: inset 4px 0 var(--accent);
+}
+[data-filter-board][data-filter-state="active"] [data-filter-count] {
+  color: var(--accent);
+  font-weight: 700;
+}
+.topic-row:focus-within, .hobby-room:focus-within,
+.anime-entry:focus-within, .chart-grid figure:focus-within {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-focus);
+}
+.personal-tabs a {
+  position: relative;
+}
+.personal-tabs a[aria-current]::before {
+  content: '';
+  position: absolute;
+  inset: auto .45rem -.3rem;
+  height: 3px;
+  background: var(--green);
+}
+.search-actions button, .reader-tools button, .post-tools button, .code-copy {
+  min-width: 6rem;
+}
+input[type="search"]::-webkit-search-cancel-button {
+  cursor: pointer;
+}
+@media (max-width: 700px) {
+  .filter-actions {
+    width: 100%;
+    margin-left: 0;
+    justify-content: space-between;
+  }
+  .filter-actions [data-filter-count] {
+    min-width: 0;
+    text-align: right;
+  }
+}
+@media (max-width: 620px) {
+  .personal-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: thin;
+  }
+  .personal-tabs a { flex: 0 0 auto; }
+  .nav-submenu[data-state="open"] { animation: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-submenu[data-state="open"] { animation: none; }
+}
+

@@ -40,8 +40,11 @@
     dropdowns.forEach(button => {
       const menu = document.getElementById(button.getAttribute('aria-controls'));
       button.setAttribute('aria-expanded', 'false');
-      button.closest('.nav-menu')?.classList.remove('is-open');
-      if (menu) menu.hidden = true;
+      button.dataset.state = 'closed';
+      const wrapper = button.closest('.nav-menu');
+      wrapper?.classList.remove('is-open');
+      if (wrapper) wrapper.dataset.state = 'closed';
+      if (menu) { menu.hidden = true; menu.dataset.state = 'closed'; }
     });
     restoreButton?.focus();
   };
@@ -50,8 +53,12 @@
     const menu = document.getElementById(button.getAttribute('aria-controls'));
     if (!menu) return;
     button.setAttribute('aria-expanded', 'true');
-    button.closest('.nav-menu')?.classList.add('is-open');
+    button.dataset.state = 'open';
+    const wrapper = button.closest('.nav-menu');
+    wrapper?.classList.add('is-open');
+    if (wrapper) wrapper.dataset.state = 'open';
     menu.hidden = false;
+    menu.dataset.state = 'open';
     if (focusFirst) menu.querySelector('a')?.focus();
   };
   dropdowns.forEach(button => {
@@ -142,7 +149,18 @@
     const sort = board.querySelector('[data-filter-sort]');
     const count = board.querySelector('[data-filter-count]');
     const empty = board.querySelector('[data-filter-empty]');
+    const reset = board.querySelector('[data-filter-reset]');
+    const defaultSort = sort?.value || '';
     let timer;
+
+    function syncFilterState() {
+      const active = Boolean((query?.value || '').trim()) ||
+        Boolean(category && category.value !== 'all') ||
+        Boolean(sort && sort.value !== defaultSort);
+      board.dataset.filterState = active ? 'active' : 'default';
+      if (reset) reset.disabled = !active;
+    }
+
     function apply() {
       const words = (query?.value || '').trim().toLocaleLowerCase('en-GB').split(/\s+/).filter(Boolean);
       let visible = 0;
@@ -154,19 +172,32 @@
       }
       if (count) count.textContent = `${visible} of ${rows.length} entries`;
       if (empty) empty.hidden = visible !== 0;
+      syncFilterState();
     }
-    query?.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(apply, 120); });
-    category?.addEventListener('change', apply);
-    sort?.addEventListener('change', () => {
+
+    function sortRows() {
       const sorted = [...records].sort((a, b) => {
-        if (sort.value === 'title') return a.title.localeCompare(b.title, 'en-GB');
-        if (sort.value === 'score') return b.score - a.score || a.index - b.index;
-        return (sort.value === 'oldest' ? a.date.localeCompare(b.date) : b.date.localeCompare(a.date)) || a.index - b.index;
+        if (sort?.value === 'title') return a.title.localeCompare(b.title, 'en-GB');
+        if (sort?.value === 'score') return b.score - a.score || a.index - b.index;
+        if (sort?.value === 'oldest') return a.date.localeCompare(b.date) || a.index - b.index;
+        return b.date.localeCompare(a.date) || a.index - b.index;
       });
       const fragment = document.createDocumentFragment();
       sorted.forEach(row => fragment.append(row.node));
       list.append(fragment);
       apply();
+    }
+
+    query?.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(apply, 120); });
+    category?.addEventListener('change', apply);
+    sort?.addEventListener('change', sortRows);
+    reset?.addEventListener('click', () => {
+      clearTimeout(timer);
+      if (query) query.value = '';
+      if (category) category.value = 'all';
+      if (sort) sort.value = defaultSort;
+      sortRows();
+      (query || category || sort)?.focus();
     });
     apply();
   });
