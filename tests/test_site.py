@@ -35,6 +35,29 @@ class BuildRegression(unittest.TestCase):
             with self.subTest(url=page['url']):
                 self.assertTrue((ROOT/'dist'/site.route_path(page['url'])).is_file())
 
+    def test_configured_learning_and_personal_links_are_source_backed_pages(self):
+        config = json.loads((ROOT / 'site.json').read_text(encoding='utf-8'))
+        authored = {p['url'] for p in self.pages if not p['synthetic'] and p['source']}
+        for group in ('Learning', 'Personal'):
+            for label, url in config['navigationGroups'][group]:
+                with self.subTest(group=group, label=label, url=url):
+                    self.assertIn(url, authored)
+                    self.assertTrue((ROOT / 'dist' / site.route_path(url)).is_file())
+
+    def test_learning_and_personal_pages_do_not_link_to_missing_local_pages(self):
+        authored_or_generated = {p['url'] for p in self.pages}
+        aliases = self.report['aliases']
+        for page in self.pages:
+            if not (page['url'].startswith('/learning/') or page['url'].startswith('/personal/')):
+                continue
+            soup = self.soup(page['url'])
+            for link in soup.select('a[href^="/"]'):
+                href = link['href'].split('#', 1)[0]
+                if not href or '.' in Path(href).name:
+                    continue
+                with self.subTest(source=page['url'], target=href):
+                    self.assertTrue(href in authored_or_generated or href in aliases)
+
     def test_learning_board_does_not_mix_other_tracks(self):
         links = [a['href'] for a in self.soup('/learning/c-sharp/').select('[data-filter-list] a')]
         self.assertTrue(links)
