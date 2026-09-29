@@ -1,8 +1,8 @@
 ---
 title: Learning hub
-description: "The C# notebook: small lessons and notes written while learning."
+description: "My learning hub: authored C# notes plus the roadmap, changelog, and glossary that support the notebook."
 date: '2026-06-05'
-lastmod: '2026-06-05'
+lastmod: '2026-09-29'
 aliases:
 - /learning/index.html
 tags:
@@ -13,5 +13,11 @@ entryType: "section"
 legacy_path: "/learning/"
 ---
 
-[C#](/learning/c-sharp/)
-This notebook only lists study material that Kaz has actually written.
+The learning area only links to pages that are actually published on this site. I would rather show a smaller real notebook than pretend unfinished tracks are complete.
+
+- [C# notebook](/learning/c-sharp/) — the lessons and notes I have actually written.
+- [What I’m working towards](/roadmap/) — the current direction and next skills I want to build.
+- [Changelog](/changelog/) — what has changed around the site and notebook.
+- [Glossary](/glossary/) — short explanations for terms used across the notes.
+
+New language or tooling sections will only appear in this directory after their own page exists.
