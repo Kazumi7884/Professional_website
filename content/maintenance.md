@@ -5,12 +5,12 @@ date: '2026-06-05'
 lastmod: '2026-06-05'
 aliases:
 - /maintenance.html
+- /pages/maintenance/
 tags:
 searchable: false
 legacy_path: maintenance.html
 noindex: true
 entryType: "page"
-legacy_path: "/pages/maintenance/"
 ---
 
 The site is temporarily unavailable while maintenance is in
