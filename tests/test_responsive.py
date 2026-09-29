@@ -63,6 +63,19 @@ class ResponsiveContracts(unittest.TestCase):
     def test_touch_controls_keep_minimum_height(self):
         self.assertRegex(CSS, r'button, select\s*\{\s*min-height:\s*44px')
 
+    def test_design_system_has_shared_spacing_type_and_surface_tokens(self):
+        for token in ('--space-1:', '--space-7:', '--step--1:', '--step-3:',
+                      '--line-soft:', '--line-strong:', '--shadow-flat:', '--shadow-raised:'):
+            with self.subTest(token=token):
+                self.assertIn(token, CSS)
+
+    def test_each_theme_has_a_distinct_visual_signature(self):
+        self.assertIn('--theme-stamp: \'NOTEBOOK\'', CSS)
+        self.assertIn('--theme-stamp: \'FIELD LOG\'', CSS)
+        self.assertIn('--theme-stamp: \'CASE FILE\'', CSS)
+        self.assertIn(':root[data-theme="halo"] .page-heading', CSS)
+        self.assertIn(':root[data-theme="resident"] .page-heading', CSS)
+
 
 class SearchContracts(unittest.TestCase):
     def test_search_index_is_generated(self):
