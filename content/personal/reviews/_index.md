@@ -13,7 +13,6 @@ tags:
 searchable: true
 legacy_path: personal/reviews/index.html
 entryType: "section"
-legacy_path: "/personal/reviews/"
 ---
 
 My personal reviews for games, anime, and anything else I want to
