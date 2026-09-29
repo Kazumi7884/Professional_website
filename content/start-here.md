@@ -5,11 +5,11 @@ date: '2026-06-05'
 lastmod: '2026-07-15'
 aliases:
 - /start-here.html
+- /pages/start-here/
 tags:
 searchable: true
 legacy_path: start-here.html
 entryType: "page"
-legacy_path: "/pages/start-here/"
 ---
 
 Best entry points for first-time visitors and anyone trying to understand what this site actually contains.
