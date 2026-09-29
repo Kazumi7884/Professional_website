@@ -891,3 +891,67 @@ body.js main.page-shell { animation: page-arrival .38s ease-out both; }
   .board, .author-panel, .side-box, .hobby-room, .spec-sheet, .chart-grid figure,
   .work-sample img { transition: none; }
 }
+
+/* V5.7 — repo-guided progressive UX and normalization. */
+:root {
+  --motion-fast: 120ms;
+  --motion-standard: 180ms;
+  --reading-measure: 70ch;
+  accent-color: var(--accent);
+}
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scrollbar-gutter: stable;
+  tab-size: 4;
+}
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+button, input, select, textarea {
+  letter-spacing: inherit;
+}
+textarea {
+  resize: vertical;
+}
+button:disabled, input:disabled, select:disabled, textarea:disabled {
+  cursor: not-allowed;
+  opacity: .62;
+}
+.search-help {
+  flex-basis: 100%;
+  margin: -.2rem 0 0;
+  color: var(--muted);
+  font-size: .8125rem;
+  line-height: 1.5;
+}
+.search-result {
+  transition: border-color var(--motion-fast) ease, background-color var(--motion-fast) ease;
+}
+.search-result:focus-within {
+  box-shadow: inset 3px 0 var(--accent);
+}
+.search-result mark {
+  background: color-mix(in srgb, var(--focus) 24%, transparent);
+  color: inherit;
+  border-bottom: 2px solid var(--focus);
+  padding-inline: .04em;
+}
+@media (hover: hover) {
+  .search-result:hover {
+    background: var(--inset);
+  }
+}
+@media (prefers-contrast: more) {
+  :focus-visible {
+    outline-width: 4px;
+  }
+  .board, .post-frame, .author-panel, .side-box, .hobby-room, .search-result {
+    border-color: currentColor;
+  }
+  .search-result mark {
+    background: transparent;
+    border-bottom-width: 3px;
+  }
+}
