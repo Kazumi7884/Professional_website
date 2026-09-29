@@ -151,7 +151,35 @@
     const empty = board.querySelector('[data-filter-empty]');
     const reset = board.querySelector('[data-filter-reset]');
     const defaultSort = sort?.value || '';
+    const filterKey = board.dataset.filterKey || '';
     let timer;
+
+    const paramName = suffix => filterKey ? `${filterKey}-${suffix}` : '';
+    const restoreFilterState = () => {
+      if (!filterKey) return;
+      const params = new URLSearchParams(location.search);
+      const savedQuery = params.get(paramName('q'));
+      const savedCategory = params.get(paramName('category'));
+      const savedSort = params.get(paramName('sort'));
+      if (query && savedQuery) query.value = savedQuery.slice(0, 100);
+      if (category && savedCategory && Array.from(category.options).some(option => option.value === savedCategory)) category.value = savedCategory;
+      if (sort && savedSort && Array.from(sort.options).some(option => option.value === savedSort)) sort.value = savedSort;
+    };
+    const syncFilterUrl = () => {
+      if (!filterKey) return;
+      const url = new URL(window.location.href);
+      const values = [
+        ['q', (query?.value || '').trim()],
+        ['category', category && category.value !== 'all' ? category.value : ''],
+        ['sort', sort && sort.value !== defaultSort ? sort.value : '']
+      ];
+      for (const [suffix, value] of values) {
+        const name = paramName(suffix);
+        if (value) url.searchParams.set(name, value);
+        else url.searchParams.delete(name);
+      }
+      history.replaceState(null, '', url);
+    };
 
     function syncFilterState() {
       const active = Boolean((query?.value || '').trim()) ||
@@ -161,7 +189,7 @@
       if (reset) reset.disabled = !active;
     }
 
-    function apply() {
+    function apply(updateUrl = false) {
       const words = (query?.value || '').trim().toLocaleLowerCase('en-GB').split(/\s+/).filter(Boolean);
       let visible = 0;
       for (const row of records) {
@@ -173,9 +201,10 @@
       if (count) count.textContent = `${visible} of ${rows.length} entries`;
       if (empty) empty.hidden = visible !== 0;
       syncFilterState();
+      if (updateUrl) syncFilterUrl();
     }
 
-    function sortRows() {
+    function sortRows(updateUrl = false) {
       const sorted = [...records].sort((a, b) => {
         if (sort?.value === 'title') return a.title.localeCompare(b.title, 'en-GB');
         if (sort?.value === 'score') return b.score - a.score || a.index - b.index;
@@ -185,21 +214,22 @@
       const fragment = document.createDocumentFragment();
       sorted.forEach(row => fragment.append(row.node));
       list.append(fragment);
-      apply();
+      apply(updateUrl);
     }
 
-    query?.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(apply, 120); });
-    category?.addEventListener('change', apply);
-    sort?.addEventListener('change', sortRows);
+    query?.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(() => apply(true), 120); });
+    category?.addEventListener('change', () => apply(true));
+    sort?.addEventListener('change', () => sortRows(true));
     reset?.addEventListener('click', () => {
       clearTimeout(timer);
       if (query) query.value = '';
       if (category) category.value = 'all';
       if (sort) sort.value = defaultSort;
-      sortRows();
+      sortRows(true);
       (query || category || sort)?.focus();
     });
-    apply();
+    restoreFilterState();
+    sortRows(false);
   });
 
   async function copy(text, button, status) {
@@ -258,6 +288,18 @@
     button.addEventListener('click', () => copy(pre.textContent, button));
     pre.before(button);
   });
+  const backToTop = document.querySelector('[data-back-to-top]');
+  if (backToTop) {
+    const syncBackToTop = () => { backToTop.hidden = window.scrollY < 600; };
+    backToTop.addEventListener('click', () => {
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({top: 0, behavior: reduced ? 'auto' : 'smooth'});
+      document.querySelector('#page-top')?.focus?.({preventScroll: true});
+    });
+    window.addEventListener('scroll', syncBackToTop, {passive: true});
+    syncBackToTop();
+  }
+
   const networkStatus = document.querySelector('[data-network-status]');
   const renderNetworkStatus = () => {
     if (!networkStatus) return;
