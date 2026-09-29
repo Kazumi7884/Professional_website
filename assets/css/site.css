@@ -1482,3 +1482,69 @@ input[type="search"]::-webkit-search-cancel-button {
   .nav-submenu[data-state="open"] { animation: none; }
 }
 
+/* V5.11 — UX GATE
+   Findability, recovery and long-page navigation. Visual design remains V5.9
+   and component styling remains V5.10. */
+.search-input-wrap {
+  position: relative;
+  display: flex;
+  min-width: 0;
+}
+.header-search .search-input-wrap {
+  flex: 1;
+}
+.header-search .search-input-wrap input {
+  width: 100%;
+  padding-right: 4.4rem;
+}
+.shortcut-hint {
+  position: absolute;
+  right: .45rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  border: 1px solid var(--line-soft);
+  border-bottom-color: var(--line-strong);
+  background: var(--surface);
+  color: var(--muted);
+  padding: .12rem .35rem;
+  font: .68rem/1.25 ui-monospace, SFMono-Regular, Consolas, monospace;
+  white-space: nowrap;
+}
+.back-to-top {
+  position: fixed;
+  z-index: 15;
+  right: max(1rem, calc((100vw - 1280px) / 2));
+  bottom: 1rem;
+  min-height: 44px;
+  padding: .55rem .8rem;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-raised);
+}
+.back-to-top:hover {
+  background: var(--bar);
+}
+[data-filter-board][data-filter-state="active"] [data-filter-empty]:not([hidden]) {
+  border-left: 4px solid var(--focus);
+}
+[data-filter-board][data-filter-state="active"] [data-filter-empty]:not([hidden])::after {
+  content: ' Use “Clear filters” above to restore the full list.';
+}
+@media (max-width: 620px) {
+  .shortcut-hint { display: none; }
+  .header-search .search-input-wrap input { padding-right: .65rem; }
+  .back-to-top {
+    right: .75rem;
+    bottom: .75rem;
+  }
+  .back-to-top span { display: none; }
+}
+@media print {
+  .back-to-top { display: none !important; }
+}
+@media (forced-colors: active) {
+  .shortcut-hint, .back-to-top { border-color: ButtonText; }
+}
+
