@@ -33,6 +33,14 @@ jobs:
           node-version: '22'
       - name: Install isolated runtime test helper
         run: npm install --prefix .cache/runtime-tests jsdom@26.1.0 --no-audit --no-fund
+      - name: JavaScript syntax gates
+        run: |
+          node --check assets/js/theme-init.js
+          node --check assets/js/site.js
+          node --check assets/js/search.js
+          node --check assets/js/reader.js
+          node --check static/sw.js
+          node --check tests/runtime.cjs
       - name: Menu, theme, filter and search behaviour
         run: node tests/runtime.cjs
       - name: Package the verified public files
