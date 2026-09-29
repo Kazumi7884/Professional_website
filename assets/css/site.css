@@ -955,3 +955,397 @@ button:disabled, input:disabled, select:disabled, textarea:disabled {
     border-bottom-width: 3px;
   }
 }
+
+/* V5.9 — DESIGN GATE
+   Visual-system pass informed by 15 design repositories. This block changes
+   appearance only: no navigation, content model, URL or JavaScript behaviour. */
+:root {
+  --space-1: .25rem;
+  --space-2: .5rem;
+  --space-3: .75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --step--1: .8125rem;
+  --step-0: .9375rem;
+  --step-1: 1.125rem;
+  --step-2: clamp(1.35rem, 1.1rem + .7vw, 1.8rem);
+  --step-3: clamp(2.15rem, 1.6rem + 2vw, 3.8rem);
+  --line-soft: color-mix(in srgb, var(--line) 46%, transparent);
+  --line-strong: color-mix(in srgb, var(--line) 84%, var(--ink));
+  --accent-soft: color-mix(in srgb, var(--accent) 11%, transparent);
+  --green-soft: color-mix(in srgb, var(--green) 10%, transparent);
+  --shadow-flat: 3px 3px 0 color-mix(in srgb, var(--line) 16%, transparent);
+  --shadow-raised: 6px 7px 0 color-mix(in srgb, var(--line) 18%, transparent);
+  --shadow-focus: 0 0 0 1px var(--surface), 0 0 0 4px var(--focus);
+  --panel-rule: 1px solid var(--line);
+  --paper-grid: repeating-linear-gradient(0deg, transparent 0 31px, color-mix(in srgb, var(--line) 7%, transparent) 31px 32px);
+  --theme-motif: linear-gradient(90deg, transparent, transparent);
+  --theme-stamp: 'NOTEBOOK';
+}
+:root[data-theme="halo"] {
+  --line-soft: color-mix(in srgb, var(--accent) 25%, transparent);
+  --line-strong: color-mix(in srgb, var(--accent) 58%, var(--line));
+  --accent-soft: color-mix(in srgb, var(--accent) 9%, transparent);
+  --green-soft: color-mix(in srgb, var(--green) 9%, transparent);
+  --shadow-flat: 4px 4px 0 color-mix(in srgb, var(--accent) 10%, transparent);
+  --shadow-raised: 7px 7px 0 color-mix(in srgb, var(--accent) 12%, transparent);
+  --paper-grid:
+    linear-gradient(90deg, color-mix(in srgb, var(--accent) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(color-mix(in srgb, var(--accent) 4%, transparent) 1px, transparent 1px);
+  --theme-motif: linear-gradient(135deg, transparent 0 46%, color-mix(in srgb, var(--accent) 9%, transparent) 46% 48%, transparent 48% 100%);
+  --theme-stamp: 'FIELD LOG';
+}
+:root[data-theme="resident"] {
+  --line-soft: color-mix(in srgb, var(--line) 42%, transparent);
+  --line-strong: color-mix(in srgb, var(--green) 28%, var(--line));
+  --accent-soft: color-mix(in srgb, var(--accent) 8%, transparent);
+  --green-soft: color-mix(in srgb, var(--green) 8%, transparent);
+  --shadow-flat: 4px 5px 0 color-mix(in srgb, #000 24%, transparent);
+  --shadow-raised: 7px 8px 0 color-mix(in srgb, #000 30%, transparent);
+  --paper-grid: repeating-linear-gradient(0deg, transparent 0 27px, color-mix(in srgb, var(--line) 5%, transparent) 27px 28px);
+  --theme-motif: repeating-linear-gradient(118deg, transparent 0 42px, color-mix(in srgb, var(--green) 3%, transparent) 42px 44px);
+  --theme-stamp: 'CASE FILE';
+}
+
+body {
+  background-image: var(--theme-motif), var(--paper-grid);
+  background-size: auto, 32px 32px;
+  background-attachment: fixed;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 4%, var(--accent-soft), transparent 27rem),
+    radial-gradient(circle at 88% 28%, var(--green-soft), transparent 31rem);
+}
+.page-shell {
+  position: relative;
+}
+.page-shell::before {
+  content: var(--theme-stamp);
+  position: absolute;
+  top: .45rem;
+  right: 1.5rem;
+  z-index: -1;
+  color: color-mix(in srgb, var(--line) 13%, transparent);
+  font: 800 clamp(2.6rem, 7vw, 6rem)/1 var(--body-font);
+  letter-spacing: .12em;
+  transform: rotate(-2deg);
+  pointer-events: none;
+}
+.site-header {
+  background:
+    linear-gradient(90deg, var(--accent) 0 5.4rem, var(--green) 5.4rem 7.5rem, transparent 7.5rem) top left / 100% 3px no-repeat,
+    color-mix(in srgb, var(--inset) 96%, var(--surface));
+  border-top: 0;
+  border-bottom-color: var(--line-strong);
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--line) 9%, transparent);
+}
+.header-inner {
+  padding-top: 1.15rem;
+}
+.site-brand strong {
+  font-size: clamp(2.35rem, 4vw, 3rem);
+  letter-spacing: -.075em;
+  text-shadow: none;
+}
+.site-brand strong::after {
+  content: '';
+  display: inline-block;
+  width: .42em;
+  height: .42em;
+  margin-left: .12em;
+  border: 2px solid var(--green);
+  transform: rotate(45deg);
+  vertical-align: .12em;
+}
+.site-brand small {
+  color: color-mix(in srgb, var(--muted) 88%, var(--ink));
+}
+.page-heading {
+  padding: var(--space-6) min(3vw, var(--space-6)) var(--space-5);
+  border: var(--panel-rule);
+  border-left: 5px solid var(--accent);
+  background:
+    linear-gradient(135deg, var(--accent-soft), transparent 44%),
+    var(--surface);
+  box-shadow: var(--shadow-flat);
+}
+.page-heading::after {
+  content: '///';
+  right: var(--space-4);
+  bottom: .7rem;
+  padding: 0;
+  background: transparent;
+  color: color-mix(in srgb, var(--green) 75%, var(--muted));
+  letter-spacing: .22em;
+}
+.page-heading h1 {
+  font-size: var(--step-3);
+  line-height: 1.08;
+  margin-block: .4rem .8rem;
+}
+.page-heading > p:last-child {
+  font-size: var(--step-0);
+  max-width: 72ch;
+}
+.eyebrow {
+  font-size: var(--step--1);
+  font-weight: 750;
+  letter-spacing: .14em;
+}
+.eyebrow::before {
+  content: '■';
+  font-size: .58em;
+  transform: rotate(45deg);
+}
+.breadcrumbs {
+  margin: 0 0 var(--space-3);
+  font-size: var(--step--1);
+}
+.breadcrumbs ol {
+  background: color-mix(in srgb, var(--surface) 74%, transparent);
+  border: 1px solid var(--line-soft);
+  width: fit-content;
+  padding: .35rem .6rem;
+}
+.board, .post-frame, .author-panel, .side-box, .welcome-note, .hobby-room,
+.spec-sheet, .chart-grid figure, .visitor-welcome, .work-sample, .related-posts {
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-flat);
+}
+.board, .post-frame, .visitor-welcome, .work-sample {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--surface) 98%, var(--accent)) 0, var(--surface) 8rem);
+}
+.board-heading, .post-topline, .related-posts h2 {
+  background:
+    linear-gradient(90deg, var(--accent-soft), transparent 34%),
+    var(--bar);
+  border-bottom-color: var(--line-strong);
+}
+.board-heading::after {
+  content: '';
+  width: 2.4rem;
+  height: 3px;
+  margin-left: auto;
+  background: linear-gradient(90deg, var(--accent) 0 64%, var(--green) 64%);
+}
+.board-heading > span, .board-heading > a,
+.entry-kind, .search-meta, .snapshot-note {
+  font-variant-numeric: tabular-nums;
+}
+.topic-row {
+  border-top-color: var(--line-soft);
+}
+.topic-row:nth-child(even) {
+  background: color-mix(in srgb, var(--inset) 63%, var(--surface));
+}
+.topic-mark {
+  display: grid;
+  place-items: center;
+  width: 1.6rem;
+  min-height: 1.6rem;
+  border: 1px solid var(--line-soft);
+  background: var(--inset);
+  font-size: 1rem;
+}
+.author-panel {
+  position: relative;
+  overflow: hidden;
+}
+.author-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: linear-gradient(var(--accent), var(--green));
+}
+.author-badge {
+  background:
+    linear-gradient(135deg, var(--accent-soft), transparent 58%),
+    var(--bar);
+  border-color: var(--line-strong);
+  box-shadow: inset 0 0 0 3px var(--surface);
+}
+.side-box {
+  border-left: 3px solid var(--green);
+}
+.visitor-welcome {
+  border-top: 4px solid var(--accent);
+}
+.visitor-welcome::before {
+  content: 'KAZ // HOME';
+  right: .8rem;
+  top: 1rem;
+  font: 800 clamp(2.2rem, 5vw, 4.8rem)/1 var(--body-font);
+  color: color-mix(in srgb, var(--line) 10%, transparent);
+  letter-spacing: .04em;
+  transform: rotate(-3deg);
+}
+.welcome-aside {
+  border-left-color: var(--accent);
+  border-block: 1px solid var(--line-soft);
+}
+.button-link, button {
+  box-shadow: 2px 2px 0 color-mix(in srgb, var(--line) 18%, transparent);
+}
+.button-link:active, button:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 color-mix(in srgb, var(--line) 18%, transparent);
+}
+.personal-tabs {
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border: 1px solid var(--line-soft);
+  background: color-mix(in srgb, var(--surface) 75%, transparent);
+}
+.personal-tabs a {
+  background: var(--surface);
+  border-color: var(--line-soft);
+  box-shadow: 2px 2px 0 color-mix(in srgb, var(--line) 11%, transparent);
+}
+.personal-tabs a[aria-current] {
+  border-color: var(--line-strong);
+  border-bottom-color: var(--green);
+  background: var(--bar);
+}
+.hobby-directory {
+  gap: var(--space-4);
+}
+.hobby-room {
+  min-height: 10rem;
+  border-top-width: 4px;
+}
+.hobby-room h2 {
+  margin: .25rem 0 .55rem;
+  font-size: var(--step-1);
+}
+.hobby-room::after {
+  content: '0' counter(hobby-room);
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  opacity: .18;
+}
+.hobby-directory { counter-reset: hobby-room; }
+.hobby-room { counter-increment: hobby-room; }
+.hobby-anime { border-top-color: var(--accent); }
+.hobby-games { border-top-color: var(--green); }
+.hobby-journal { border-top-color: color-mix(in srgb, var(--accent) 60%, var(--green)); }
+.hobby-phasmo { border-top-color: var(--focus); }
+.hobby-reviews { border-top-color: color-mix(in srgb, var(--green) 62%, var(--accent)); }
+.post-frame {
+  border-width: 1px;
+  box-shadow: var(--shadow-raised);
+}
+.post-topline {
+  min-height: 2.6rem;
+}
+.post-content {
+  background:
+    linear-gradient(90deg, transparent 0 2.8rem, color-mix(in srgb, var(--green) 7%, transparent) 2.8rem 2.86rem, transparent 2.86rem),
+    color-mix(in srgb, var(--surface) 98%, var(--inset));
+}
+.post-content .prose {
+  max-width: var(--reading-measure);
+}
+.prose h2 {
+  font-size: var(--step-2);
+  border-bottom-color: var(--line-strong);
+}
+.prose h2::before {
+  content: '#';
+  margin-right: .45rem;
+  color: var(--green);
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+.prose blockquote {
+  border-left-color: var(--accent);
+  background:
+    linear-gradient(90deg, var(--accent-soft), transparent),
+    var(--inset);
+}
+pre {
+  border-color: var(--line-strong);
+  box-shadow: inset 4px 0 0 color-mix(in srgb, var(--accent) 55%, var(--green));
+}
+:not(pre) > code {
+  border: 1px solid var(--line-soft);
+}
+.work-sample {
+  border-left: 5px solid var(--green);
+}
+.work-sample img, .anime-entry img, .chart-grid img {
+  border: 1px solid var(--line-strong);
+}
+.case-files {
+  box-shadow: var(--shadow-flat);
+}
+.case-file {
+  border-bottom-color: var(--line-soft);
+}
+.case-file[open] {
+  box-shadow: inset 4px 0 0 var(--green);
+}
+.search-form {
+  border-color: var(--line-strong);
+  box-shadow: var(--shadow-flat);
+}
+.search-result {
+  border-left-color: var(--accent);
+}
+.search-result + .search-result {
+  border-top-color: var(--line-soft);
+}
+.site-footer {
+  border-top-color: var(--line-strong);
+  padding-top: var(--space-5);
+}
+:root[data-theme="halo"] .page-heading,
+:root[data-theme="halo"] .board,
+:root[data-theme="halo"] .post-frame,
+:root[data-theme="halo"] .hobby-room {
+  background-image:
+    linear-gradient(135deg, var(--accent-soft), transparent 34%),
+    linear-gradient(45deg, transparent 0 92%, color-mix(in srgb, var(--accent) 8%, transparent) 92% 100%);
+}
+:root[data-theme="halo"] .board-heading h2::before { content: '◇'; }
+:root[data-theme="halo"] .page-heading::after { content: '▲  ▲  ▲'; letter-spacing: .1em; }
+:root[data-theme="halo"] .author-badge {
+  font-family: 'Arial Narrow', 'Segoe UI', sans-serif;
+  text-transform: uppercase;
+}
+:root[data-theme="resident"] .page-heading,
+:root[data-theme="resident"] .post-frame,
+:root[data-theme="resident"] .side-box {
+  background-image:
+    linear-gradient(100deg, color-mix(in srgb, var(--green) 5%, transparent), transparent 38%),
+    repeating-linear-gradient(0deg, transparent 0 31px, color-mix(in srgb, var(--line) 5%, transparent) 31px 32px);
+}
+:root[data-theme="resident"] .page-heading::after { content: 'FILE // 09-29'; }
+:root[data-theme="resident"] .board-heading h2::before { content: '◆'; }
+:root[data-theme="resident"] .hobby-room {
+  box-shadow: 5px 6px 0 color-mix(in srgb, #000 24%, transparent);
+}
+@media (max-width: 620px) {
+  .page-shell::before { right: .5rem; font-size: 2.8rem; }
+  .page-heading { padding: var(--space-5) var(--space-4); }
+  .page-heading::after { bottom: .45rem; }
+  .post-content { background: var(--surface); }
+  .breadcrumbs ol { width: 100%; }
+}
+@media (forced-colors: active) {
+  .page-heading, .board, .post-frame, .author-panel, .side-box, .hobby-room,
+  .visitor-welcome, .work-sample { box-shadow: none; }
+  .page-shell::before, .visitor-welcome::before { display: none; }
+}
+@media print {
+  body { background-image: none; }
+  body::before, .page-shell::before { display: none; }
+}
+
