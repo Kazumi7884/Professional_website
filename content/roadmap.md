@@ -5,11 +5,11 @@ date: '2026-06-05'
 lastmod: '2026-06-05'
 aliases:
 - /roadmap.html
+- /pages/roadmap/
 tags:
 searchable: true
 legacy_path: roadmap.html
 entryType: "page"
-legacy_path: "/pages/roadmap/"
 ---
 
 Current learning milestones, priorities, and next practical tasks.
