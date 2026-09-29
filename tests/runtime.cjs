@@ -177,10 +177,15 @@ test('anime reset clears category and sort controls', () => {
 
 test('filter controls describe the list they update', () => {
   const dom=page('/learning/c-sharp/');const d=dom.window.document;
-  const input=d.querySelector('[data-filter-query]');
-  const list=d.querySelector('[data-filter-list]');
-  assert.ok(list.id);
-  assert.equal(input.getAttribute('aria-controls'),list.id);
+  const boards=Array.from(d.querySelectorAll('[data-filter-board]'));
+  assert.ok(boards.length>0);
+  for(const board of boards){
+    const list=board.querySelector('[data-filter-list]');
+    assert.ok(list?.id);
+    for(const control of board.querySelectorAll('[data-filter-query],[data-filter-category],[data-filter-sort]')){
+      assert.equal(control.getAttribute('aria-controls'),list.id);
+    }
+  }
   dom.window.close();
 });
 
