@@ -90,7 +90,7 @@
       <div class="nav-menu{% if page.url.startswith('/personal/') %} is-current{% endif %}">
         <button type="button" class="nav-menu-toggle" data-nav-dropdown aria-haspopup="true" aria-expanded="false" aria-controls="nav-personal-menu"{% if page.url.startswith('/personal/') %} aria-current="location"{% endif %}>Personal <span aria-hidden="true">▾</span></button>
         <div id="nav-personal-menu" class="nav-submenu" hidden>
-          {% for child_label, child_url in config.navigationGroups[label] %}<a href="{{ child_url }}">{{ child_label }}</a>{% endfor %}
+          {% for child_label, child_url in config.navigationGroups[label] %}<a href="{{ child_url }}"{% if page.url == child_url %} aria-current="page"{% elif child_url != '/' and page.url.startswith(child_url) %} aria-current="location"{% endif %}>{{ child_label }}</a>{% endfor %}
         </div>
       </div>
       {% else %}
