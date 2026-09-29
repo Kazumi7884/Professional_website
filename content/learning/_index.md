@@ -10,7 +10,6 @@ tags:
 searchable: true
 legacy_path: learning/index.html
 entryType: "section"
-legacy_path: "/learning/"
 ---
 
 The learning area only links to pages that are actually published on this site. I would rather show a smaller real notebook than pretend unfinished tracks are complete.
