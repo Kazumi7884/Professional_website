@@ -142,6 +142,7 @@ class ContentSafety(unittest.TestCase):
             self.assertEqual((path / 'precious.txt').read_text(), 'Keep me')
 
     def test_failed_render_preserves_last_build(self):
+        builder.build()
         home = builder.ROOT / 'build/index.html'
         previous = home.read_bytes()
         with patch.object(builder, 'make_site', side_effect=ValueError('fixture')):
