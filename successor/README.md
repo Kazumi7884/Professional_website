@@ -51,7 +51,10 @@ from turning into a claim about experience.
 The GitHub workflow checks that same allowlist three times a day and opens or
 updates one `automation/repository-snapshot` pull request when the facts change.
 It builds and verifies before pushing the branch. It never merges its own pull
-request. Merge the reviewed change to put the new dated facts on the site.
+request or force-push over branch changes. Merge the reviewed change to put the
+new dated facts on the site. If someone changes that review branch directly,
+the scheduled update stops instead of replacing their work; resolve or merge the
+review before the next update.
 
 ## Optional local AI review
 
@@ -130,3 +133,4 @@ Offline caching stores core pages and up to 100 same-origin responses. New
 content changes the cache revision. Activation removes only this site's known
 old cache prefixes. Optional storage failure does not prevent online reading.
 No analytics, remote fonts, embeds or browser API credentials are introduced.
+

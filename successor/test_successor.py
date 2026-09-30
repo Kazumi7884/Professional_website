@@ -10,6 +10,7 @@ import unittest
 from unittest.mock import patch
 import urllib.error
 import urllib.request
+from zipfile import ZipFile
 
 from bs4 import BeautifulSoup
 
@@ -27,6 +28,7 @@ builder = module('build')
 refresh = module('refresh')
 serve = module('serve')
 local_review = module('local_review')
+package = module('package')
 
 
 class PublishedJourneys(unittest.TestCase):
@@ -211,6 +213,33 @@ class SnapshotSafety(unittest.TestCase):
             self.assertEqual(json.loads(path.read_text())['repositories'][0]['language'], 'C#')
         self.assertEqual((HERE / 'projects.json').read_bytes(), original)
 
+    def test_unchanged_refresh_keeps_the_existing_snapshot(self):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / 'facts.json'
+            first = refresh.refresh(path, lambda name: self.data())
+            before = path.read_bytes()
+            second = refresh.refresh(path, lambda name: self.data())
+            self.assertEqual(path.read_bytes(), before)
+            self.assertEqual(second, first)
+
+    def test_taxonomy_route_rejects_ambiguous_terms(self):
+        self.assertEqual(builder.taxonomy_route('tags', 'C#'), '/tags/c/')
+        self.assertEqual(builder.taxonomy_route('tags', 'C++'), '/tags/c/')
+        with self.assertRaises(ValueError):
+            builder.taxonomy_route('tags', '---')
+
+    def test_generated_htaccess_retains_security_headers(self):
+        builder.build()
+        text = (builder.ROOT / 'build/.htaccess').read_text(encoding='utf-8')
+        self.assertIn('X-Content-Type-Options', text)
+        self.assertIn('Content-Security-Policy', text)
+
+    def test_public_archive_excludes_internal_build_report(self):
+        with tempfile.TemporaryDirectory() as temp:
+            archive = package.create_archive(Path(temp) / 'site.zip')
+            with ZipFile(archive) as contents:
+                self.assertNotIn('build-info.json', contents.namelist())
+
 
 class LocalReviewSafety(unittest.TestCase):
     def test_prompt_marks_the_review_as_non_authoritative(self):
@@ -235,3 +264,4 @@ class LocalReviewSafety(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main(verbosity=2)
+

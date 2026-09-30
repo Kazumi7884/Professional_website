@@ -30,8 +30,16 @@ def refresh(destination=HERE / 'repositories.json', fetch=None):
                     raise ValueError('Oversized repository response')
                 return json.loads(data)
     facts = [public_snapshot(name, fetch(name)) for name in allowlist]
-    result = {'observed_at': datetime.now(timezone.utc).isoformat(), 'status': 'verified', 'repositories': facts}
     target = Path(destination)
+    stable = {'status': 'verified', 'repositories': facts}
+    if target.is_file():
+        try:
+            existing = json.loads(target.read_text(encoding='utf-8'))
+        except json.JSONDecodeError:
+            existing = None
+        if isinstance(existing, dict) and {key: existing.get(key) for key in stable} == stable:
+            return existing
+    result = {'observed_at': datetime.now(timezone.utc).isoformat(), **stable}
     temporary = target.with_suffix('.json.tmp')
     temporary.write_text(json.dumps(result, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
     temporary.replace(target)
@@ -41,3 +49,4 @@ def refresh(destination=HERE / 'repositories.json', fetch=None):
 if __name__ == '__main__':
     refresh()
     print('Public repository facts refreshed. Editorial claims are unchanged.')
+

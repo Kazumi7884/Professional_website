@@ -39,6 +39,13 @@ def safe_route(route):
     return route
 
 
+def taxonomy_route(taxonomy, term):
+    slug = re.sub(r'[^a-z0-9]+', '-', term.lower()).strip('-')
+    if not slug:
+        raise ValueError(f"Taxonomy term has no usable URL: {term!r}")
+    return f'/{taxonomy}/{slug}/'
+
+
 def output_path(root, route):
     safe_route(route)
     path = root / route.lstrip("/")
@@ -193,8 +200,12 @@ def make_site():
     for taxonomy in ('tags', 'categories'):
         terms = sorted({str(term) for p in pages.values() for term in (p['meta'].get(taxonomy) or [])})
         term_pages = []
+        routes = {}
         for term in terms:
-            route = '/' + taxonomy + '/' + re.sub(r'[^a-z0-9]+', '-', term.lower()).strip('-') + '/'
+            route = taxonomy_route(taxonomy, term)
+            if route in routes:
+                raise ValueError(f"Taxonomy URL collision: {routes[route]!r} and {term!r} both use {route}")
+            routes[route] = term
             matches = [(r, p) for r, p in pages.items() if term in (p['meta'].get(taxonomy) or [])]
             add(route, term, 'Entries filed under ' + term + '.', '<h1>' + e(term) + '</h1>' + topic_list(matches))
             term_pages.append((route, pages[route]))
@@ -344,7 +355,9 @@ def build(output=ROOT / 'build', origin=None):
             path.write_text(frame(target, page, '<h1>This entry has moved.</h1>' + link(target, 'Read the entry at its current address', 'button'), origin), encoding='utf-8')
             redirects.append(f'{alias} {target} 301')
         (staging / '_redirects').write_text('\n'.join(redirects), encoding='utf-8')
-        (staging / '.htaccess').write_text('ErrorDocument 404 /404.html\n' + '\n'.join('Redirect 301 ' + row.rsplit(' ', 1)[0] for row in redirects), encoding='utf-8')
+        base_htaccess = (ROOT / 'static' / '.htaccess').read_text(encoding='utf-8').rstrip()
+        generated_redirects = '\n'.join('Redirect 301 ' + row.rsplit(' ', 1)[0] for row in redirects)
+        (staging / '.htaccess').write_text(base_htaccess + ('\n' + generated_redirects if generated_redirects else '') + '\n', encoding='utf-8')
         (staging / 'search-index.json').write_text(json.dumps(index, ensure_ascii=False), encoding='utf-8')
         rss = ET.Element('rss', version='2.0'); channel = ET.SubElement(rss, 'channel')
         for key, value in [('title', 'Kaz’s journal'), ('link', origin), ('description', 'Authored learning and personal notes')]:
@@ -381,3 +394,4 @@ if __name__ == '__main__':
     parser.add_argument('--origin')
     args = parser.parse_args()
     print(json.dumps(build(args.output, args.origin), indent=2))
+
