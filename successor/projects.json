@@ -1,0 +1,8 @@
+{
+  "projects": [
+    {"slug":"space-invaders","title":"Space Invaders coursework","kind":"C# / coursework","summary":"A programming assignment using object-oriented C#, multiple classes and screen transitions.","contribution":"The repository README describes coursework built on a brief supplied framework, with a working main game, screen transitions and a basic score.","limitations":"The README explicitly says full functionality was not required. This rebuild has not executed or certified the game.","repo":"Kazumi7884/space-invaders-0.1-coursework-upload","source":"https://github.com/Kazumi7884/space-invaders-0.1-coursework-upload","track":"c-sharp","evidence":["/learning/c-sharp/posts/c-sharp-lesson-1/","/learning/c-sharp/posts/c-sharp-lesson-2/"],"courses":["c-sharp-masterclass"]},
+    {"slug":"steam-study","title":"Reading my Steam library","kind":"Python / data visualisation","summary":"Fifteen saved charts exploring playtime, ratings, genre tags and platform support.","contribution":"The authored post describes exporting Steam data and making the charts offline with Python, Pandas, Matplotlib and Seaborn.","limitations":"These are saved visualisations. Neither the underlying dataset nor a reproducible analysis repository was verified during this rebuild.","source":"/personal/misc/writing/posts/steam-viz/","track":"python","evidence":["/personal/misc/writing/posts/steam-viz/"],"courses":["python-100-days","python-masterclass"]}
+  ],
+  "repositories": ["Kazumi7884/space-invaders-0.1-coursework-upload"],
+  "snapshot_policy": "Only explicitly curated public repositories. Machine facts never replace authored contribution statements."
+}

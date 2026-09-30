@@ -1,0 +1,63 @@
+name: Curated repository snapshot
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 2,10,18 * * *'
+permissions:
+  contents: write
+  pull-requests: write
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Refresh allowlisted public repository facts
+        run: python successor/refresh.py
+      - name: Build and verify the candidate
+        run: |
+          python successor/build.py
+          python scripts/verify.py
+      - id: changes
+        name: Check for a real repository update
+        shell: bash
+        run: |
+          if git diff --quiet -- successor/repositories.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Publish the reviewed-facts branch
+        if: steps.changes.outputs.changed == 'true'
+        shell: bash
+        run: |
+          git config user.name "kaz-site snapshot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -B automation/repository-snapshot
+          git add successor/repositories.json
+          git commit -m "chore: refresh verified repository facts"
+          git push --force origin HEAD:automation/repository-snapshot
+      - name: Open one review pull request
+        if: steps.changes.outputs.changed == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const head = `${context.repo.owner}:automation/repository-snapshot`;
+            const existing = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head,
+              state: 'open'
+            });
+            if (!existing.data.length) {
+              await github.rest.pulls.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                head: 'automation/repository-snapshot',
+                base: 'main',
+                title: 'chore: refresh verified repository facts',
+                body: 'Automated public-repository facts only. Review the diff before merging; this does not change authored project claims.'
+              });
+            }

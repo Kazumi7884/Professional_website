@@ -1,4 +1,24 @@
-# Kaz's website — V5.7
+# Kaz's notebook and workshop
+
+The clean-room successor lives in **successor/**. It uses V5's authored Markdown,
+saved data and historical URLs as content inputs, with a new builder, page
+composition, external CSS/JavaScript, search and offline worker.
+
+Start with [the successor guide](successor/README.md). Build with
+`python successor/build.py`, preview with `python successor/serve.py`, and verify
+with `python scripts/verify.py`. Upload output comes from `build/`, packaged by
+`python successor/package.py`. Both Windows and Linux CI run the successor checks.
+
+The learning area now connects seven verified owned Udemy courses to tracks,
+authored notes and related practical evidence. Progress is a dated snapshot, not
+a skill rating. Public repository updates are curated and reviewed before use.
+
+The V5 implementation below remains an explicit recovery and authoring bridge.
+It is not imported by the successor. Its writing desk still edits the shared
+Markdown, but its Build/View controls preview V5; use the new preview command
+to review the successor. No hosting upload happens merely by building locally.
+
+## V5 reference and recovery instructions
 
 The main website source lives in **Kazumi7884/Professional_website**, on **main**.
 

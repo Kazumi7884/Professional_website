@@ -1,5 +1,11 @@
 # Writing posts in V5.2
 
+For the clean-room successor, this desk remains a local Markdown authoring bridge.
+Its Build/View controls show V5. After saving, run `python successor/build.py`
+and `python successor/serve.py` from the repository root to inspect the new site.
+See [the current successor guide](../successor/README.md). Existing authored
+content and metadata remain editable; the new public site does not load V5 code.
+
 ## First-time setup
 
 Use the Windows or Linux setup commands in README.md once. The writing desk
