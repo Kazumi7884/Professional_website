@@ -1548,3 +1548,286 @@ input[type="search"]::-webkit-search-cancel-button {
   .shortcut-hint, .back-to-top { border-color: ButtonText; }
 }
 
+
+
+/* ==========================================================================
+   V6.1 THEME OVERHAUL — three interfaces, one content model
+   Themes deliberately change silhouette, surface language and navigation,
+   not only colour. Keep this layer last so older V5 rules remain fallbacks.
+   ========================================================================== */
+:root {
+  --shadow: 0 18px 50px rgb(12 18 28 / .10);
+  --glow: none;
+  --panel-cut: 0px;
+  --grid-alpha: .045;
+  --theme-label: "BALANCED";
+}
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 12% 0%, color-mix(in srgb,var(--accent) 10%,transparent),transparent 30rem),
+    linear-gradient(180deg,color-mix(in srgb,var(--surface) 38%,transparent),transparent 22rem),
+    var(--bg);
+}
+body::before {
+  content:"";
+  position:fixed; inset:0; z-index:-2; pointer-events:none;
+  background-image:
+    linear-gradient(color-mix(in srgb,var(--line) calc(var(--grid-alpha)*100%),transparent) 1px,transparent 1px),
+    linear-gradient(90deg,color-mix(in srgb,var(--line) calc(var(--grid-alpha)*100%),transparent) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:linear-gradient(to bottom,#000,transparent 80%);
+}
+.site-header { position:relative; box-shadow:0 8px 32px rgb(0 0 0 / .08); }
+.site-header::after {
+  content:var(--theme-label);
+  position:absolute; right:max(1rem,calc((100vw - 1280px)/2 + 1.5rem)); bottom:.4rem;
+  font:700 .64rem/1 ui-monospace,Consolas,monospace; letter-spacing:.22em;
+  color:var(--muted); opacity:.65; pointer-events:none;
+}
+.author-panel,.side-box,.welcome-note,.board,.post-frame,.hobby-room,.spec-sheet,.case-files,.site-signal {
+  box-shadow:var(--shadow);
+}
+.theme-control select { font-weight:700; }
+.theme-control::before {
+  content:"Interface";
+  font:700 .66rem/1 ui-monospace,Consolas,monospace;
+  letter-spacing:.12em; text-transform:uppercase; color:var(--muted);
+}
+
+/* BALANCED — professional at first glance, personal-web underneath.
+   Ink/purple/blue/pink, tactile forum surfaces, fewer SaaS-card cues. */
+:root:not([data-theme]),:root[data-theme="balanced"] {
+  color-scheme:dark;
+  --theme-label:"BALANCED // KAZ";
+  --bg:#0d0d17; --surface:#171727; --inset:#11111d; --bar:#211e35;
+  --ink:#f4f0ff; --muted:#bbb4cc; --line:#4b4564;
+  --accent:#8bc7ff; --green:#f08ad8; --focus:#ffd0f1; --code:#090912;
+  --heading-font:"Segoe UI Variable","Segoe UI",sans-serif;
+  --radius:10px; --grid-alpha:.035;
+  --shadow:0 16px 45px rgb(0 0 0 / .22);
+}
+:root[data-theme="balanced"] .site-header {
+  border-top:0;
+  background:linear-gradient(90deg,#151426,#20162b 52%,#121d31);
+}
+:root[data-theme="balanced"] .site-header::before {
+  content:""; display:block; height:4px;
+  background:linear-gradient(90deg,#65b9ff,#a77cff,#f078d0,#65b9ff);
+  background-size:240% 100%; animation:kaz-spectrum 14s linear infinite;
+}
+:root[data-theme="balanced"] .site-brand strong {
+  font-weight:850; letter-spacing:-.065em;
+  text-shadow:0 0 22px rgb(139 199 255 / .16);
+}
+:root[data-theme="balanced"] .site-brand strong span { color:#f08ad8; }
+:root[data-theme="balanced"] .site-nav a {
+  border-radius:8px 8px 0 0; border:1px solid transparent; border-bottom:0;
+}
+:root[data-theme="balanced"] .site-nav a:hover,
+:root[data-theme="balanced"] .site-nav a[aria-current] {
+  background:#2a2440; border-color:#5d537d; box-shadow:inset 0 2px #8bc7ff;
+}
+:root[data-theme="balanced"] .board-heading {
+  background:linear-gradient(90deg,#28203a,#1c2940);
+  border-bottom-color:#62577f;
+}
+:root[data-theme="balanced"] .topic-row:nth-child(even) { background:#121321; }
+:root[data-theme="balanced"] .topic-row:hover { background:#1d1b30; box-shadow:inset 4px 0 #f08ad8; }
+:root[data-theme="balanced"] .author-badge {
+  color:#f08ad8; border-bottom-color:#8bc7ff;
+  text-shadow:0 0 18px rgb(240 138 216 / .24);
+}
+:root[data-theme="balanced"] .post-frame {
+  border-color:#51496c; border-radius:12px; overflow:hidden;
+}
+:root[data-theme="balanced"] .post-topline { background:#262038; }
+:root[data-theme="balanced"] .button-link.primary {
+  background:linear-gradient(135deg,#87c9ff,#c59cff 55%,#f09bdc);
+  color:#11111c; border:0;
+}
+
+/* UMBRELLA — clinical corporate containment system.
+   White/red/black, chamfered dossier panels, warning stripes and lab labels. */
+:root[data-theme="resident"] {
+  color-scheme:dark;
+  --theme-label:"UMBRELLA // SECURE";
+  --bg:#08090b; --surface:#111317; --inset:#0c0e11; --bar:#181b20;
+  --ink:#f3f4f5; --muted:#a7adb5; --line:#3a3f46;
+  --accent:#f4f5f6; --green:#e21d2e; --focus:#ff4b58; --code:#070809;
+  --heading-font:"Arial Narrow","Roboto Condensed","Segoe UI",sans-serif;
+  --radius:0; --grid-alpha:.025;
+  --shadow:0 20px 55px rgb(0 0 0 / .34);
+}
+:root[data-theme="resident"] body {
+  background:
+    linear-gradient(115deg,transparent 0 73%,rgb(226 29 46 / .055) 73% 73.4%,transparent 73.4%),
+    radial-gradient(circle at 85% 12%,rgb(226 29 46 / .09),transparent 24rem),#08090b;
+}
+:root[data-theme="resident"] .site-header {
+  border:0; border-bottom:1px solid #4a4f56;
+  background:linear-gradient(90deg,#f2f3f4 0 19%,#121419 19% 100%);
+}
+:root[data-theme="resident"] .site-header::before {
+  content:""; position:absolute; left:calc(19% - 30px); top:0; bottom:0; width:62px;
+  background:repeating-linear-gradient(135deg,#d7192d 0 9px,#f3f3f3 9px 18px);
+  clip-path:polygon(48% 0,100% 0,52% 100%,0 100%);
+}
+:root[data-theme="resident"] .site-brand { position:relative; z-index:1; }
+:root[data-theme="resident"] .site-brand strong { color:#111318; text-transform:uppercase; letter-spacing:.03em; }
+:root[data-theme="resident"] .site-brand strong span { color:#c91425; }
+:root[data-theme="resident"] .site-brand small { color:#333943; border-left-color:#9da1a7; }
+:root[data-theme="resident"] .header-search,
+:root[data-theme="resident"] .theme-control { color:#f3f4f5; }
+:root[data-theme="resident"] .site-nav { border-top:1px solid #353a42; }
+:root[data-theme="resident"] .site-nav a {
+  text-transform:uppercase; letter-spacing:.08em; font-weight:800;
+  border-right:1px solid #30343a; color:#e8eaed;
+}
+:root[data-theme="resident"] .site-nav a:hover,
+:root[data-theme="resident"] .site-nav a[aria-current] {
+  background:#d7192d; color:white; box-shadow:inset 0 -3px #fff;
+}
+:root[data-theme="resident"] .page-heading {
+  border-bottom:1px solid #5a6068; position:relative; padding-left:1.25rem;
+}
+:root[data-theme="resident"] .page-heading::before {
+  content:""; position:absolute; left:0; top:.35rem; bottom:1.65rem; width:5px; background:#d7192d;
+}
+:root[data-theme="resident"] .page-heading h1 { text-transform:uppercase; letter-spacing:.025em; font-weight:800; }
+:root[data-theme="resident"] .eyebrow { color:#ff5360; font-family:ui-monospace,monospace; }
+:root[data-theme="resident"] .board,
+:root[data-theme="resident"] .post-frame,
+:root[data-theme="resident"] .author-panel,
+:root[data-theme="resident"] .side-box,
+:root[data-theme="resident"] .hobby-room,
+:root[data-theme="resident"] .spec-sheet {
+  border-color:#484d55;
+  clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));
+}
+:root[data-theme="resident"] .board-heading,
+:root[data-theme="resident"] .post-topline {
+  background:linear-gradient(90deg,#20242a,#15171b);
+  border-bottom:2px solid #d7192d; text-transform:uppercase; letter-spacing:.07em;
+}
+:root[data-theme="resident"] .board-heading::after { content:"AUTHORIZED PERSONNEL"; color:#858b94; font:600 .62rem ui-monospace,monospace; }
+:root[data-theme="resident"] .topic-row:hover { background:#171a1f; box-shadow:inset 5px 0 #d7192d; }
+:root[data-theme="resident"] .topic-mark { color:#ff3345; }
+:root[data-theme="resident"] .author-badge {
+  border:1px solid #4a4f57; border-left:5px solid #d7192d; background:#0c0e11;
+  color:#f3f4f5; font-family:"Arial Narrow","Segoe UI",sans-serif;
+}
+:root[data-theme="resident"] .button-link.primary,
+:root[data-theme="resident"] button:hover { background:#d7192d; color:#fff; border-color:#ff5360; }
+:root[data-theme="resident"] .reading-progress { background:#d7192d; box-shadow:0 0 14px rgb(215 25 45 / .55); }
+
+/* FORERUNNER — monumental hard-light architecture.
+   Navy/graphite, silver ribs, cyan emitters, angular cuts and glyph ambience. */
+:root[data-theme="halo"] {
+  color-scheme:dark;
+  --theme-label:"FORERUNNER // DOMAIN";
+  --bg:#050b13; --surface:#0b1622; --inset:#07111c; --bar:#102334;
+  --ink:#e9f7ff; --muted:#9cb5c5; --line:#345064;
+  --accent:#72e7ff; --green:#9df8ff; --focus:#c8f8ff; --code:#03080e;
+  --heading-font:"Arial Narrow","Segoe UI Variable","Segoe UI",sans-serif;
+  --radius:0; --grid-alpha:.055;
+  --shadow:0 20px 60px rgb(0 0 0 / .35),0 0 28px rgb(69 215 255 / .045);
+  --glow:0 0 18px rgb(114 231 255 / .32);
+}
+:root[data-theme="halo"] body {
+  background:
+    radial-gradient(ellipse at 50% -10%,rgb(70 178 220 / .16),transparent 38rem),
+    linear-gradient(115deg,transparent 0 24%,rgb(84 214 255 / .035) 24% 24.2%,transparent 24.2% 76%,rgb(84 214 255 / .03) 76% 76.2%,transparent 76.2%),
+    #050b13;
+}
+:root[data-theme="halo"] body::after {
+  content:"⌁ ᚫ ◇ ⌬ ᛝ ⟡ ⌁ ᚫ ◇ ⌬ ᛝ ⟡";
+  position:fixed; z-index:-1; top:5rem; right:1.2vw; width:1.2rem;
+  overflow-wrap:anywhere; color:rgb(116 230 255 / .16);
+  font:1rem/2.1 ui-monospace,monospace; letter-spacing:.25em;
+  filter:drop-shadow(0 0 8px rgb(91 221 255 / .24));
+  animation:forerunner-drift 22s linear infinite;
+}
+:root[data-theme="halo"] .site-header {
+  border:0; background:linear-gradient(180deg,#0b1825,#07111b);
+  box-shadow:0 12px 50px rgb(0 0 0 / .42),inset 0 -1px #3e7b91;
+}
+:root[data-theme="halo"] .site-header::before {
+  content:""; display:block; height:5px;
+  background:linear-gradient(90deg,transparent 4%,#4fcde9 4% 18%,transparent 18% 21%,#b9f6ff 21% 22%,transparent 22% 78%,#b9f6ff 78% 79%,transparent 79% 82%,#4fcde9 82% 96%,transparent 96%);
+  box-shadow:0 0 18px rgb(83 220 255 / .6);
+}
+:root[data-theme="halo"] .site-brand strong {
+  text-transform:uppercase; letter-spacing:.09em; font-weight:300;
+  text-shadow:var(--glow);
+}
+:root[data-theme="halo"] .site-brand strong span { color:#a7f5ff; }
+:root[data-theme="halo"] .site-nav { justify-content:center; gap:.35rem; }
+:root[data-theme="halo"] .site-nav a {
+  position:relative; min-width:7rem; text-align:center; text-transform:uppercase;
+  letter-spacing:.11em; font-size:.72rem; color:#b9d5df;
+  border:1px solid #27475a; clip-path:polygon(9px 0,calc(100% - 9px) 0,100% 50%,calc(100% - 9px) 100%,9px 100%,0 50%);
+}
+:root[data-theme="halo"] .site-nav a:hover,
+:root[data-theme="halo"] .site-nav a[aria-current] {
+  color:#eaffff; background:#123247; border-color:#72e7ff;
+  box-shadow:inset 0 0 20px rgb(94 223 255 / .12); text-shadow:var(--glow);
+}
+:root[data-theme="halo"] .page-heading {
+  border:0; border-left:2px solid #72e7ff; border-right:2px solid #31546a;
+  padding:1rem 1.6rem 1.3rem; background:linear-gradient(90deg,rgb(28 77 102 / .28),transparent 70%);
+  clip-path:polygon(0 0,calc(100% - 22px) 0,100% 22px,100% 100%,22px 100%,0 calc(100% - 22px));
+}
+:root[data-theme="halo"] .page-heading h1 { text-transform:uppercase; letter-spacing:.055em; font-weight:300; text-shadow:0 0 24px rgb(101 226 255 / .16); }
+:root[data-theme="halo"] .eyebrow { color:#7deaff; font-family:ui-monospace,monospace; letter-spacing:.22em; }
+:root[data-theme="halo"] .board,
+:root[data-theme="halo"] .post-frame,
+:root[data-theme="halo"] .author-panel,
+:root[data-theme="halo"] .side-box,
+:root[data-theme="halo"] .hobby-room,
+:root[data-theme="halo"] .spec-sheet {
+  border-color:#31546a;
+  clip-path:polygon(14px 0,calc(100% - 14px) 0,100% 14px,100% calc(100% - 14px),calc(100% - 14px) 100%,14px 100%,0 calc(100% - 14px),0 14px);
+}
+:root[data-theme="halo"] .board-heading,
+:root[data-theme="halo"] .post-topline {
+  background:linear-gradient(90deg,#10293b,#0a1723 70%);
+  border-bottom:1px solid #5ccce6;
+  box-shadow:inset 0 -1px rgb(142 241 255 / .18);
+}
+:root[data-theme="halo"] .board-heading::after { content:"◈ DOMAIN RECORD"; color:#6bbbd0; font:500 .64rem ui-monospace,monospace; letter-spacing:.14em; }
+:root[data-theme="halo"] .topic-row:hover { background:#0e2130; box-shadow:inset 4px 0 #72e7ff; }
+:root[data-theme="halo"] .topic-mark { color:#80ecff; text-shadow:var(--glow); }
+:root[data-theme="halo"] .author-badge {
+  color:#b8f7ff; border:0; border-bottom:1px solid #72e7ff; background:linear-gradient(90deg,rgb(80 214 245 / .08),transparent);
+  text-shadow:var(--glow); font-family:"Arial Narrow","Segoe UI",sans-serif;
+}
+:root[data-theme="halo"] .button-link.primary {
+  background:#9defff; color:#061019; border-color:#d8fbff;
+  clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
+}
+:root[data-theme="halo"] .reading-progress { background:#75e9ff; box-shadow:0 0 16px rgb(90 224 255 / .75); }
+
+@keyframes kaz-spectrum { to { background-position:240% 0; } }
+@keyframes forerunner-drift { from { transform:translateY(-18%); } to { transform:translateY(18%); } }
+@media (prefers-reduced-motion:reduce) {
+  :root[data-theme="balanced"] .site-header::before,
+  :root[data-theme="halo"] body::after { animation:none; }
+}
+@media (max-width:760px) {
+  .site-header::after,.theme-control::before { display:none; }
+  :root[data-theme="resident"] .site-header { background:#111318; }
+  :root[data-theme="resident"] .site-header::before { display:none; }
+  :root[data-theme="resident"] .site-brand strong,
+  :root[data-theme="resident"] .site-brand small { color:#f3f4f5; }
+  :root[data-theme="halo"] .site-nav a { min-width:0; clip-path:none; text-align:left; }
+}
+@media (min-width:1800px) {
+  .header-inner,.page-shell { max-width:1500px; }
+  .homepage-columns { grid-template-columns:280px minmax(0,1fr); }
+  .prose { max-width:78ch; }
+}
+@media (min-width:3000px) {
+  .header-inner,.page-shell { max-width:1760px; }
+  .page-shell { padding-inline:2.5rem; }
+}
