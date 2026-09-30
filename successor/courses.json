@@ -1,0 +1,15 @@
+{
+  "observed_at": "2026-09-30",
+  "source": "Udemy signed-in My learning / All courses",
+  "source_url": "https://www.udemy.com/home/my-courses/learning/",
+  "scope": "Seven courses visible in All courses; archived library not verified.",
+  "courses": [
+    {"id":"1581488","slug":"c-sharp-masterclass","title":"Complete C# Masterclass","instructors":"Denis Panjuta, Tutorials.eu by Denis Panjuta","progress":4,"state":"In progress","track":"c-sharp","topics":["C#", ".NET"],"notes":["/learning/c-sharp/posts/c-sharp-lesson-1/","/learning/c-sharp/posts/c-sharp-lesson-2/","/learning/c-sharp/posts/c-sharp-blog-1/"],"projects":["space-invaders"],"relationship":"These notes and the coursework use related C# topics. Their origin in this course has not been verified."},
+    {"id":"2776760","slug":"python-100-days","title":"100 Days of Code™: The Complete Python Pro Bootcamp","instructors":"Dr. Angela Yu, Developer and Lead Instructor","progress":1,"state":"In progress","track":"python","topics":["Python"],"notes":["/personal/misc/writing/posts/steam-viz/"],"projects":["steam-study"],"relationship":"The Steam study is existing Python work. It is related practice, not a verified assignment from this course."},
+    {"id":"4471614","slug":"react-complete","title":"The Ultimate React Course 2025: React, Next.js, Redux & More","instructors":"Jonas Schmedtmann","progress":1,"state":"In progress","track":"web","topics":["React","Next.js","Redux"],"notes":[],"projects":[],"relationship":"Course study is recorded; no corresponding authored project or learning note is published yet."},
+    {"id":"857010","slug":"ethical-hacking","title":"Learn Ethical Hacking From Scratch","instructors":"Zaid Sabih, z Security","progress":null,"state":"Not started","track":"security","topics":["Ethical hacking"],"notes":[],"projects":[],"relationship":"Owned course. Udemy displayed Start course; no numerical completion was reported."},
+    {"id":"614772","slug":"cyber-security","title":"The Complete Cyber Security Course : Hackers Exposed!","instructors":"Nathan House","progress":null,"state":"Not started","track":"security","topics":["Cybersecurity"],"notes":[],"projects":[],"relationship":"Owned course. Udemy displayed Start course; no numerical completion was reported."},
+    {"id":"629302","slug":"python-masterclass","title":"Learn Python Programming Masterclass","instructors":"Tim Buchalka, Jean-Paul Roberts, Tim Buchalka's Learn Programming Academy","progress":null,"state":"Not started","track":"python","topics":["Python"],"notes":[],"projects":["steam-study"],"relationship":"The Steam study provides related Python context, not evidence that this course has been started."},
+    {"id":"756150","slug":"angular-guide","title":"Angular - The Complete Guide","instructors":"Maximilian Schwarzmüller","progress":null,"state":"Not started","track":"web","topics":["Angular"],"notes":[],"projects":[],"relationship":"Owned course. Udemy displayed Start course; no numerical completion was reported."}
+  ]
+}

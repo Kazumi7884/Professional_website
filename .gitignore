@@ -9,3 +9,6 @@ deploy/
 .DS_Store
 Thumbs.db
 *.log
+build/
+.v6-build-*/
+.sites-runtime/

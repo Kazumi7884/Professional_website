@@ -49,3 +49,18 @@ jobs:
         with:
           name: website-${{ matrix.os }}
           path: deploy/site-upload.zip
+      - name: Successor behavioural verification
+        run: python scripts/verify.py
+      - name: Successor browser-logic verification
+        run: node successor/runtime.test.cjs
+      - name: Successor JavaScript syntax
+        run: |
+          node --check successor/site.js
+          node --check successor/theme.js
+          node --check successor/worker.js
+      - name: Package clean-room successor
+        run: python successor/package.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: successor-${{ matrix.os }}
+          path: deploy/successor-upload.zip

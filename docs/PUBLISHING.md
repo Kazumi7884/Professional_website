@@ -1,5 +1,13 @@
 # Publishing the website
 
+## Clean-room successor
+
+Use `python successor/package.py` for `deploy/successor-upload.zip`, generated
+from `build/`. Run `python scripts/verify.py` and the documented successor runtime
+checks before publishing. The main repository canonical domain remains the
+configured `site.json` origin. A separate private Sites preview does not replace
+Fasthosts or change DNS. The instructions below describe the preserved V5 package.
+
 The repository contains editable source. The public host needs only the files
 generated in `dist/`. GitHub commits and a Fasthosts upload are separate actions.
 
