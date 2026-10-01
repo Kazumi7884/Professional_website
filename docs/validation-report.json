@@ -1,15 +1,15 @@
 {
-  "generated": "2026-09-10T05:06:04.377510+00:00",
-  "authored_pages": 78,
-  "total_pages": 143,
-  "checks": 3900,
-  "passing_checks": 3900,
+  "generated": "2026-09-27T01:39:39.478760+00:00",
+  "authored_pages": 79,
+  "total_pages": 144,
+  "checks": 3950,
+  "passing_checks": 3950,
   "iterations": [
     {
       "iteration": 1,
       "goal": "Standards-mode HTML",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -322,6 +322,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -329,8 +333,8 @@
     {
       "iteration": 2,
       "goal": "British English document language",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -643,6 +647,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -650,8 +658,8 @@
     {
       "iteration": 3,
       "goal": "Early UTF-8 declaration",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -964,6 +972,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -971,8 +983,8 @@
     {
       "iteration": 4,
       "goal": "Mobile viewport without zoom restriction",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -1285,6 +1297,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -1292,8 +1308,8 @@
     {
       "iteration": 5,
       "goal": "Descriptive browser title",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -1606,6 +1622,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -1613,8 +1633,8 @@
     {
       "iteration": 6,
       "goal": "Unique authored-page titles",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -1927,6 +1947,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -1934,8 +1958,8 @@
     {
       "iteration": 7,
       "goal": "Nonempty page descriptions",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -2248,6 +2272,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -2255,8 +2283,8 @@
     {
       "iteration": 8,
       "goal": "Single canonical declaration",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -2569,6 +2597,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -2576,8 +2608,8 @@
     {
       "iteration": 9,
       "goal": "Canonical matches the public route",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -2890,6 +2922,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -2897,8 +2933,8 @@
     {
       "iteration": 10,
       "goal": "Explicit indexing policy",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -3211,6 +3247,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -3218,8 +3258,8 @@
     {
       "iteration": 11,
       "goal": "Social title matches the page",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -3532,6 +3572,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -3539,8 +3583,8 @@
     {
       "iteration": 12,
       "goal": "Social description matches the page",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -3853,6 +3897,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -3860,8 +3908,8 @@
     {
       "iteration": 13,
       "goal": "Social URL matches the canonical",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -4174,6 +4222,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -4181,8 +4233,8 @@
     {
       "iteration": 14,
       "goal": "Appropriate social page type",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -4495,6 +4547,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -4502,8 +4558,8 @@
     {
       "iteration": 15,
       "goal": "Consistent social site identity",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -4816,6 +4872,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -4823,8 +4883,8 @@
     {
       "iteration": 16,
       "goal": "X title consistency",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -5137,6 +5197,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -5144,8 +5208,8 @@
     {
       "iteration": 17,
       "goal": "X description consistency",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -5458,6 +5522,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -5465,8 +5533,8 @@
     {
       "iteration": 18,
       "goal": "Discoverable RSS feed",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -5779,6 +5847,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -5786,8 +5858,8 @@
     {
       "iteration": 19,
       "goal": "Working favicon reference",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -6100,6 +6172,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -6107,8 +6183,8 @@
     {
       "iteration": 20,
       "goal": "One local fingerprinted stylesheet",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -6421,6 +6497,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -6428,8 +6508,8 @@
     {
       "iteration": 21,
       "goal": "Deferred enhancement scripts",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -6742,6 +6822,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -6749,8 +6833,8 @@
     {
       "iteration": 22,
       "goal": "Executable scripts kept in separate files",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -7063,6 +7147,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -7070,8 +7158,8 @@
     {
       "iteration": 23,
       "goal": "Valid structured data",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -7384,6 +7472,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -7391,8 +7483,8 @@
     {
       "iteration": 24,
       "goal": "Structured data identifies this route",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -7705,6 +7797,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -7712,8 +7808,8 @@
     {
       "iteration": 25,
       "goal": "Identified authorship",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -8026,6 +8122,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -8033,8 +8133,8 @@
     {
       "iteration": 26,
       "goal": "One main landmark",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -8347,6 +8447,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -8354,8 +8458,8 @@
     {
       "iteration": 27,
       "goal": "One descriptive top-level heading",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -8668,6 +8772,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -8675,8 +8783,8 @@
     {
       "iteration": 28,
       "goal": "Keyboard skip target",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -8989,6 +9097,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -8996,8 +9108,8 @@
     {
       "iteration": 29,
       "goal": "Breadcrumb orientation",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -9310,6 +9422,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -9317,8 +9433,8 @@
     {
       "iteration": 30,
       "goal": "Consistent primary menu destinations",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -9631,6 +9747,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -9638,8 +9758,8 @@
     {
       "iteration": 31,
       "goal": "Correct menu current-location state",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -9952,6 +10072,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -9959,8 +10083,8 @@
     {
       "iteration": 32,
       "goal": "Footer recovery navigation",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -10273,6 +10397,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -10280,8 +10408,8 @@
     {
       "iteration": 33,
       "goal": "Unique HTML identifiers",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -10594,6 +10722,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -10601,8 +10733,8 @@
     {
       "iteration": 34,
       "goal": "Internal destinations exist",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -10915,6 +11047,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -10922,8 +11058,8 @@
     {
       "iteration": 35,
       "goal": "In-page and cross-page anchors resolve",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -11236,6 +11372,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -11243,8 +11383,8 @@
     {
       "iteration": 36,
       "goal": "Local scripts, styles and media exist",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -11557,6 +11697,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -11564,8 +11708,8 @@
     {
       "iteration": 37,
       "goal": "Every form control has a label",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -11878,6 +12022,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -11885,8 +12033,8 @@
     {
       "iteration": 38,
       "goal": "ARIA references resolve",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -12199,6 +12347,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -12206,8 +12358,8 @@
     {
       "iteration": 39,
       "goal": "Links have accessible names",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -12520,6 +12672,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -12527,8 +12683,8 @@
     {
       "iteration": 40,
       "goal": "Buttons have names and explicit types",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -12841,6 +12997,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -12848,8 +13008,8 @@
     {
       "iteration": 41,
       "goal": "Images reserve space and supply alternatives",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -13162,6 +13322,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -13169,8 +13333,8 @@
     {
       "iteration": 42,
       "goal": "New-tab links protect the opener",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -13483,6 +13647,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -13490,8 +13658,8 @@
     {
       "iteration": 43,
       "goal": "No executable URL schemes",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -13804,6 +13972,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -13811,8 +13983,8 @@
     {
       "iteration": 44,
       "goal": "Styles kept outside the markup",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -14125,6 +14297,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -14132,8 +14308,8 @@
     {
       "iteration": 45,
       "goal": "Events kept outside the markup",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -14446,6 +14622,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -14453,8 +14633,8 @@
     {
       "iteration": 46,
       "goal": "No unsolicited audio or video autoplay",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -14767,6 +14947,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -14774,8 +14958,8 @@
     {
       "iteration": 47,
       "goal": "No insecure embedded resources",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -15088,6 +15272,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -15095,8 +15283,8 @@
     {
       "iteration": 48,
       "goal": "No unrendered template syntax",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -15409,6 +15597,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -15416,8 +15608,8 @@
     {
       "iteration": 49,
       "goal": "Page payload under 2 MiB",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -15730,6 +15922,10 @@
         },
         {
           "target": "/start-here/",
+          "passed": true
+        },
+        {
+          "target": "/writing/",
           "passed": true
         }
       ]
@@ -15737,8 +15933,8 @@
     {
       "iteration": 50,
       "goal": "Readable content without JavaScript",
-      "targets": 78,
-      "passed": 78,
+      "targets": 79,
+      "passed": 79,
       "failed": [],
       "checks": [
         {
@@ -16052,10 +16248,14 @@
         {
           "target": "/start-here/",
           "passed": true
+        },
+        {
+          "target": "/writing/",
+          "passed": true
         }
       ]
     }
   ],
   "additional_failures": [],
-  "source_digest": "b1f50ca1e17539eeea07a9e3a9c557a44724c2cc0632f3bb18644eded44835c9"
+  "source_digest": "b31d30094c05e557910564ccd0660cd2fe18f2e1e53a96da5711f75a2c4b007a"
 }
