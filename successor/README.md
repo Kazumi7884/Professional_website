@@ -67,8 +67,17 @@ you explicitly give it `--output`, and even then it writes a separate draft only
 .venv\Scripts\python.exe successor\local_review.py --endpoint http://127.0.0.1:11435/v1/chat/completions --model simple
 ```
 
-For a different local model service, pass its local chat-completions endpoint and
-model name. Read the draft against the repositories and your own notes before
+For FOSSLife's governed local runtime, use:
+
+```powershell
+.venv\Scripts\python.exe successor\local_review.py --endpoint http://127.0.0.1:9080/v1/chat/completions --model nano
+```
+
+For a different local model service, pass its literal loopback HTTP
+chat-completions endpoint and model name. Remote addresses, credentials in
+URLs, redirects and environment proxies are refused. Replies are capped at
+512 generated tokens and 1 MiB; requests time out after 90 seconds.
+An output draft must be a new file: existing files are never overwritten. Read the draft against the repositories and your own notes before
 changing `projects.json` or authored Markdown. This is a review aid, not an
 automatic writer or publisher.
 
@@ -134,3 +143,6 @@ content changes the cache revision. Activation removes only this site's known
 old cache prefixes. Optional storage failure does not prevent online reading.
 No analytics, remote fonts, embeds or browser API credentials are introduced.
 
+
+For the latest maintenance evidence and continuation steps, read
+[the AI handoff](../docs/AI_HANDOFF.md).

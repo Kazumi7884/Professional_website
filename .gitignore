@@ -12,3 +12,6 @@ Thumbs.db
 build/
 .v6-build-*/
 .sites-runtime/
+
+# Retained local source archive; never part of a public build or source sync.
+/professional_wesbite.zip

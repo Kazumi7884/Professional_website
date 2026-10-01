@@ -65,8 +65,13 @@ class BuildRegression(unittest.TestCase):
         self.assertNotIn('/learning/python/projects/pc-metrics-logger/', links)
 
     def test_site_does_not_publish_unclaimed_projects_or_resources(self):
-        self.assertFalse(any(p['entryType'] in {'project', 'resource'} for p in self.pages))
-        self.assertFalse((ROOT / 'dist' / 'projects').exists())
+        # The September consolidation restored these two authored projects.
+        # Reject additional unclaimed projects and keep resources excluded.
+        restored = {'/projects/kaz-website-v6/', '/projects/steam-library-visualisation/'}
+        self.assertEqual({p['url'] for p in self.pages if p['entryType'] == 'project'}, restored)
+        self.assertFalse(any(p['entryType'] == 'resource' for p in self.pages))
+        for route in restored:
+            self.assertTrue((ROOT / 'dist' / site.route_path(route)).is_file())
         self.assertFalse((ROOT / 'dist' / 'resources').exists())
 
     def test_original_urls_have_working_redirects(self):

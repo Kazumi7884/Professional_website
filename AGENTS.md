@@ -39,6 +39,16 @@ The handbook preserves the original core policy and adds repository-specific cla
 
 ## 3. Verified repository facts — recheck when source changes
 
+Current implementation update (1 October 2026): the root README now selects
+`successor/` for builds and `build/` for generated public output. Use
+`python scripts/verify.py`, `node successor/runtime.test.cjs` and
+`python successor/package.py` for that path. The V5 facts/commands below remain
+the retained authoring and recovery bridge; do not mistake its `dist/` preview
+for the successor. Read `docs/AI_HANDOFF.md` before resuming. This corrects
+source/command routing only; every safety, authorship and verification rule
+below still applies.
+
+
 The discovery snapshot was `48fc8497257b75960c5f80b75dee2b4433068074`. The original agent policy was integrated at `ea3fae11886bcffdb7739571f5b4c23feb32e0e7`. These identify historical observations, not the current branch head forever.
 
 - The site uses Python 3.11+, Jinja, Python-Markdown, YAML metadata and ordinary external CSS/JavaScript. It is not Hugo or a React application.

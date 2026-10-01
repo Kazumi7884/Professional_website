@@ -123,3 +123,5 @@ The [expanded handbook](docs/agents/HANDBOOK.md) contains the detailed policy, 2
 and 500 individually numbered audit scenarios. The [audit catalogue](docs/agents/audit-catalogue.json)
 is a machine-readable specification; its cases are NOT_RUN until separate evidence is recorded.
 These files guide a local agent but do not install or start a background monitor.
+
+Current maintenance state and local-AI continuation: [AI handoff](docs/AI_HANDOFF.md).

@@ -3,6 +3,8 @@ from functools import partial
 from http.server import ThreadingHTTPServer
 import importlib.util
 import json
+import runpy
+import sys
 from pathlib import Path
 import tempfile
 import threading
@@ -54,6 +56,12 @@ class PublishedJourneys(unittest.TestCase):
         self.assertEqual(caught.exception.code, 404)
         soup = BeautifulSoup(caught.exception.read(), 'html.parser')
         self.assertIsNotNone(soup.select_one('main a[href="/search/"]'))
+
+    def test_historical_projects_route_reaches_work(self):
+        with urllib.request.urlopen(self.origin + '/projects/') as response:
+            soup = BeautifulSoup(response.read(), 'html.parser')
+        self.assertIsNotNone(soup.select_one('main a[href="/work/"]'))
+        self.assertIn('/projects/ /work/ 301', (builder.ROOT / 'build/_redirects').read_text())
 
     def test_every_internal_link_and_anchor_resolves(self):
         self.assertGreater(builder.check(builder.ROOT / 'build')['internal_references_checked'], 100)
@@ -257,9 +265,45 @@ class LocalReviewSafety(unittest.TestCase):
                 return b'{"choices":[{"message":{"content":"ASK OWNER: confirm this."}}]}'
             def __enter__(self): return self
             def __exit__(self, *args): return False
-        with patch.object(local_review.urllib.request, 'urlopen', return_value=Response()):
+        with patch.object(local_review.urllib.request.OpenerDirector, 'open', return_value=Response()):
             self.assertEqual(local_review.review('http://127.0.0.1:11435/v1/chat/completions', 'simple'), 'ASK OWNER: confirm this.')
         self.assertEqual((HERE / 'projects.json').read_bytes(), before)
+
+    def test_remote_or_credentialled_endpoints_are_rejected_before_network(self):
+        for endpoint in ['https://example.org/v1/chat/completions',
+                         'http://192.168.1.2:9080/v1/chat/completions',
+                         'http://user:secret@127.0.0.1:9080/v1/chat/completions',
+                         'http://127.0.0.1:9080/v1/chat/completions#fragment']:
+            with self.subTest(endpoint=endpoint), patch.object(local_review.urllib.request, 'build_opener') as opener:
+                with self.assertRaises(ValueError):
+                    local_review.review(endpoint, 'fixture')
+                opener.assert_not_called()
+
+    def test_redirect_to_remote_is_not_followed(self):
+        self.assertIsNone(local_review.NoRedirect().redirect_request(
+            None, None, 302, 'Found', {}, 'https://example.org/'))
+
+    def test_oversized_reply_is_rejected(self):
+        with patch.object(local_review.urllib.request.OpenerDirector, 'open') as request:
+            request.return_value.__enter__.return_value.read.return_value = b'x' * (1024 * 1024 + 1)
+            with self.assertRaises(ValueError):
+                local_review.review('http://127.0.0.1:9080/v1/chat/completions', 'fixture')
+
+    def test_cli_preserves_existing_draft(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / 'draft.md'
+            output.write_text('Keep my draft', encoding='utf-8')
+            with patch.object(sys, 'argv', ['local_review.py', '--output', str(output)]), patch.object(local_review.urllib.request.OpenerDirector, 'open') as request:
+                request.return_value.__enter__.return_value.read.return_value = b'{"choices":[{"message":{"content":"New draft"}}]}'
+                with self.assertRaises(FileExistsError):
+                    runpy.run_path(str(HERE / 'local_review.py'), run_name='__main__')
+            self.assertEqual(output.read_text(encoding='utf-8'), 'Keep my draft')
+
+    def test_empty_model_reply_is_not_a_successful_review(self):
+        with patch.object(local_review.urllib.request.OpenerDirector, 'open') as request:
+            request.return_value.__enter__.return_value.read.return_value = b'{"choices":[{"message":{"content":""}}]}'
+            with self.assertRaisesRegex(ValueError, 'no review text'):
+                local_review.review('http://127.0.0.1:9080/v1/chat/completions', 'fixture')
 
 
 if __name__ == '__main__':

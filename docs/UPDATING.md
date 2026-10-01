@@ -200,12 +200,16 @@ with your virtual environment's Python. Open http://127.0.0.1:8000/__studio/.
 The writing desk saves into `content/`; include those files in your normal commit.
 `Build site` refreshes `dist/`, which remains generated output.
 
-For this redesign branch, fetch and switch with a clean working tree:
+The redesign branch is historical. Continue on `main` after preserving any
+local changes, then use the current successor commands:
 
-```bash
-git fetch origin
-git switch --track origin/codex/v5.2-writing-themes
+```text
+git pull --ff-only
+python successor/build.py
+python scripts/verify.py
+python successor/serve.py --port 8765
 ```
 
-If the branch already exists locally, use `git switch codex/v5.2-writing-themes`.
-After the pull request is merged, switch back to main and run `git pull --ff-only`.
+Use your existing environment's Python. The writing desk still previews V5;
+`successor/serve.py` previews the current source described by the root README.
+Read [the AI handoff](AI_HANDOFF.md) when resuming maintenance.
