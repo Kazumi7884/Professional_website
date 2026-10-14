@@ -1,7 +1,13 @@
 (() => {
   'use strict';
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {
-    navigator.serviceWorker.register('/sw.js').catch(() => { /* Online reading does not depend on offline caching. */ });
+    const register = () => navigator.serviceWorker.register('/sw.js').catch(() => { /* Online reading does not depend on offline caching. */ });
+    const schedule = () => {
+      if ('requestIdleCallback' in window) window.requestIdleCallback(register, {timeout: 2000});
+      else register();
+    };
+    if (document.readyState === 'complete') schedule();
+    else window.addEventListener('load', schedule, {once: true});
   }
   const theme = document.querySelector('#theme');
   if (theme) {
@@ -21,21 +27,22 @@
   const filter = document.querySelector('[data-filter]');
   const normalize = value => String(value).normalize('NFKC').toLocaleLowerCase().trim().replace(/\s+/g, ' ');
   if (filter) {
-    const entries = [...document.querySelectorAll('[data-record]')];
+    const entries = [...document.querySelectorAll('[data-record]')].map(node => ({node, text: undefined}));
     const status = document.querySelector('[data-filter-status]');
     const empty = document.querySelector('[data-filter-empty]');
     const apply = () => {
       const terms = normalize(filter.value).split(' ');
       let count = 0;
       for (const entry of entries) {
-        entry.hidden = !terms.every(term => normalize(entry.textContent).includes(term));
-        if (!entry.hidden) count++;
+        if (entry.text === undefined) entry.text = normalize(entry.node.textContent);
+        entry.node.hidden = !terms.every(term => entry.text.includes(term));
+        if (!entry.node.hidden) count++;
       }
       status.textContent = `${count} of ${entries.length} entries shown`;
       empty.hidden = count !== 0;
     };
     filter.addEventListener('input', apply);
-    apply();
+    if (filter.value) apply();
   }
   const form = document.querySelector('#search-form');
   if (!form) return;

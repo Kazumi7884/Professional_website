@@ -121,6 +121,24 @@ Each handoff must identify repository and candidate, dirty state, tasks and file
 
 A task is complete when acceptance is met, relevant evidence applies to the final candidate, documentation is accurate and the integration state is explicit. A run is complete when it has a recoverable handoff and has released its owned resources. Continuous maintenance means returning to real needs; it does not require perpetual rewrites.
 
+## Default site audit workflow (Kaz's preference, 14 October 2026)
+
+For future site work, use the performance, security and accessibility workflow in
+[docs/SITE_AUDIT_WORKFLOW.md](docs/SITE_AUDIT_WORKFLOW.md). Retain antislop during
+implementation. Use four read-only review agents, one per performance group,
+with medium effort and high effort for database/API review when the runtime
+supports those settings. Only the owner edits source. Reuse current evidence
+for unchanged inputs; label unavailable measurements BLOCKED.
+
+Before implementation, build the production output and take three mobile
+Lighthouse runs on home and the two or three slowest representative pages.
+Repeat the same routes, browser, build mode and throttling after changes; report
+medians and raw evidence. Preserve features. Obtain Kaz's approval before removing
+dependencies, changing deployment region or changing a database. Check public
+credentials, API authorization, SQL injection, XSS, SSRF and frontend accessibility.
+Architecture-specific N/A needs inspected evidence. A missing filmstrip or null
+Lighthouse score is unavailable evidence, never a zero or a passing score.
+
 ## Field-notes operating discipline
 
 These rules adapt the practical agent lessons in [unicodef1wn/grokbot-field-notes](https://github.com/unicodef1wn/grokbot-field-notes). They supplement this repository's stricter project-specific rules; they do not replace them.

@@ -1,0 +1,56 @@
+name: Production mobile measurements
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: site-performance-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install measurement tools
+        run: |
+          python -m pip install -r requirements.txt
+          npm install --prefix .cache/performance lighthouse@13.5.0 chrome-launcher@1.2.2 playwright@1.62.1 @axe-core/playwright@4.11.0 --ignore-scripts --no-audit --no-fund
+      - name: Select the unchanged baseline
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if [[ -z "$BASE_SHA" ]]; then BASE_SHA=$(git rev-parse HEAD^); fi
+          git worktree add --detach .cache/baseline "$BASE_SHA"
+          python .cache/baseline/successor/build.py
+      - name: Three mobile runs per baseline route
+        env:
+          WEBSITE_PYTHON: python
+        run: node scripts/lighthouse.mjs before .cache/baseline
+      - name: Build candidate and repeat the same measurements
+        env:
+          WEBSITE_PYTHON: python
+        run: |
+          python successor/build.py
+          node scripts/lighthouse.mjs after
+      - name: Themes, keyboard, slow 4G and accessibility
+        env:
+          WEBSITE_PYTHON: python
+        run: node scripts/browser_audit.mjs
+      - name: Preserve every raw run and median
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-before-after
+          path: |
+            .cache/lighthouse/
+            .cache/browser-audit/

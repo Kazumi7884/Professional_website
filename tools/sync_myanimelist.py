@@ -22,6 +22,28 @@ ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "static" / "data" / "anime.json"
 LOCAL_ENV = ROOT / ".env.local"
 API = "https://api.myanimelist.net/v2/users/{username}/animelist"
+MAX_PAGES = 100
+MAX_RESPONSE_BYTES = 8 * 1024 * 1024
+
+
+def validate_api_url(url: str) -> str:
+    if not isinstance(url, str) or any(ord(c) < 33 for c in url):
+        raise ValueError('Invalid MyAnimeList page URL')
+    parsed = urllib.parse.urlsplit(url)
+    if (parsed.scheme != 'https' or parsed.hostname != 'api.myanimelist.net'
+            or parsed.port not in (None, 443) or parsed.username or parsed.password
+            or parsed.fragment or not parsed.path.startswith('/v2/users/')
+            or not parsed.path.endswith('/animelist')):
+        raise ValueError('MyAnimeList pages must stay on the official HTTPS list API')
+    username = urllib.parse.unquote(parsed.path[len('/v2/users/'):-len('/animelist')])
+    if not username or '/' in username or '\\' in username or username in ('.', '..'):
+        raise ValueError('Invalid MyAnimeList user path')
+    return url
+
+
+class NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        raise ValueError('MyAnimeList API redirects are refused')
 
 
 def load_local_env() -> None:
@@ -34,10 +56,17 @@ def load_local_env() -> None:
 
 
 def request_json(url: str, client_id: str) -> dict:
+    validate_api_url(url)
     request = urllib.request.Request(url, headers={"X-MAL-CLIENT-ID": client_id, "Accept": "application/json", "User-Agent": "Kaz-Website-V5/5.0"})
     try:
-        with urllib.request.urlopen(request, timeout=30) as response:
-            return json.load(response)
+        with urllib.request.build_opener(NoRedirect()).open(request, timeout=30) as response:
+            raw = response.read(MAX_RESPONSE_BYTES + 1)
+            if len(raw) > MAX_RESPONSE_BYTES:
+                raise ValueError('MyAnimeList response is too large')
+            payload = json.loads(raw)
+            if not isinstance(payload, dict):
+                raise ValueError('MyAnimeList response must be an object')
+            return payload
     except urllib.error.HTTPError as exc:
         message = exc.read().decode("utf-8", errors="replace")
         if exc.code in (401, 403):
@@ -55,7 +84,13 @@ def fetch_list(username: str, client_id: str) -> list[dict]:
     })
     url = API.format(username=urllib.parse.quote(username, safe="")) + "?" + params
     results: list[dict] = []
+    expected_path = urllib.parse.urlsplit(url).path
+    visited = set()
     while url:
+        validate_api_url(url)
+        if urllib.parse.urlsplit(url).path != expected_path or url in visited or len(visited) >= MAX_PAGES:
+            raise ValueError('MyAnimeList pagination changed user, repeated a page or exceeded its limit')
+        visited.add(url)
         payload = request_json(url, client_id)
         results.extend(payload.get("data", []))
         url = payload.get("paging", {}).get("next", "")

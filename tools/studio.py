@@ -191,7 +191,8 @@ def make_handler(token, port, build_fn):
             self.send_header('Content-Type', 'application/json; charset=utf-8')
             self.send_header('Content-Length', str(len(data)))
             self.end_headers()
-            self.wfile.write(data)
+            if self.command != 'HEAD':
+                self.wfile.write(data)
 
         def trusted(self, api=False):
             actual_port = self.server.server_address[1]
@@ -204,10 +205,20 @@ def make_handler(token, port, build_fn):
             if origin and origin not in origins:
                 self.send_json({'error': 'Request origin rejected.'}, 403)
                 return False
-            if api and not hmac.compare_digest(self.headers.get('X-Studio-Token', ''), token):
+            supplied_token = self.headers.get('X-Studio-Token', '')
+            if api and (not supplied_token.isascii() or not hmac.compare_digest(supplied_token, token)):
                 self.send_json({'error': 'Reload the writing desk to reconnect.'}, 403)
                 return False
             return True
+
+        def do_HEAD(self):
+            route = urlsplit(self.path)
+            if not self.trusted(route.path.startswith('/__studio/api/')):
+                return
+            if route.path.startswith('/__studio'):
+                self.send_error(405, 'Use GET for writing desk resources.')
+                return
+            super().do_HEAD()
 
         def do_GET(self):
             route = urlsplit(self.path)

@@ -34,6 +34,32 @@ package = module('package')
 
 
 class PublishedJourneys(unittest.TestCase):
+    def test_visible_lcp_chart_is_eager_and_other_charts_stay_lazy(self):
+        soup = BeautifulSoup((builder.ROOT / 'build/personal/games/index.html').read_text(encoding='utf-8'), 'html.parser')
+        images = soup.select('img')
+        self.assertEqual(images[0]['loading'], 'eager')
+        self.assertEqual(images[0]['fetchpriority'], 'high')
+        self.assertTrue(all(image['loading'] == 'lazy' for image in images[1:]))
+
+    def test_initial_filter_counts_are_available_without_javascript(self):
+        for route in ['personal/games', 'personal/anime', 'personal/misc/phasmophobia/ghosts', 'personal/misc/phasmophobia/maps', 'personal/misc/phasmophobia/items']:
+            soup = BeautifulSoup((builder.ROOT / 'build' / route / 'index.html').read_text(encoding='utf-8'), 'html.parser')
+            count = len(soup.select('[data-record]'))
+            self.assertEqual(soup.select_one('[data-filter-status]').text, f'{count} of {count} entries shown')
+
+    def test_gzip_preview_preserves_exact_public_html(self):
+        import gzip
+        request = urllib.request.Request(self.origin + '/', headers={'Accept-Encoding': 'gzip'})
+        with urllib.request.urlopen(request) as response:
+            self.assertEqual(response.headers['Content-Encoding'], 'gzip')
+            self.assertEqual(response.headers['Vary'], 'Accept-Encoding')
+            self.assertEqual(gzip.decompress(response.read()), (builder.ROOT / 'build/index.html').read_bytes())
+
+    def test_disabled_gzip_is_not_sent(self):
+        request = urllib.request.Request(self.origin + '/', headers={'Accept-Encoding': 'gzip;q=0'})
+        with urllib.request.urlopen(request) as response:
+            self.assertIsNone(response.headers.get('Content-Encoding'))
+
     @classmethod
     def setUpClass(cls):
         cls.report = builder.build()
@@ -61,7 +87,7 @@ class PublishedJourneys(unittest.TestCase):
         with urllib.request.urlopen(self.origin + '/projects/') as response:
             soup = BeautifulSoup(response.read(), 'html.parser')
         self.assertIsNotNone(soup.select_one('main a[href="/work/"]'))
-        self.assertIn('/projects/ /work/ 301', (builder.ROOT / 'build/_redirects').read_text())
+        self.assertIn('/projects/ /work/ 301', (builder.ROOT / 'build/_redirects').read_text(encoding='utf-8'))
 
     def test_every_internal_link_and_anchor_resolves(self):
         self.assertGreater(builder.check(builder.ROOT / 'build')['internal_references_checked'], 100)
@@ -149,7 +175,7 @@ class ContentSafety(unittest.TestCase):
         with tempfile.TemporaryDirectory(dir=builder.ROOT) as temp:
             path = Path(temp); (path / 'precious.txt').write_text('Keep me')
             with self.assertRaises(ValueError): builder.build(path)
-            self.assertEqual((path / 'precious.txt').read_text(), 'Keep me')
+            self.assertEqual((path / 'precious.txt').read_text(encoding='utf-8'), 'Keep me')
 
     def test_failed_render_preserves_last_build(self):
         builder.build()
@@ -211,14 +237,14 @@ class SnapshotSafety(unittest.TestCase):
             path = Path(temp) / 'facts.json'; path.write_text('last good snapshot')
             def offline(name): raise OSError('Offline fixture')
             with self.assertRaises(OSError): refresh.refresh(path, offline)
-            self.assertEqual(path.read_text(), 'last good snapshot')
+            self.assertEqual(path.read_text(encoding='utf-8'), 'last good snapshot')
 
     def test_refresh_updates_facts_only(self):
         original = (HERE / 'projects.json').read_bytes()
         with tempfile.TemporaryDirectory() as temp:
             path = Path(temp) / 'facts.json'
             refresh.refresh(path, lambda name: self.data())
-            self.assertEqual(json.loads(path.read_text())['repositories'][0]['language'], 'C#')
+            self.assertEqual(json.loads(path.read_text(encoding='utf-8'))['repositories'][0]['language'], 'C#')
         self.assertEqual((HERE / 'projects.json').read_bytes(), original)
 
     def test_unchanged_refresh_keeps_the_existing_snapshot(self):

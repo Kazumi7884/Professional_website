@@ -173,7 +173,20 @@ def optimise_html(document, route, aliases):
     return '<!DOCTYPE html>\n' + str(soup).replace('<!DOCTYPE html>\n', '', 1)
 
 
+def validate_public_assets(directory):
+    for parent in [directory, *directory.parents]:
+        if parent == ROOT:
+            break
+        if parent.is_symlink():
+            raise ValueError('Public asset directories cannot contain symlink ancestors')
+    for path in [directory, *directory.rglob('*')]:
+        if path.is_symlink() or not path.resolve().is_relative_to(ROOT.resolve()):
+            raise ValueError('Public assets must be ordinary files inside the repository')
+
+
 def build():
+    validate_public_assets(ROOT / 'static')
+    validate_public_assets(ROOT / 'assets')
     started = time.perf_counter()
     config = json.loads((ROOT / 'site.json').read_text(encoding='utf-8'))
     if not re.fullmatch(r'https://[a-zA-Z0-9.-]+(?::[0-9]+)?', config['url']):
