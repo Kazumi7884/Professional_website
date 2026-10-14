@@ -189,6 +189,18 @@ class StudioHTTP(unittest.TestCase):
     def test_missing_token_rejected(self):
         self.assertEqual(self.request({})[0], 403)
 
+    def test_non_ascii_token_returns_forbidden(self):
+        self.assertEqual(self.request({'X-Studio-Token': 'é'})[0], 403)
+
+    def test_head_rejects_untrusted_host_and_missing_api_token(self):
+        for path, headers in [('/', {'Host': 'attacker.example'}), ('/__studio/api/posts', {})]:
+            connection = http.client.HTTPConnection('127.0.0.1', self.port)
+            connection.request('HEAD', path, headers=headers)
+            response = connection.getresponse()
+            self.assertEqual(response.status, 403)
+            self.assertEqual(response.read(), b'')
+            connection.close()
+
     def test_cross_origin_rejected(self):
         self.assertEqual(self.request({'X-Studio-Token': 'test-token', 'Origin': 'https://example.com'})[0], 403)
 

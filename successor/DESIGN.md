@@ -26,7 +26,7 @@ basalt, pale stone, cyan light and angular panel joins evoke a very old, precise
 system. The glow only marks current location, focus and active controls, so it
 helps orientation instead of becoming a blue-neon effect.
 
-Design dials: ENERGY 3 / RHYTHM 4 / MOTION 1. Density is intentional: the page
+Design dials: ENERGY 3 / RHYTHM 3 / MOTION 1. Density is intentional: the page
 should show where to go and what has changed without using empty space as a
 substitute for structure. Movement is limited to short state changes. Every
 visual device serves navigation, reading order, or the selected theme.

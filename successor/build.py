@@ -5,6 +5,7 @@ import argparse
 from datetime import date
 import hashlib
 from html import escape
+from io import BytesIO
 import json
 from pathlib import Path
 import re
@@ -30,6 +31,71 @@ def e(value):
 
 def read_json(path):
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def validate_public_assets(directory):
+    for parent in [directory, *directory.parents]:
+        if parent == ROOT:
+            break
+        if parent.is_symlink():
+            raise ValueError('Public asset directories cannot contain symlink ancestors')
+    for path in [directory, *directory.rglob('*')]:
+        if path.is_symlink() or not path.resolve().is_relative_to(ROOT.resolve()):
+            raise ValueError('Public assets must be ordinary files inside the repository')
+
+
+def prepare_images(staging):
+    images = staging / 'assets/images'
+    for path in sorted(images.rglob('*.webp')):
+        with Image.open(path) as current:
+            png = path.with_suffix('.png')
+            with Image.open(png if png.is_file() else path) as source:
+                if png.is_file() and source.size == current.size:
+                    encoded = BytesIO()
+                    source.save(encoded, format='WEBP', lossless=True, method=6)
+                    if encoded.tell() < path.stat().st_size:
+                        path.write_bytes(encoded.getvalue())
+            for width in (480, 800, 1200):
+                if width >= current.width:
+                    continue
+                resized = current.resize((width, round(current.height * width / current.width)), Image.Resampling.LANCZOS)
+                encoded = BytesIO()
+                resized.save(encoded, format='WEBP', quality=90, method=6)
+                if encoded.tell() < path.stat().st_size:
+                    path.with_name(path.stem + f'-{width}w.webp').write_bytes(encoded.getvalue())
+
+
+def responsive_images(html, staging, route):
+    soup = BeautifulSoup(html, 'html.parser')
+    descriptions = read_json(HERE / 'chart-descriptions.json')
+    for number, image in enumerate(soup.select('img[src^="/assets/images/"]')):
+        source = staging / image['src'].lstrip('/')
+        if source.name in descriptions:
+            description = soup.new_tag('details', attrs={'class': 'chart-description', 'id': f'chart-description-{number}'})
+            summary = soup.new_tag('summary')
+            summary.string = 'Read the chart description'
+            description.append(summary)
+            text = soup.new_tag('p')
+            text.string = descriptions[source.name]
+            description.append(text)
+            note = soup.new_tag('p', attrs={'class': 'meta'})
+            note.string = 'Ranges are approximate. Exact values are not printed in the saved chart; the original data would be needed for an exact table.'
+            description.append(note)
+            image['aria-describedby'] = description['id']
+            if source.name == '03-steam-deck-status.webp':
+                image['alt'] = 'Steam Deck compatibility counts shown as horizontal bars'
+            image.parent.insert_after(description)
+        variants = []
+        for width in (480, 800, 1200):
+            variant = source.with_name(source.stem + f'-{width}w.webp')
+            if variant.is_file():
+                variants.append('/' + variant.relative_to(staging).as_posix() + f' {width}w')
+        if variants:
+            variants.append(image['src'] + ' ' + str(image['width']) + 'w')
+            image['srcset'] = ', '.join(variants)
+            image['sizes'] = ('(max-width: 480px) calc(100vw - 4.2rem), (max-width: 1360px) calc((100vw - 8rem) / 2), 600px'
+                              if route == '/personal/games/' else '(max-width: 760px) calc(100vw - 2rem), 760px')
+    return str(soup)
 
 
 def safe_route(route):
@@ -110,6 +176,9 @@ def render_markdown(body):
 
 
 def link(route, title, cls=""):
+    parsed = urlsplit(str(route))
+    if parsed.scheme not in ('', 'https', 'http', 'mailto') or (parsed.netloc and not parsed.scheme) or any(c in str(route) for c in '\\\r\n\x00'):
+        raise ValueError('Unsafe public link')
     return f'<a href="{e(route)}"' + (f' class="{e(cls)}"' if cls else "") + f'>{e(title)}</a>'
 
 
@@ -165,6 +234,12 @@ def records(data):
         pieces.append('</article>')
         out.append(''.join(pieces))
     return '<div class="records">' + ''.join(out) + '</div><p class="empty" data-filter-empty hidden>No entries match. Try a shorter term or clear the filter.</p>'
+
+
+def steam_chart(chart):
+    caption = f'<figcaption><h2>{e(chart["title"])}</h2><p>{e(chart["description"])}</p></figcaption>'
+    image = render_markdown('![' + chart['alt'] + '](' + chart['image'] + ')')
+    return '<figure class="record" data-record>' + caption + image + link(chart['image'], 'Open full-size chart', 'chart-link') + '</figure>'
 
 
 def make_site():
@@ -253,7 +328,7 @@ def make_site():
     add('/personal/misc/writing/posts/', 'Personal posts', 'All authored personal posts.', '<h1>Personal posts</h1>' + topic_list(journal))
     bodies['/learning/c-sharp/posts/'] = '<h1>C# notebook entries</h1>' + topic_list(notes)
     steam = read_json(ROOT / 'data/steam.json')
-    bodies['/personal/games/'] = '<h1>Games &amp; Steam</h1><p>Saved charts from my Steam library. The original article explains the data and tools.</p><p class="snapshot">Offline snapshot carried forward from V5. No live Steam connection.</p>' + link('/personal/misc/writing/posts/steam-viz/', 'Read the full Steam study') + filters('Find a chart') + '<div class="records">' + ''.join(f'<figure class="record" data-record><figcaption><h2>{e(c["title"])}</h2><p>{e(c["description"])}</p></figcaption>{render_markdown("![" + c["alt"] + "](" + c["image"] + ")")}</figure>' for c in steam['charts']) + '</div><p class="empty" data-filter-empty hidden>No charts match. Clear the filter to show all charts.</p>'
+    bodies['/personal/games/'] = '<h1>Games &amp; Steam</h1><p>Saved charts from my Steam library. The original article explains the data and tools.</p><p class="snapshot">Offline snapshot carried forward from V5. No live Steam connection.</p>' + link('/personal/misc/writing/posts/steam-viz/', 'Read the full Steam study') + filters('Find a chart') + '<div class="records">' + ''.join(steam_chart(c) for c in steam['charts']) + '</div><p class="empty" data-filter-empty hidden>No charts match. Clear the filter to show all charts.</p>'
     anime = read_json(ROOT / 'static/data/anime.json')
     bodies['/personal/anime/'] = '<h1>The anime shelf</h1><p class="snapshot">MyAnimeList snapshot from ' + e(anime['syncedAt'][:10]) + '. This list is not live.</p>' + filters('Find an anime or status') + records(anime['items'])
     for kind in ['ghosts', 'items', 'maps']:
@@ -308,6 +383,12 @@ def check(output):
                 errors.append(f'{path.relative_to(output)}: missing anchor {url}')
         if soup.select('[style],script:not([src])'):
             errors.append(f'{path}: inline CSS/JS')
+        for image in soup.select('img[srcset]'):
+            for item in image['srcset'].split(','):
+                url = item.strip().rsplit(' ', 1)[0]
+                checked += 1
+                if not (output / url.lstrip('/')).is_file():
+                    errors.append(f'{path.relative_to(output)}: missing responsive image {url}')
     if errors:
         raise ValueError('\n'.join(errors))
     return {'html_documents': len(documents), 'internal_references_checked': checked}
@@ -322,9 +403,12 @@ def build(output=ROOT / 'build', origin=None):
     if output in (ROOT.resolve(), HERE.resolve()) or not output.is_relative_to(ROOT.resolve()):
         raise ValueError('Output must be a build directory inside the repository')
     output.parent.mkdir(parents=True, exist_ok=True)
+    validate_public_assets(ROOT / 'static/assets/images')
+    validate_public_assets(ROOT / 'static/favicon.ico')
     with tempfile.TemporaryDirectory(prefix='.v6-build-', dir=output.parent) as temp:
         staging = Path(temp)
         shutil.copytree(ROOT / 'static/assets/images', staging / 'assets/images')
+        prepare_images(staging)
         shutil.copy2(ROOT / 'static/favicon.ico', staging / 'favicon.ico')
         (staging / 'v6').mkdir()
         for name in ['site.css', 'site.js', 'theme.js']:
@@ -336,10 +420,10 @@ def build(output=ROOT / 'build', origin=None):
         for route, page in pages.items():
             path = output_path(staging, route)
             path.parent.mkdir(parents=True, exist_ok=True)
-            html = frame(route, page, bodies[route], origin)
+            html = responsive_images(frame(route, page, bodies[route], origin), staging, route)
             path.write_text(html, encoding='utf-8')
             if route not in ('/404.html', '/offline.html', '/search/', '/sitemap/') and not page['meta'].get('noindex') and page['meta'].get('searchable', True):
-                text = BeautifulSoup(bodies[route], 'html.parser').get_text(' ', strip=True)
+                text = BeautifulSoup(html, 'html.parser').find('main').get_text(' ', strip=True)
                 index.append({'title': page['title'], 'url': route, 'summary': page['description'], 'text': text, 'tags': page['meta'].get('tags') or []})
             for alias in page['meta'].get('aliases') or []:
                 if alias != route and alias not in pages:
@@ -359,7 +443,7 @@ def build(output=ROOT / 'build', origin=None):
         base_htaccess = (ROOT / 'static' / '.htaccess').read_text(encoding='utf-8').rstrip()
         generated_redirects = '\n'.join('Redirect 301 ' + row.rsplit(' ', 1)[0] for row in redirects)
         (staging / '.htaccess').write_text(base_htaccess + ('\n' + generated_redirects if generated_redirects else '') + '\n', encoding='utf-8')
-        (staging / 'search-index.json').write_text(json.dumps(index, ensure_ascii=False), encoding='utf-8')
+        (staging / 'search-index.json').write_text(json.dumps(index, ensure_ascii=False, separators=(',', ':')), encoding='utf-8')
         rss = ET.Element('rss', version='2.0'); channel = ET.SubElement(rss, 'channel')
         for key, value in [('title', 'Kaz’s journal'), ('link', origin), ('description', 'Authored learning and personal notes')]:
             ET.SubElement(channel, key).text = value
@@ -375,8 +459,22 @@ def build(output=ROOT / 'build', origin=None):
                 ET.SubElement(ET.SubElement(sitemap, 'url'), 'loc').text = origin.rstrip('/') + route
         ET.ElementTree(sitemap).write(staging / 'sitemap.xml', encoding='utf-8', xml_declaration=True)
         (staging / 'robots.txt').write_text('User-agent: *\nAllow: /\nSitemap: ' + origin.rstrip('/') + '/sitemap.xml\n', encoding='utf-8')
-        digest = hashlib.sha256(''.join(bodies.values()).encode() + (HERE / 'site.js').read_bytes() + (HERE / 'site.css').read_bytes()).hexdigest()[:16]
-        (staging / 'sw.js').write_text((HERE / 'worker.js').read_text(encoding='utf-8').replace('__BUILD__', digest), encoding='utf-8')
+        digest_input = hashlib.sha256()
+        for asset in sorted(staging.rglob('*')):
+            if asset.is_file():
+                digest_input.update(asset.relative_to(staging).as_posix().encode())
+                digest_input.update(asset.read_bytes())
+        digest_input.update((HERE / 'worker.js').read_bytes())
+        digest = digest_input.hexdigest()[:16]
+        public_paths = []
+        for asset in sorted(staging.rglob('*')):
+            if asset.is_file() and not asset.name.startswith('.') and asset.name != '_redirects':
+                route = '/' + asset.relative_to(staging).as_posix()
+                public_paths.append(route)
+                if route.endswith('/index.html'):
+                    public_paths.append(route[:-len('index.html')])
+        worker = (HERE / 'worker.js').read_text(encoding='utf-8').replace('__BUILD__', digest).replace('__PUBLIC_PATHS__', json.dumps(public_paths))
+        (staging / 'sw.js').write_text(worker, encoding='utf-8')
         report = check(staging)
         if output.exists() and not (output / 'build-info.json').is_file():
             raise ValueError('Refusing to replace an unmarked directory')

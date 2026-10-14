@@ -34,6 +34,19 @@ package = module('package')
 
 
 class PublishedJourneys(unittest.TestCase):
+    def test_gzip_preview_preserves_exact_public_html(self):
+        import gzip
+        request = urllib.request.Request(self.origin + '/', headers={'Accept-Encoding': 'gzip'})
+        with urllib.request.urlopen(request) as response:
+            self.assertEqual(response.headers['Content-Encoding'], 'gzip')
+            self.assertEqual(response.headers['Vary'], 'Accept-Encoding')
+            self.assertEqual(gzip.decompress(response.read()), (builder.ROOT / 'build/index.html').read_bytes())
+
+    def test_disabled_gzip_is_not_sent(self):
+        request = urllib.request.Request(self.origin + '/', headers={'Accept-Encoding': 'gzip;q=0'})
+        with urllib.request.urlopen(request) as response:
+            self.assertIsNone(response.headers.get('Content-Encoding'))
+
     @classmethod
     def setUpClass(cls):
         cls.report = builder.build()
