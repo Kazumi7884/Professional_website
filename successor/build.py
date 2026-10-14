@@ -70,6 +70,10 @@ def responsive_images(html, staging, route):
     descriptions = read_json(HERE / 'chart-descriptions.json')
     for number, image in enumerate(soup.select('img[src^="/assets/images/"]')):
         source = staging / image['src'].lstrip('/')
+        if route == '/personal/games/' and number == 0:
+            # Hosted Lighthouse identifies this visible chart as the LCP element.
+            image['loading'] = 'eager'
+            image['fetchpriority'] = 'high'
         if source.name in descriptions:
             description = soup.new_tag('details', attrs={'class': 'chart-description', 'id': f'chart-description-{number}'})
             summary = soup.new_tag('summary')
@@ -210,8 +214,12 @@ def profile():
     return '<aside class="profile" aria-label="About Kaz"><div class="profile-head"><p class="profile-kicker">profile</p><h2>Kaz</h2><p>Computing graduate. Still learning.</p></div><div class="profile-body"><dl><dt>Currently here for</dt><dd>C#, console apps and writing things down properly.</dd><dt>Also around</dt><dd>Games, anime and whatever I decide to write about.</dd></dl>' + link('/about/', 'A little about me') + '<br>' + link('https://github.com/Kazumi7884', 'Find me on GitHub') + '</div></aside>'
 
 
-def filters(label):
-    return f'<div class="filter"><label for="filter-input">{e(label)}</label><input id="filter-input" type="search" data-filter placeholder="Type to filter"><p class="meta" data-filter-status role="status"></p></div>'
+def filters(label, count):
+    return f'<div class="filter"><label for="filter-input">{e(label)}</label><input id="filter-input" type="search" data-filter placeholder="Type to filter"><p class="meta" data-filter-status role="status">{count} of {count} entries shown</p></div>'
+
+
+def record_count(data):
+    return sum(len(category['items']) for category in data['categories']) if isinstance(data, dict) and 'categories' in data else len(data)
 
 
 def records(data):
@@ -328,12 +336,13 @@ def make_site():
     add('/personal/misc/writing/posts/', 'Personal posts', 'All authored personal posts.', '<h1>Personal posts</h1>' + topic_list(journal))
     bodies['/learning/c-sharp/posts/'] = '<h1>C# notebook entries</h1>' + topic_list(notes)
     steam = read_json(ROOT / 'data/steam.json')
-    bodies['/personal/games/'] = '<h1>Games &amp; Steam</h1><p>Saved charts from my Steam library. The original article explains the data and tools.</p><p class="snapshot">Offline snapshot carried forward from V5. No live Steam connection.</p>' + link('/personal/misc/writing/posts/steam-viz/', 'Read the full Steam study') + filters('Find a chart') + '<div class="records">' + ''.join(steam_chart(c) for c in steam['charts']) + '</div><p class="empty" data-filter-empty hidden>No charts match. Clear the filter to show all charts.</p>'
+    bodies['/personal/games/'] = '<h1>Games &amp; Steam</h1><p>Saved charts from my Steam library. The original article explains the data and tools.</p><p class="snapshot">Offline snapshot carried forward from V5. No live Steam connection.</p>' + link('/personal/misc/writing/posts/steam-viz/', 'Read the full Steam study') + filters('Find a chart', len(steam['charts'])) + '<div class="records">' + ''.join(steam_chart(c) for c in steam['charts']) + '</div><p class="empty" data-filter-empty hidden>No charts match. Clear the filter to show all charts.</p>'
     anime = read_json(ROOT / 'static/data/anime.json')
-    bodies['/personal/anime/'] = '<h1>The anime shelf</h1><p class="snapshot">MyAnimeList snapshot from ' + e(anime['syncedAt'][:10]) + '. This list is not live.</p>' + filters('Find an anime or status') + records(anime['items'])
+    bodies['/personal/anime/'] = '<h1>The anime shelf</h1><p class="snapshot">MyAnimeList snapshot from ' + e(anime['syncedAt'][:10]) + '. This list is not live.</p>' + filters('Find an anime or status', len(anime['items'])) + records(anime['items'])
     for kind in ['ghosts', 'items', 'maps']:
         route = '/personal/misc/phasmophobia/' + kind + '/'
-        bodies[route] = '<h1>' + e(pages[route]['title']) + '</h1>' + render_markdown(pages[route]['body']) + '<p class="snapshot">Saved personal reference from V5. Game updates may change these details.</p>' + filters('Filter ' + kind + ' and notes') + records(read_json(ROOT / ('data/phasmophobia/' + kind + '.json')))
+        data = read_json(ROOT / ('data/phasmophobia/' + kind + '.json'))
+        bodies[route] = '<h1>' + e(pages[route]['title']) + '</h1>' + render_markdown(pages[route]['body']) + '<p class="snapshot">Saved personal reference from V5. Game updates may change these details.</p>' + filters('Filter ' + kind + ' and notes', record_count(data)) + records(data)
     guide = '/personal/misc/phasmophobia/'
     bodies[guide] = '<h1>Phasmophobia field notes</h1>' + render_markdown(pages[guide]['body']) + topic_list([(guide + k + '/', pages[guide + k + '/']) for k in ['ghosts', 'items', 'maps', 'general-info', 'cursed-possessions']])
     general = read_json(ROOT / 'data/phasmophobia/general.json')

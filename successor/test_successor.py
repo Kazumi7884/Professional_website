@@ -34,6 +34,19 @@ package = module('package')
 
 
 class PublishedJourneys(unittest.TestCase):
+    def test_visible_lcp_chart_is_eager_and_other_charts_stay_lazy(self):
+        soup = BeautifulSoup((builder.ROOT / 'build/personal/games/index.html').read_text(), 'html.parser')
+        images = soup.select('img')
+        self.assertEqual(images[0]['loading'], 'eager')
+        self.assertEqual(images[0]['fetchpriority'], 'high')
+        self.assertTrue(all(image['loading'] == 'lazy' for image in images[1:]))
+
+    def test_initial_filter_counts_are_available_without_javascript(self):
+        for route in ['personal/games', 'personal/anime', 'personal/misc/phasmophobia/ghosts', 'personal/misc/phasmophobia/maps', 'personal/misc/phasmophobia/items']:
+            soup = BeautifulSoup((builder.ROOT / 'build' / route / 'index.html').read_text(), 'html.parser')
+            count = len(soup.select('[data-record]'))
+            self.assertEqual(soup.select_one('[data-filter-status]').text, f'{count} of {count} entries shown')
+
     def test_gzip_preview_preserves_exact_public_html(self):
         import gzip
         request = urllib.request.Request(self.origin + '/', headers={'Accept-Encoding': 'gzip'})
