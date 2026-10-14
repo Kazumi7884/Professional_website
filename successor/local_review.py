@@ -53,8 +53,8 @@ def review(endpoint, model):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Draft a local-only editorial review. It never edits source files.')
-    parser.add_argument('--endpoint', default='http://127.0.0.1:11435/v1/chat/completions')
-    parser.add_argument('--model', default='simple')
+    parser.add_argument('--endpoint', default='http://127.0.0.1:11434/v1/chat/completions')
+    parser.add_argument('--model', default='qwen3:4b')
     parser.add_argument('--output', type=Path, help='Optional review-draft file. Omit to print only.')
     args = parser.parse_args()
     draft = review(args.endpoint, args.model)
