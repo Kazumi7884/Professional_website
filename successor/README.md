@@ -67,6 +67,8 @@ you explicitly give it `--output`, and even then it writes a separate draft only
 .venv\Scripts\python.exe successor\local_review.py --endpoint http://127.0.0.1:11434/v1/chat/completions --model qwen3:4b
 ```
 
+The selected Ollama tag must already be pulled on this machine, for example `ollama pull qwen3:4b`. This optional reviewer does not start another inference server, download models, or enable a cloud fallback. Pass `--model` for another installed model. A future validated FOSSLife Chief endpoint can still be supplied explicitly.
+
 For FOSSLife's governed local runtime, use:
 
 ```powershell
