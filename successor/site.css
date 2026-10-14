@@ -9,6 +9,8 @@ a{color:var(--link,var(--accent))}
 h1,h2,h3{overflow-wrap:anywhere}
 .chart-link{display:inline-block;min-height:44px;padding:.5rem 0}
 .chart-description summary{min-height:44px;padding:.5rem 0}
+/* Default figure margins shrink chart labels and disagree with responsive sizes. */
+figure.record{margin:0}
 
 /* Umbrella: original corporate-biotech dossier treatment. */
 :root[data-theme=resident] .masthead{background:#0a0b0a;border-bottom-color:var(--accent);box-shadow:none}:root[data-theme=resident] .masthead::before{content:"UMB-ARCHIVE / PUBLIC COPY";display:block;color:#d7d3ca;font-size:.64rem;letter-spacing:.16em;padding:.35rem max(var(--space),calc((100vw - 1280px)/2));border-bottom:1px solid #383936}:root[data-theme=resident] .brand b,:root[data-theme=resident] h1,:root[data-theme=resident] h2{font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:.035em}:root[data-theme=resident] h1{font-weight:800}:root[data-theme=resident] .primary a{border-color:#383936;text-transform:uppercase;font-size:.76rem;letter-spacing:.08em}:root[data-theme=resident] .profile,:root[data-theme=resident] .split-door,:root[data-theme=resident] .feature{box-shadow:none}:root[data-theme=resident] .profile-head{background:#252623;border-top:10px solid var(--accent)}:root[data-theme=resident] .section-head{border-top-color:var(--accent)}:root[data-theme=resident] .section-head span,:root[data-theme=resident] .eyebrow{color:#e26469}:root[data-theme=resident] .topic{border-bottom-color:#4b4c48}:root[data-theme=resident] .snapshot{border-left-color:var(--accent);background:#222320}:root[data-theme=resident] .button{background:var(--accent)}
