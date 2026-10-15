@@ -1,0 +1,46 @@
+# Upstream credit: lycheeverse/lychee-action (Apache-2.0)
+# https://github.com/lycheeverse/lychee-action
+# Uses lycheeverse/lychee (MIT OR Apache-2.0), not a bespoke crawler.
+name: Review published-site links (lychee)
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/links-upstream.yml'
+      - 'successor/**'
+      - 'content/**'
+      - 'static/**'
+  workflow_dispatch:
+  schedule:
+    - cron: "15 3 * * 1"
+permissions:
+  contents: read
+jobs:
+  site-links:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install official site dependencies
+        run: python -m pip install -r requirements.txt
+      - name: Build the existing successor
+        run: python successor/build.py
+      - name: Review generated site links using upstream lychee
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8
+        with:
+          lycheeVersion: v0.24.2
+          args: '--no-progress --root-dir ${{ github.workspace }}/build --index-files index.html --exclude "^https://kazumi7884[.]co[.]uk/" --exclude "^https://www[.]udemy[.]com/course-dashboard-redirect/" --exclude "^https://phasmophobia[.]fandom[.]com/" "build/**/*.html"'
+          output: lychee/out.md
+          # Advisory until the current website's real external-link baseline
+          # has been reviewed. HTTP 403 and rate-limits can be false positives.
+          fail: false
+          failIfEmpty: true
+      - name: Retain the upstream link report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lychee-site-links
+          path: lychee/out.md
+          if-no-files-found: warn

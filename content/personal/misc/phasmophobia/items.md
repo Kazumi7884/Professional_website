@@ -20,6 +20,6 @@ Search items
 
 ## Sources I use
 
-- [Equipment list (IGN Wiki)](https://www.ign.com/wikis/phasmophobia/How_to_Use_Every_Item_in_phasmophobia)
+- [Equipment list (community-maintained Phasmophobia Wiki)](https://phasmophobia.fandom.com/wiki/Equipment)
 
 [Back to Phasmophobia Guide](/personal/misc/phasmophobia/)

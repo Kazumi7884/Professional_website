@@ -11,6 +11,22 @@ This policy applies equally to GPT, Qwen, Mistral, Ministral, DeepSeek and futur
 
 Use existing user authorisation without asking repeatedly. Do not discard unrelated work, force-push, bypass required gates, expose secrets, weaken tests, fabricate authorship or claim checks you did not run. An agent cannot edit policy to authorise itself. A request to expand this documentation authorises documentation changes, not unrelated production features.
 
+## 1a. Upstream software first (15 October 2026)
+
+New operational features and third-party capabilities should integrate an
+existing maintained GitHub project with explicit original author attribution,
+source URL, licence, pinned release and upgrade path. Do not invent replacement
+website crawlers, link scanners, uptime monitors, notification servers, file
+organisers, model runtimes or agent systems. Use original upstream Actions,
+programs and documented APIs/configuration instead; keep any glue narrow and
+reviewable. Credit upstream projects in workflow comments and documentation.
+
+This does **not** authorise replacing Kaz's original authored content, custom
+portfolio design, personal website source or learning notes with another
+project's content. Preserve the existing successor builder and CI checks when
+adding upstream utilities. Review any published site content and deployment
+changes separately, and never expose private repository data.
+
 ## 2. Required handbook loading
 
 The detailed policy is [docs/agents/HANDBOOK.md](docs/agents/HANDBOOK.md). The machine-readable case specification is [docs/agents/audit-catalogue.json](docs/agents/audit-catalogue.json). These are part of the repository instructions, not optional suggestions.
