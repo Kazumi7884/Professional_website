@@ -3,6 +3,12 @@
 # Uses lycheeverse/lychee (MIT OR Apache-2.0), not a bespoke crawler.
 name: Review published-site links (lychee)
 on:
+  pull_request:
+    paths:
+      - '.github/workflows/links-upstream.yml'
+      - 'successor/**'
+      - 'content/**'
+      - 'static/**'
   workflow_dispatch:
   schedule:
     - cron: "15 3 * * 1"
