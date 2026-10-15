@@ -25,7 +25,7 @@ jobs:
         uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8
         with:
           lycheeVersion: v0.24.2
-          args: '--no-progress --root-dir build build'
+          args: '--no-progress --root-dir ${{ github.workspace }}/build --index-files index.html "build/**/*.html"'
           output: lychee/out.md
           # Advisory until the current website's real external-link baseline
           # has been reviewed. HTTP 403 and rate-limits can be false positives.
