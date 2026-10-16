@@ -95,7 +95,9 @@ def responsive_images(html, staging, route):
             if variant.is_file():
                 variants.append('/' + variant.relative_to(staging).as_posix() + f' {width}w')
         if variants:
-            variants.append(image['src'] + ' ' + str(image['width']) + 'w')
+            width = image.get('width')
+            if width is not None:
+                variants.append(image['src'] + ' ' + str(width) + 'w')
             image['srcset'] = ', '.join(variants)
             image['sizes'] = ('(max-width: 480px) calc(100vw - 4.2rem), (max-width: 1360px) calc((100vw - 8rem) / 2), 600px'
                               if route == '/personal/games/' else '(max-width: 760px) calc(100vw - 2rem), 760px')

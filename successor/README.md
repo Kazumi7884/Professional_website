@@ -64,7 +64,7 @@ prints a review draft for you to decide on. It cannot edit source files unless
 you explicitly give it `--output`, and even then it writes a separate draft only.
 
 ```powershell
-.venv\Scripts\python.exe successor\local_review.py --endpoint http://127.0.0.1:11435/v1/chat/completions --model simple
+.venv\Scripts\python.exe successor\local_review.py --endpoint http://127.0.0.1:11434/v1/chat/completions --model qwen3:4b
 ```
 
 For FOSSLife's governed local runtime, use:
