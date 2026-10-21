@@ -4,7 +4,11 @@ The clean-room successor lives in **successor/**. It uses V5's authored Markdown
 saved data and historical URLs as content inputs, with a new builder, page
 composition, external CSS/JavaScript, search and offline worker.
 
-The [October design-reference review](docs/DESIGN-REFERENCES-OCT-2026.md) explains\nwhich of the six linked web-development resources fit the site, what was\nimplemented and how to review future changes.\n\nStart with [the successor guide](successor/README.md). Build with
+The [October design-reference review](docs/DESIGN-REFERENCES-OCT-2026.md) explains
+which of the six linked web-development resources fit the site, what was
+implemented and how to review future changes.
+
+Start with [the successor guide](successor/README.md). Build with
 `python successor/build.py`, preview with `python successor/serve.py`, and verify
 with `python scripts/verify.py`. Upload output comes from `build/`, packaged by
 `python successor/package.py`. Both Windows and Linux CI run the successor checks.
