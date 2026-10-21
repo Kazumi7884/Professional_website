@@ -21,3 +21,49 @@ figure.record{margin:0}
 @media(max-width:920px){.home-grid,.work-grid{grid-template-columns:minmax(0,1fr) 240px;gap:2rem}.article-frame{grid-template-columns:135px minmax(0,1fr);gap:2rem}.primary a{padding-inline:.65rem}}
 @media(max-width:760px){body{font-size:15px}.home-grid,.work-grid{grid-template-columns:1fr}.profile{margin-top:0;display:grid;grid-template-columns:1fr 1.25fr}.profile-head{display:flex;flex-direction:column;justify-content:center}.profile dl{margin:0}.article-frame{grid-template-columns:1fr;gap:1rem}.author-gutter{display:flex;flex-wrap:wrap;align-items:baseline;gap:1rem}.author-gutter p{margin:0}.welcome h1{max-width:15ch}.welcome{padding-top:0}.intro{margin-bottom:1.5rem}.mastrow{gap:.75rem;min-height:64px}.theme-control label{position:absolute;width:1px;height:1px;clip-path:inset(50%);overflow:hidden}.primary{display:none}.mobile-nav{display:block;flex:1}.mobile-nav summary{padding:.5rem 0;min-height:44px;font-weight:700}.mobile-nav nav{display:grid;grid-template-columns:1fr 1fr;gap:.35rem 1rem;padding:.5rem 0}.mobile-nav a{min-height:44px;padding:.5rem 0;font-weight:700}.navrow{align-items:flex-start;padding-bottom:.45rem}.course{grid-template-columns:minmax(0,1fr) 120px}.section-head{margin-top:1.8rem}.aside{margin-top:1rem}}
 @media(max-width:480px){.brand{gap:.5rem}.brand b{font-size:2rem}.brand span{font-size:.63rem}.theme-control select{max-width:138px;font-size:.8rem}.split-door,.profile,.records{grid-template-columns:1fr}.split-door section+section{border-left:0;border-top:2px solid var(--line)}.topic{grid-template-columns:1fr;gap:.25rem}.topic .meta{font-size:.76rem}.course{grid-template-columns:1fr;gap:.6rem}.progress{max-width:220px}.section-head{display:block}.section-head h2{margin-bottom:.35rem}.profile-head{padding:1rem 1.2rem}.profile-body{padding:1rem 1.2rem}.breadcrumb{margin:.8rem 0}.welcome h1{font-size:2.7rem}:root[data-theme=resident] .masthead::before{padding-inline:1rem;font-size:.57rem}}
+
+
+/* Editorial navigation: a compact contents box for long notes, not a dashboard card. */
+.article-outline{
+  max-width:65ch;
+  margin:1.4rem 0 2rem;
+  padding:1rem 1.25rem;
+  border:1px solid var(--line);
+  border-top:3px solid var(--accent);
+  background:var(--surface);
+}
+.article-outline-title{
+  margin:0 0 .5rem;
+  font:700 .82rem/1.5 var(--body);
+  letter-spacing:.055em;
+  text-transform:uppercase;
+}
+.article-outline ol{
+  margin:.25rem 0 0;
+  padding-left:1.35rem;
+}
+.article-outline-long ol{columns:2;column-gap:2.5rem}
+.article-outline li{
+  padding:.15rem 0;
+  break-inside:avoid;
+  line-height:1.55;
+}
+.article-outline-subsection{margin-left:1rem;font-size:.92rem}
+.article-outline a{display:inline-block;padding:.2rem 0;text-underline-offset:.2em}
+.article h2[id],.article h3[id]{scroll-margin-top:1.25rem}
+.article h2[id]:target,.article h3[id]:target{
+  border-inline-start:3px solid var(--accent);
+  padding-inline-start:.65rem;
+}
+.article pre{
+  white-space:pre;
+  overflow-x:auto;
+  max-width:100%;
+  overscroll-behavior-inline:contain;
+  tab-size:4;
+  line-height:1.5;
+}
+@media(max-width:760px){
+  .article-outline-long ol{columns:1}
+  .article-outline{padding:.8rem 1rem;margin:1rem 0 1.5rem}
+}
