@@ -175,10 +175,37 @@ def render_markdown(body):
             if candidate.is_file() and candidate.resolve().is_relative_to((ROOT / "static").resolve()):
                 with Image.open(candidate) as image:
                     tag["width"], tag["height"] = image.size
+    for block in soup.select("pre"):
+        # Horizontally scrollable code must also be reachable without a mouse.
+        block["tabindex"] = "0"
+        block["role"] = "region"
+        block["aria-label"] = "Code example (scroll for long lines)"
     for table in soup.find_all("table"):
         wrapper = soup.new_tag("div", attrs={"class": "table-wrap", "tabindex": "0", "role": "region", "aria-label": "Scrollable table"})
         table.wrap(wrapper)
     return str(soup)
+
+
+def article_outline(body):
+    """Generate a small, no-JavaScript section index for longer authored entries."""
+    headings = [
+        heading for heading in BeautifulSoup(body, "html.parser").select("h2[id], h3[id]")
+        if heading.get_text(" ", strip=True)
+    ]
+    if len(headings) < 3:
+        return ""
+    entries = []
+    for heading in headings:
+        depth = ' class="article-outline-subsection"' if heading.name == "h3" else ""
+        entries.append(
+            '<li' + depth + '><a href="#' + e(heading["id"]) + '">'
+            + e(heading.get_text(" ", strip=True)) + '</a></li>'
+        )
+    long = " article-outline-long" if len(headings) >= 6 else ""
+    return '<nav class="article-outline' + long + '" aria-label="Sections in this entry">' + (
+        '<p class="article-outline-title">In this entry</p><ol>'
+        + "".join(entries) + '</ol></nav>'
+    )
 
 
 def link(route, title, cls=""):
@@ -358,9 +385,9 @@ def make_site():
             continue
         body = render_markdown(page['body'])
         if page['meta'].get('entryType') == 'post':
-            bodies[route] = '<div class="article-frame"><aside class="author-gutter"><b>Kaz</b><p>From the notebook</p><p>' + e(page['meta'].get('date', '')) + '</p>' + link('/about/', 'About the author') + '</aside><article class="article"><h1>' + e(page['title']) + '</h1>' + body + '<div class="actions">' + link('/blog/', 'All journal entries') + link('/learning/' if route.startswith('/learning/') else '/personal/', 'Back to this section') + '</div></article></div>'
+            bodies[route] = '<div class="article-frame"><aside class="author-gutter"><b>Kaz</b><p>From the notebook</p><p>' + e(page['meta'].get('date', '')) + '</p>' + link('/about/', 'About the author') + '</aside><article class="article"><h1>' + e(page['title']) + '</h1>' + article_outline(body) + body + '<div class="actions">' + link('/blog/', 'All journal entries') + link('/learning/' if route.startswith('/learning/') else '/personal/', 'Back to this section') + '</div></article></div>'
         else:
-            bodies[route] = '<article class="article"><h1>' + e(page['title']) + '</h1>' + body + '</article>'
+            bodies[route] = '<article class="article"><h1>' + e(page['title']) + '</h1>' + article_outline(body) + body + '</article>'
     return pages, bodies
 
 
