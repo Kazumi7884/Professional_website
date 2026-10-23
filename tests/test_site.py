@@ -228,7 +228,8 @@ class AuthoringSafety(unittest.TestCase):
         self.assertEqual(site.route_path('/about.html'),Path('about.html'))
 
     def test_unsafe_routes_are_rejected(self):
-        for route in ['/../secrets','/%2e%2e/secrets','https://example.com/','//example.com/','/a\\b']:
+        for route in ['/../secrets','/%2e%2e/secrets','https://example.com/','//example.com/','/a\\b',
+                      '/C:/tmp/escape/', '/%43%3a/tmp/escape/']:
             with self.subTest(route=route),self.assertRaises(ValueError):site.route_path(route)
 
     def test_new_draft_cannot_overwrite_work(self):
