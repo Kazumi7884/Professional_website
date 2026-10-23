@@ -39,8 +39,9 @@ def slug(value):
 def route_path(route):
     """Reject output traversal before converting a public URL to a file path."""
     parsed = urlsplit(route)
-    parts = unquote(parsed.path).split('/')
-    if parsed.scheme or parsed.netloc or '..' in parts or '\\' in route:
+    decoded = unquote(parsed.path)
+    parts = decoded.split('/')
+    if parsed.scheme or parsed.netloc or '..' in parts or ':' in decoded or '\\' in route:
         raise ValueError(f'Unsafe local route: {route}')
     name = parsed.path.lstrip('/')
     return Path(name if Path(name).suffix else (name.rstrip('/') + '/' if name else '') + 'index.html')

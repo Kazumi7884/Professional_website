@@ -32,7 +32,7 @@ jobs:
         with:
           node-version: '22'
       - name: Install isolated runtime test helper
-        run: npm install --prefix .cache/runtime-tests jsdom@26.1.0 --no-audit --no-fund
+        run: npm install --prefix .cache/runtime-tests jsdom@26.1.0 --ignore-scripts --no-audit --no-fund
       - name: JavaScript syntax gates
         run: |
           node --check assets/js/theme-init.js
