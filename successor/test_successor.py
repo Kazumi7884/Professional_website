@@ -292,7 +292,7 @@ class LocalReviewSafety(unittest.TestCase):
             def __enter__(self): return self
             def __exit__(self, *args): return False
         with patch.object(local_review.urllib.request.OpenerDirector, 'open', return_value=Response()):
-            self.assertEqual(local_review.review('http://127.0.0.1:11435/v1/chat/completions', 'simple'), 'ASK OWNER: confirm this.')
+            self.assertEqual(local_review.review('http://127.0.0.1:11434/v1/chat/completions', 'qwen3:4b'), 'ASK OWNER: confirm this.')
         self.assertEqual((HERE / 'projects.json').read_bytes(), before)
 
     def test_remote_or_credentialled_endpoints_are_rejected_before_network(self):
