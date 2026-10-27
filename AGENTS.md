@@ -175,3 +175,7 @@ These rules adapt the practical agent lessons in [unicodef1wn/grokbot-field-note
 - **Do not repeat a failed approach indefinitely.** After two materially similar failed attempts, change the approach and report the evidence rather than looping.
 - **Status must be factual.** Report what is done, what is in progress, what failed or remains unverified, and what is blocked. Never manufacture progress.
 
+
+## Cross-agent task-scoped review imports (27 October 2026)
+
+For **every task**, including a prose-only change, use Antislop's relevant quality guidance and Ponytail's smallest safe complete change discipline. Read [docs/AGENT_REVIEW_IMPORT.md](docs/AGENT_REVIEW_IMPORT.md) for the task-scoped Codex/Hermes/Agent Zero specialist prompts and optional Alibaba Open Code Review rules. Do not bulk-load skills or install executables on an agent's authority. The site handbook and existing validation, security, authorship and publication controls remain authoritative.
