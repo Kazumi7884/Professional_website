@@ -9,7 +9,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   lighthouse:
-    runs-on: ${{ fromJSON((github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository) && '["ubuntu-latest"]' || '["self-hosted","nio12"]') }}
+    runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
