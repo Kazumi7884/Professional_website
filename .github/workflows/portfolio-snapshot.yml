@@ -2,7 +2,10 @@ name: Curated repository snapshot
 on:
   workflow_dispatch:
   schedule:
-    - cron: '17 2,10,18 * * *'
+    - cron: '17 2 * * *'
+concurrency:
+  group: website-facts-${{ github.ref }}
+  cancel-in-progress: false
 permissions:
   contents: write
   pull-requests: write
