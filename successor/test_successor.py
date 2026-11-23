@@ -87,7 +87,7 @@ class PublishedJourneys(unittest.TestCase):
         with urllib.request.urlopen(self.origin + '/projects/') as response:
             soup = BeautifulSoup(response.read(), 'html.parser')
         self.assertIsNotNone(soup.select_one('main a[href="/work/"]'))
-        self.assertIn('/projects/ /work/ 301', (builder.ROOT / 'build/_redirects').read_text(encoding='utf-8'))
+        self.assertIn('/projects/ /work/projects/ 301', (builder.ROOT / 'build/_redirects').read_text(encoding='utf-8'))
 
     def test_every_internal_link_and_anchor_resolves(self):
         self.assertGreater(builder.check(builder.ROOT / 'build')['internal_references_checked'], 100)
