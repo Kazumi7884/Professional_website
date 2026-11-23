@@ -111,5 +111,30 @@ class CareerHierarchyTests(unittest.TestCase):
                          '/work/projects/')
 
 
+    def test_home_places_evidence_before_secondary_choice_panels(self):
+        _, bodies = builder.make_site()
+        home = bodies['/']
+        self.assertLess(home.index('Projects with evidence'), home.index('class="split-door"'))
+
+    def test_standalone_page_does_not_highlight_home(self):
+        pages, bodies = builder.make_site()
+        html = builder.frame('/skills/', pages['/skills/'], bodies['/skills/'],
+                             'https://kazumi7884.co.uk')
+        soup = BeautifulSoup(html, 'html.parser')
+        self.assertFalse(soup.select('nav.primary a[aria-current]'))
+
+    def test_career_pages_render_without_visible_html_markup(self):
+        pages = builder.content_pages()
+        for route in ('/skills/', '/experience/', '/education/', '/contact/'):
+            with self.subTest(route=route):
+                rendered = BeautifulSoup(builder.render_markdown(pages[route]['body']), 'html.parser')
+                visible = rendered.get_text(' ', strip=True)
+                self.assertNotIn('<div', visible)
+                self.assertNotIn('<section', visible)
+                self.assertNotIn('<article', visible)
+                self.assertGreaterEqual(len(rendered.select('a[href]')), 1)
+                self.assertTrue(len(visible) > 100)
+
+
 if __name__ == "__main__":
     unittest.main()
