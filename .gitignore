@@ -15,3 +15,6 @@ build/
 
 # Retained local source archive; never part of a public build or source sync.
 /professional_wesbite.zip
+
+# Generated validation output; recreated by the audit rather than versioned.
+docs/validation-report.json
