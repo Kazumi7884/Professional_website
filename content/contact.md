@@ -7,11 +7,7 @@ entryType: "page"
 
 The simplest way to reach me about technology roles, projects or this site is by email.
 
-<div class="button-row">
-  <a class="button" href="mailto:hello@kazumi7884.co.uk">Email Kaz</a>
-  <a class="button button--quiet" href="https://github.com/kazumi7884" rel="noopener">GitHub</a>
-  <a class="button button--quiet" href="https://linkedin.com/in/kazumi7884" rel="noopener">LinkedIn</a>
-</div>
+[Email Kaz](mailto:hello@kazumi7884.co.uk) · [GitHub](https://github.com/kazumi7884) · [LinkedIn](https://linkedin.com/in/kazumi7884)
 
 ## CV
 
