@@ -27,4 +27,4 @@ An earlier systems-support qualification forming part of the route into further 
 
 Education continues through focused learning in C# and .NET, PowerShell, JavaScript, accessible web development, Linux and self-hosting. These areas are shown as current learning until there is enough evidence to claim more.
 
-The [learning hub](/learning/) holds notes and experiments; the [projects page](/work/projects/) is deliberately more selective.
+The [learning hub](/learning/) holds notes and experiments; the [projects page](/projects/) is deliberately more selective.
