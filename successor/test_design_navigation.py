@@ -79,5 +79,37 @@ class EditorialNavigationTests(unittest.TestCase):
         )
 
 
+class CareerHierarchyTests(unittest.TestCase):
+    def test_home_surfaces_real_projects_without_extra_navigation(self):
+        pages, bodies = builder.make_site()
+        self.assertIn('/work/projects/', pages)
+        home = BeautifulSoup(bodies['/'], 'html.parser')
+        self.assertEqual([link['href'] for link in home.select('a[href^="/work/projects/"]')],
+                         ['/work/projects/space-invaders/', '/work/projects/steam-study/'])
+
+    def test_journal_separates_technical_and_personal_posts(self):
+        _, bodies = builder.make_site()
+        journal = BeautifulSoup(bodies['/blog/'], 'html.parser')
+        headings = [heading.get_text(' ', strip=True) for heading in journal.select('h2')]
+        self.assertIn('Technical notes', headings)
+        self.assertIn('Personal writing', headings)
+        self.assertIn('/learning/c-sharp/posts/c-sharp-lesson-1/',
+                      [link['href'] for link in journal.select('a[href]')])
+        self.assertIn('/personal/misc/writing/posts/steam-viz/',
+                      [link['href'] for link in journal.select('a[href]')])
+
+    def test_project_navigation_marks_active_section_on_details(self):
+        pages, bodies = builder.make_site()
+        html = builder.frame('/work/projects/space-invaders/',
+                             pages['/work/projects/space-invaders/'],
+                             bodies['/work/projects/space-invaders/'],
+                             'https://kazumi7884.co.uk')
+        soup = BeautifulSoup(html, 'html.parser')
+        self.assertEqual(soup.select_one('nav.primary a[aria-current="page"]')['href'],
+                         '/work/projects/')
+        self.assertEqual(soup.select_one('nav[aria-label="Mobile navigation"] a[aria-current="page"]')['href'],
+                         '/work/projects/')
+
+
 if __name__ == "__main__":
     unittest.main()

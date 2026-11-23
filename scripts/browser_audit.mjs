@@ -1,4 +1,5 @@
 import {spawn} from 'node:child_process';
+import {createHash} from 'node:crypto';
 import {mkdir,readFile,writeFile} from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
@@ -12,7 +13,8 @@ const python=process.env.WEBSITE_PYTHON || path.join(root,'.venv',process.platfo
 const server=spawn(python,[path.join(root,'successor/serve.py')],{stdio:['ignore','pipe','inherit']});
 await new Promise((resolve,reject)=>{server.stdout.once('data',resolve);server.once('error',reject);server.once('exit',code=>reject(Error('Preview exited '+code)));});
 let browser;
-const rows=[],errors=[],flows=[];
+const rows=[],errors=[],flows=[],screenshots=[];
+const screenshotDir=path.join(output,'screenshots');await mkdir(screenshotDir,{recursive:true});
 const routes=['/','/learning/','/learning/c-sharp/posts/c-sharp-blog-1/','/personal/games/','/personal/anime/','/search/','/personal/misc/phasmophobia/ghosts/','/404.html'];
 const viewports=[[320,568],[390,844],[430,932],[844,390],[768,1024],[1024,768],[1280,1024],[1920,1080],[2560,1080],[3440,1440],[5120,2160],[5120,1440]];
 try {
@@ -65,8 +67,25 @@ try {
   await page.setViewportSize({width:640,height:512});assert(await page.evaluate(()=>document.documentElement.scrollWidth)<=641);flows.push('200% equivalent desktop reflow');
   const allRoutes=[...new Set([...((await readFile(path.join(root,'build/sitemap.xml'),'utf8')).matchAll(/<loc>(.*?)<\/loc>/g))].map(match=>new URL(match[1]).pathname).concat(['/404.html','/offline.html']))];
   await cdp.send('Network.emulateNetworkConditions',{offline:false,latency:0,downloadThroughput:-1,uploadThroughput:-1});await cdp.send('Emulation.setCPUThrottlingRate',{rate:1});await page.setViewportSize({width:320,height:568});
-  for(const route of allRoutes){const response=await page.goto('http://127.0.0.1:8765'+route);assert(response.status()===200);assert(await page.evaluate(()=>document.documentElement.scrollWidth)<=321,'Overflow '+route);}
+  for(const route of allRoutes){
+    const response=await page.goto('http://127.0.0.1:8765'+route);
+    assert(response.status()===200,'HTTP status '+route);
+    assert(await page.evaluate(()=>document.documentElement.scrollWidth)<=321,'Overflow '+route);
+    const slug=(route.replace(/[^a-z0-9]+/gi,'-').replace(/^-|-$/g,'').slice(0,42)||'home');
+    const digest=createHash('sha256').update(route).digest('hex').slice(0,10);
+    for(const [kind,width,height] of [['mobile',390,844],['desktop',1280,800]]){
+      await page.setViewportSize({width,height});
+      const documentHeight=await page.evaluate(()=>document.documentElement.scrollHeight);
+      // Very long lists get a viewport capture to avoid oversized browser bitmaps.
+      const fullPage=documentHeight<=9000;
+      const filename=slug+'-'+digest+'-'+kind+'.png';
+      await page.screenshot({path:path.join(screenshotDir,filename),fullPage,animations:'disabled'});
+      screenshots.push({route,kind,width,height,fullPage,documentHeight,file:'screenshots/'+filename});
+    }
+    await page.setViewportSize({width:320,height:568});
+  }
   flows.push(allRoutes.length+' canonical direct loads at 320px');
+  flows.push(screenshots.length+' Chrome screenshots covering '+allRoutes.length+' routes');
   const offlineContext=await browser.newContext({viewport:{width:390,height:844},serviceWorkers:'allow'});
   const offlinePage=await offlineContext.newPage();await offlinePage.goto('http://127.0.0.1:8765/');
   await offlinePage.waitForFunction(()=>navigator.serviceWorker.controller,{timeout:15000});
@@ -76,5 +95,5 @@ try {
   await offlinePage.goto('http://127.0.0.1:8765/learning/python/');assert.match(await offlinePage.locator('h1').textContent(),/offline/);
   flows.push('Real service-worker saved page and unsaved-page offline fallback');
 } catch(error){errors.push(error.message);console.error(error);}
-finally{if(browser)await browser.close();server.kill();await writeFile(path.join(output,'report.json'),JSON.stringify({rows,flows,errors,viewports,browser:process.env.CHROME_PATH||'installed Chrome'},null,2));}
+finally{if(browser)await browser.close();server.kill();await writeFile(path.join(output,'screenshots.json'),JSON.stringify(screenshots,null,2));await writeFile(path.join(output,'report.json'),JSON.stringify({rows,flows,errors,viewports,screenshotCount:screenshots.length,browser:process.env.CHROME_PATH||'installed Chrome'},null,2));}
 process.exitCode=errors.length||rows.some(row=>row.violations.length||row.overflows.length)?1:0;
