@@ -83,10 +83,10 @@ class PublishedJourneys(unittest.TestCase):
         soup = BeautifulSoup(caught.exception.read(), 'html.parser')
         self.assertIsNotNone(soup.select_one('main a[href="/search/"]'))
 
-    def test_historical_projects_route_reaches_work(self):
+    def test_historical_projects_route_reaches_projects_index(self):
         with urllib.request.urlopen(self.origin + '/projects/') as response:
             soup = BeautifulSoup(response.read(), 'html.parser')
-        self.assertIsNotNone(soup.select_one('main a[href="/work/"]'))
+        self.assertIsNotNone(soup.select_one('main a[href="/work/projects/"]'))
         self.assertIn('/projects/ /work/projects/ 301', (builder.ROOT / 'build/_redirects').read_text(encoding='utf-8'))
 
     def test_every_internal_link_and_anchor_resolves(self):
