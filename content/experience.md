@@ -31,4 +31,4 @@ Converting formal study and long-term technical interest into documented work: f
 - Responsibility for routine standards and practical operational tasks.
 - Problem solving without losing sight of the person affected by the problem.
 
-For technical evidence, see [projects](/work/projects/) and [skills](/skills/).
+For technical evidence, see [projects](/projects/) and [skills](/skills/).
