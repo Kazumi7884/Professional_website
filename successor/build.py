@@ -458,7 +458,7 @@ def build(output=ROOT / 'build', origin=None):
         index = []
         aliases = read_json(ROOT / 'data/legacy-routes.json')
         aliases['/search.html'] = '/search/'
-        aliases.setdefault('/projects/', '/work/')
+        aliases.setdefault('/projects/', '/work/projects/')
         for route, page in pages.items():
             path = output_path(staging, route)
             path.parent.mkdir(parents=True, exist_ok=True)
