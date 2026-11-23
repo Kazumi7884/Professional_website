@@ -323,7 +323,7 @@ def make_site():
             term_pages.append((route, pages[route]))
         add('/' + taxonomy + '/', taxonomy.title(), 'Browse the notebook by ' + taxonomy + '.', '<h1>' + taxonomy.title() + '</h1>' + topic_list(term_pages))
 
-    home = '<div class="home-grid"><div><div class="welcome"><p class="eyebrow">welcome to my corner of the internet</p><h1>Hi, I’m Kaz.</h1><p>This is where I keep the learning side and the personal side together. There are notes, projects, games, and posts about whatever is going on.</p></div><div class="split-door"><section><h2>Work &amp; learning</h2><p>Courses, C# notes and the work I can actually point to.</p>' + link('/work/', 'See work and learning') + '</section><section><h2>Personal stuff</h2><p>Posts, game notes, anime and things I want to keep around.</p>' + link('/personal/', 'Go to the personal side') + '</section></div>' + section('Projects with evidence', 'work') + project_list(projects) + section('Latest learning notes', 'learning') + topic_list(notes[:2]) + '</div>' + profile() + '</div>'
+    home = '<div class="home-grid"><div><div class="welcome"><p class="eyebrow">welcome to my corner of the internet</p><h1>Hi, I’m Kaz.</h1><p>This is where I keep the learning side and the personal side together. There are notes, projects, games, and posts about whatever is going on.</p></div>' + section('Projects with evidence', 'work') + project_list(projects) + '<div class="split-door"><section><h2>Work &amp; learning</h2><p>Courses, C# notes and the work I can actually point to.</p>' + link('/work/', 'See work and learning') + '</section><section><h2>Personal stuff</h2><p>Posts, game notes, anime and things I want to keep around.</p>' + link('/personal/', 'Go to the personal side') + '</section></div>' + section('Latest learning notes', 'learning') + topic_list(notes[:2]) + '</div>' + profile() + '</div>'
     home += section('Recent personal posts', 'journal') + topic_list(journal)
     add('/', 'Kaz · personal site and learning notes', 'Learning notes, practical work and personal posts by Kaz.', home)
     add('/work/projects/', 'Projects and evidence', 'Authored project write-ups with links to evidence and known limitations.', '<div class="intro"><h1>Projects and evidence</h1><p>Practical work I can explain, including the source material and what still needs improving.</p></div>' + project_list(projects))
@@ -396,7 +396,7 @@ def make_site():
 def frame(route, page, body, origin):
     def nav():
         active = next((dest for _, dest in sorted(NAV, key=lambda item: len(item[1]), reverse=True)
-                       if route == dest or (dest != '/' and route.startswith(dest))), '/')
+                       if route == dest or (dest != '/' and route.startswith(dest))), None)
         return ''.join(f'<a href="{dest}"' + (' aria-current="page"' if dest == active else '') + f'>{label}</a>' for label, dest in NAV)
     canonical = origin.rstrip('/') + route
     robots = '<meta name="robots" content="noindex">' if page.get('meta', {}).get('noindex') or route in ('/404.html', '/offline.html') else ''
