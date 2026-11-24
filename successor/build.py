@@ -51,6 +51,7 @@ SUBJECT_GROUPS = [
 ]
 TRACKS = {slug: title for _, subjects in SUBJECT_GROUPS for slug, title, _ in subjects}
 NAV = [("Home", "/"), ("Learning", "/learning/"), ("Personal", "/personal/"), ("About", "/about/"), ("Site", "/start-here/")]
+STYLE_SOURCES = ('theme-tokens.css', 'site.css', 'themes.css', 'sections.css')
 
 
 def e(value):
@@ -262,7 +263,7 @@ def project_route(project):
 
 def subject_directory(groups=SUBJECT_GROUPS):
     return '<nav class="subject-directory" aria-label="Learning subjects">' + ''.join(
-        '<section class="subject-group"><h2>' + e(group) + '</h2><ul>' + ''.join(
+        '<section class="subject-group" id="' + e(re.sub(r'[^a-z0-9]+', '-', group.lower()).strip('-')) + '"><h2>' + e(group) + '</h2><ul>' + ''.join(
             '<li>' + link('/learning/' + slug + '/', title) + '<p>' + e(description) + '</p></li>'
             for slug, title, description in subjects
         ) + '</ul></section>' for group, subjects in groups
@@ -280,8 +281,57 @@ def course_rows(courses):
     return '<ul class="course-list">' + "".join(f'<li class="course"><div><h3>{link("/learning/courses/" + c["slug"] + "/", c["title"])}</h3><p>{e(c["instructors"])}</p><p class="meta">{e(" · ".join(c["topics"]))}</p></div>{progress(c)}</li>' for c in courses) + '</ul>'
 
 
+def board(title, body, route=None, label=None):
+    heading = link(route, title) if route else e(title)
+    return '<section class="board"' + (' aria-label="' + e(label) + '"' if label else '') + '><h2 class="board-title">' + heading + '</h2>' + body + '</section>'
+
+
+def link_rows(items):
+    return '<ul class="link-rows">' + ''.join('<li>' + link(route, label) + '</li>' for route, label in items) + '</ul>'
+
+
 def profile():
-    return '<aside class="profile" aria-label="About Kaz"><div class="profile-head"><p class="profile-kicker">profile</p><h2>Kaz</h2><p>Computing graduate. Still learning.</p></div><div class="profile-body"><dl><dt>Currently here for</dt><dd>C#, console apps and writing things down properly.</dd><dt>Also around</dt><dd>Games, anime and whatever I decide to write about.</dd></dl>' + link('/about/', 'A little about me') + '<br>' + link('https://github.com/Kazumi7884', 'Find me on GitHub') + '</div></aside>'
+    return '<aside class="profile" aria-label="About Kaz"><h2 class="board-title">About the author</h2><div class="profile-body"><div class="identity"><span class="monogram" aria-hidden="true">K</span><div><b>Kaz</b><p>Computing graduate</p></div></div><p>MSc Computing &amp; Information Systems</p><p class="meta">Programming, games and hardware.</p>' + link_rows([('/about/', 'About me'), ('/education/', 'Education'), ('/experience/', 'Experience'), ('https://github.com/Kazumi7884', 'GitHub')]) + '</div></aside>'
+
+
+def utilities():
+    return board('Site utilities', '<ul class="link-rows"><li><a href="/music/" target="_blank" rel="noopener">Music player (new tab)</a></li><li>' + link('/changelog/', 'Changelog') + '</li><li>' + link('/feed.xml', 'RSS feed') + '</li><li>' + link('/start-here/', 'Site guide') + '</li></ul><p class="board-note">Theme and motion controls are in the header.</p>')
+
+
+def subject_nav(base, name, current):
+    items = [('', 'Overview'), ('posts/', 'Posts & lessons'), ('projects/', 'Projects'), ('resources/', 'Resources')]
+    active = next((base + suffix for suffix, _ in reversed(items) if current.startswith(base + suffix)), base)
+    return '<nav class="track-nav" aria-label="' + e(name) + ' notebook">' + ''.join(
+        '<a href="' + e(base + suffix) + '"' + (' aria-current="page"' if base + suffix == active else '') + '>' + e(label) + '</a>'
+        for suffix, label in items) + '</nav>'
+
+
+def subject_layout(main, sidebar):
+    return '<div class="notebook-grid"><div>' + main + '</div><aside class="notebook-sidebar" aria-label="Related notebook resources">' + sidebar + '</aside></div>'
+
+
+def subject_sidebar(base, courses, projects):
+    resources = [(base + 'resources/', 'All resources')]
+    resources += [('/learning/courses/' + c['slug'] + '/', c['title']) for c in courses]
+    practice = [(base + 'projects/', 'All projects')]
+    practice += [(project_route(p), p['title']) for p in projects]
+    return board('Related resources', link_rows(resources)) + board('Practical work', link_rows(practice)) + board('Notebook tools', link_rows([('/roadmap/', 'Learning roadmap'), ('/glossary/', 'Glossary'), ('/learning/', 'All subjects')]))
+
+
+def ordered_posts(items):
+    return sorted(items, key=lambda item: (str(item[1]['meta'].get('date', '')), item[0]), reverse=True)
+
+
+def post_navigation(route, owner, items):
+    routes = [r for r, _ in ordered_posts(items)]
+    links = [link(owner, 'Return to this section')]
+    if route in routes:
+        index = routes.index(route)
+        if index + 1 < len(routes):
+            links.append(link(routes[index + 1], 'Older entry'))
+        if index:
+            links.append(link(routes[index - 1], 'Newer entry'))
+    return '<nav class="post-navigation" aria-label="Related entries">' + ''.join(links) + '</nav>'
 
 
 def filters(label, count):
@@ -312,6 +362,21 @@ def records(data):
         pieces.append('</article>')
         out.append(''.join(pieces))
     return '<div class="records">' + ''.join(out) + '</div><p class="empty" data-filter-empty hidden>No entries match. Try a shorter term or clear the filter.</p>'
+
+
+def anime_catalogue(items):
+    rows = []
+    for item in items:
+        title = item.get('title', 'Untitled')
+        status = str(item.get('status', 'Not recorded')).replace('_', ' ').title()
+        watched = item.get('episodesWatched')
+        total = item.get('episodesTotal')
+        episodes = f'{watched if watched is not None else "?"} / {total if total else "?"}'
+        score = item.get('score')
+        score_label = f'{score}/10' if isinstance(score, (int, float)) and score > 0 else 'Not rated'
+        name = link(item['url'], title) if str(item.get('url', '')).startswith('https://') else e(title)
+        rows.append('<article class="anime-entry" data-record><h3>' + name + '</h3><dl><div><dt>Watch status</dt><dd>' + e(status) + '</dd></div><div><dt>Format</dt><dd>' + e(str(item.get('format', '')).upper() or 'Not recorded') + '</dd></div><div><dt>Episodes</dt><dd>' + e(episodes) + '</dd></div><div><dt>My score</dt><dd>' + e(score_label) + '</dd></div><div><dt>Community score</dt><dd>' + e(item.get('communityScore') or 'Not recorded') + '</dd></div></dl><p class="meta">Series: ' + e(str(item.get('seriesStatus', 'Not recorded')).replace('_', ' ')) + ' · Updated ' + e(str(item.get('updatedAt', ''))[:10] or 'not recorded') + '</p></article>')
+    return '<div class="anime-catalogue">' + ''.join(rows) + '</div><p class="empty" data-filter-empty hidden>No entries match. Try a shorter term or clear the filter.</p>'
 
 
 def steam_chart(chart):
@@ -364,7 +429,10 @@ def make_site():
             term_pages.append((route, pages[route]))
         add('/' + taxonomy + '/', taxonomy.title(), 'Browse the notebook by ' + taxonomy + '.', '<h1>' + taxonomy.title() + '</h1>' + topic_list(term_pages))
 
-    home = '<div class="home-grid"><div><div class="welcome"><p class="eyebrow">My personal website</p><h1>Hi, I’m Kaz.</h1><p>This is my corner of the internet for learning, technical notes, projects, games, anime and personal writing.</p></div><div class="split-door"><section><h2>Learning notebook</h2><p>Languages, frameworks, lessons, projects and resources grouped by subject.</p>' + link('/learning/', 'Browse learning subjects') + '</section><section><h2>Personal</h2><p>Miscellaneous blogs, reviews, games, anime, PC setup and field notes.</p>' + link('/personal/', 'Browse personal pages') + '</section></div>' + section('Recent learning entries', 'notebook') + topic_list(sorted(notes, key=lambda item: str(item[1]['meta'].get('date', '')), reverse=True)[:3]) + section('Recent personal posts', 'journal') + topic_list(sorted(journal, key=lambda item: str(item[1]['meta'].get('date', '')), reverse=True)[:3]) + '</div>' + profile() + '</div>'
+    learning_links = [( '/learning/#' + re.sub(r'[^a-z0-9]+', '-', group.lower()).strip('-'), group) for group, _ in SUBJECT_GROUPS]
+    personal_links = [('/personal/games/', 'Games & Steam'), ('/personal/anime/', 'Anime shelf'), ('/personal/reviews/', 'Reviews'), ('/setup/', 'PC hardware & setup'), ('/personal/misc/phasmophobia/', 'Phasmophobia'), ('/personal/misc/writing/', 'Miscellaneous blogs')]
+    home = '<div class="home-grid"><div><header class="welcome"><p class="eyebrow">My corner of the internet</p><h1>Welcome to my website.</h1><p>Learning, programming, games, hardware and everything in between. A personal record of what I learn, build and enjoy.</p></header><div class="split-door home-boards">' + board('Learning notebook', link_rows(learning_links), '/learning/') + board('Personal interests', link_rows(personal_links), '/personal/') + '</div><div class="recent-boards">' + board('Recent learning entries', topic_list(ordered_posts(notes)[:3])) + board('Recent personal posts', topic_list(ordered_posts(journal)[:3])) + '</div></div><div class="home-sidebar">' + profile() + utilities() + '</div></div>'
+
     add('/', 'Kaz · personal site and learning notes', 'Learning notes, practical work and personal posts by Kaz.', home)
     add('/work/projects/', 'Projects and evidence', 'Authored project write-ups with links to evidence and known limitations.', '<div class="intro"><h1>Projects and evidence</h1><p>Practical work I can explain, including the source material and what still needs improving.</p></div>' + project_list(projects))
     add('/work/', 'Work and learning', 'Practical work, source evidence and learning context.', '<div class="intro"><p class="eyebrow">the professional side</p><h1>Work and learning</h1><p>This is the part where I keep the source, what I did, and what I still need to work on in the same place.</p></div><div class="work-grid"><div>' + section('Things I have made', 'evidence') + project_list(projects) + section('Learning notebook') + '<p>Technical notes are organised under their own subjects.</p>' + link('/learning/', 'Browse learning subjects') + '</div><aside class="aside"><h2>What I’m focusing on</h2><p>C# is where I have the most written work so far. I am also working through Python, web development and security courses.</p>' + link('/work/skills/', 'Skills and evidence') + '<h2>Repository updates</h2><p>Public repository facts are checked separately from the write-ups.</p>' + link('/work/repository-updates/', 'See the latest snapshot') + '<h2>Background</h2><p>MSc Computing and Information Systems, completed in 2024.</p>' + link('/experience/', 'Experience') + ' · ' + link('/education/', 'Education') + ' · ' + link('/contact/', 'Contact') + '</aside></div>')
@@ -380,16 +448,13 @@ def make_site():
                                  if r.startswith(base + 'projects/') and r != base + 'projects/']
             authored_resources = [(r, p) for r, p in pages.items()
                                   if r.startswith(base + 'resources/') and r != base + 'resources/']
-            local_nav = '<nav class="track-nav" aria-label="' + e(name) + ' notebook">' + ''.join(
-                link(base + suffix, label) for suffix, label in [
-                    ('', 'Overview'), ('posts/', 'Posts & lessons'),
-                    ('projects/', 'Projects'), ('resources/', 'Resources')
-                ]) + '</nav>'
+            local_nav = subject_nav(base, name, base)
+            sidebar = subject_sidebar(base, relevant, owned_projects)
             intro = render_markdown(pages[base]['body']) if base in pages else '<p>' + e(description) + '</p>'
-            body = '<div class="intro"><h1>' + e(name) + '</h1>' + intro + '</div>' + local_nav
-            body += '<p class="meta">' + e(group) + ' · ' + str(len(authored)) + ' authored entries · ' + str(len(owned_projects) + len(authored_projects)) + ' project records</p>'
-            if not authored and not owned_projects and not authored_projects:
-                body += '<p class="empty">No authored posts or projects have been published for this subject yet.</p>'
+            body = '<header class="subject-heading"><p class="meta">' + e(group) + '</p><h1>' + e(name) + '</h1><p>' + e(description) + '</p></header>' + local_nav
+            entries = topic_list(ordered_posts(authored)) if authored else '<p class="empty">No authored posts or lessons published yet.</p>'
+            main = board('Published learning entries', entries) + board('Notebook introduction', '<div class="board-copy">' + intro + '</div>')
+            body += subject_layout(main, sidebar)
             if base in pages:
                 bodies[base] = body
             else:
@@ -400,6 +465,7 @@ def make_site():
                 ('resources/', 'Resources', relevant + authored_resources, (snapshot + course_rows(relevant) if relevant else '') + topic_list(authored_resources), 'No reviewed resources published yet.'),
             ]:
                 route = base + suffix
+                local_nav = subject_nav(base, name, route)
                 if route in pages:
                     original = render_markdown(pages[route]['body'])
                     if suffix == 'posts/':
@@ -408,10 +474,10 @@ def make_site():
                         listing = original + (topic_list(additional) if additional else '')
                     else:
                         listing = original + listing
-                    bodies[route] = '<h1>' + e(name + ' ' + label.lower()) + '</h1>' + local_nav + listing
+                    bodies[route] = '<header class="subject-heading"><h1>' + e(name + ' ' + label.lower()) + '</h1></header>' + local_nav + subject_layout(board(label, '<div class="board-copy">' + listing + '</div>'), sidebar)
                 else:
                     add(route, name + ' ' + label.lower(), description,
-                        '<h1>' + e(name + ' ' + label.lower()) + '</h1>' + local_nav + (listing if entries else '<p class="empty">' + e(empty) + '</p>'))
+                        '<header class="subject-heading"><h1>' + e(name + ' ' + label.lower()) + '</h1></header>' + local_nav + subject_layout(board(label, listing if entries else '<p class="empty">' + e(empty) + '</p>'), sidebar))
                     if not entries:
                         pages[route]['meta']['noindex'] = True
                         pages[route]['meta']['searchable'] = False
@@ -440,13 +506,13 @@ def make_site():
     bodies['/blog/'] = '<h1>Blog directory</h1><p>Technical writing belongs to its learning subject. Personal blogs are kept separately.</p><div class="split-door"><section><h2>Technical notes</h2><p>Lessons, posts and projects filed by language or framework.</p>' + link('/learning/', 'Learning notebook') + '</section><section><h2>Personal writing</h2><p>Miscellaneous blogs and personal interests.</p>' + link('/personal/misc/writing/', 'Personal blogs') + '</section></div>' + (section('Earlier technical entries') + topic_list(other_posts) if other_posts else '')
     bodies['/start-here/'] = '<article class="article"><h1>Site guide</h1>' + render_markdown(pages['/start-here/']['body']) + section('Site pages') + topic_list([(r, pages[r]) for r in ['/about/', '/contact/', '/education/', '/experience/', '/skills/', '/roadmap/', '/changelog/', '/glossary/', '/writing/', '/sitemap/']]) + '</article>'
     bodies['/about/'] = '<article class="article"><h1>About</h1>' + render_markdown(pages['/about/']['body']) + section('Professional background') + topic_list([(r, pages[r]) for r in ['/education/', '/experience/', '/skills/', '/contact/', '/work/projects/', '/work/repository-updates/']]) + '</article>'
-    bodies['/personal/'] = '<div class="home-grid"><div><div class="intro"><p class="eyebrow">the non-professional bit</p><h1>My corner of the web.</h1><p>Games, anime, field notes and somewhere to start writing again.</p></div>' + section('Journal entries', 'posts') + topic_list(journal) + section('The shelves', 'stuff I keep track of') + topic_list([(r, pages[r]) for r in ['/personal/games/', '/personal/anime/', '/personal/misc/phasmophobia/', '/personal/reviews/', '/setup/']]) + '</div>' + profile() + '</div>'
-    bodies['/personal/misc/writing/'] = '<h1>Personal writing</h1>' + topic_list(journal)
-    add('/personal/misc/writing/posts/', 'Personal posts', 'All authored personal posts.', '<h1>Personal posts</h1>' + topic_list(journal))
+    bodies['/personal/'] = '<div class="home-grid"><div><header class="welcome"><p class="eyebrow">Away from the notebook</p><h1>Personal interests</h1><p>Games, anime, hardware, reviews and personal writing.</p></header>' + board('The shelves', topic_list([(r, pages[r]) for r, _ in personal_links])) + board('Recent journal entries', topic_list(ordered_posts(journal))) + '</div><div class="home-sidebar">' + profile() + utilities() + '</div></div>'
+    bodies['/personal/misc/writing/'] = '<header class="subject-heading"><h1>Personal writing</h1><p>Miscellaneous blogs and reflections, in date order.</p></header>' + subject_layout(board('Journal entries', topic_list(ordered_posts(journal))), profile())
+    add('/personal/misc/writing/posts/', 'Personal posts', 'All authored personal posts.', '<h1>Personal posts</h1>' + board('Journal entries', topic_list(ordered_posts(journal))))
     steam = read_json(ROOT / 'data/steam.json')
     bodies['/personal/games/'] = '<h1>Games &amp; Steam</h1><p>Saved charts from my Steam library. The original article explains the data and tools.</p><p class="snapshot">Offline snapshot carried forward from V5. No live Steam connection.</p>' + link('/personal/misc/writing/posts/steam-viz/', 'Read the full Steam study') + filters('Find a chart', len(steam['charts'])) + '<div class="records">' + ''.join(steam_chart(c) for c in steam['charts']) + '</div><p class="empty" data-filter-empty hidden>No charts match. Clear the filter to show all charts.</p>'
     anime = read_json(ROOT / 'static/data/anime.json')
-    bodies['/personal/anime/'] = '<h1>The anime shelf</h1><p class="snapshot">MyAnimeList snapshot from ' + e(anime['syncedAt'][:10]) + '. This list is not live.</p>' + filters('Find an anime or status', len(anime['items'])) + records(anime['items'])
+    bodies['/personal/anime/'] = '<h1>The anime shelf</h1><p class="snapshot">MyAnimeList snapshot from ' + e(anime['syncedAt'][:10]) + '. This list is not live.</p>' + filters('Find an anime or status', len(anime['items'])) + anime_catalogue(anime['items'])
     for kind in ['ghosts', 'items', 'maps']:
         route = '/personal/misc/phasmophobia/' + kind + '/'
         data = read_json(ROOT / ('data/phasmophobia/' + kind + '.json'))
@@ -466,10 +532,52 @@ def make_site():
         body = render_markdown(page['body'])
         if page['meta'].get('entryType') == 'post':
             owner = '/learning/' + route.split('/')[2] + '/' if route.startswith('/learning/') else '/personal/misc/writing/' if route.startswith('/personal/') else '/blog/technical/'
-            bodies[route] = '<div class="article-frame"><aside class="author-gutter"><b>Kaz</b><p>Author</p><p>' + e(page['meta'].get('date', '')) + '</p>' + link('/about/', 'About the author') + '</aside><article class="article"><header class="post-header"><p class="meta">' + link(owner, 'Back to notebook' if route.startswith('/learning/') else 'Back to writing') + '</p><h1>' + e(page['title']) + '</h1></header>' + article_outline(body) + body + '<div class="actions">' + link(owner, 'Return to this section') + '</div></article></div>'
+            siblings = [(r, p) for r, p in notes if r.startswith(owner)] if route.startswith('/learning/') else journal if route.startswith('/personal/') else other_posts
+            bodies[route] = '<div class="article-frame"><header class="post-header"><p class="meta">' + link(owner, 'Back to notebook' if route.startswith('/learning/') else 'Back to writing') + '</p><h1>' + e(page['title']) + '</h1></header><aside class="author-gutter"><span class="monogram" aria-hidden="true">K</span><b>Kaz</b><p>Author</p><p>' + e(page['meta'].get('date', '')) + '</p>' + link('/about/', 'Author profile') + '</aside><article class="article">' + article_outline(body) + body + '</article>' + post_navigation(route, owner, siblings) + '</div>'
         else:
-            bodies[route] = '<article class="article"><h1>' + e(page['title']) + '</h1>' + article_outline(body) + body + '</article>'
+            note = ''
+            if route == '/setup/':
+                stamp = str(page['meta'].get('lastmod') or page['meta'].get('date') or 'not recorded')
+                note = '<p class="snapshot">Hardware notes last recorded ' + e(stamp) + '. This is an authored snapshot, not a live hardware inventory.</p>'
+            bodies[route] = '<article class="article"><h1>' + e(page['title']) + '</h1>' + note + article_outline(body) + body + '</article>'
     return pages, bodies
+
+
+def page_kind(route):
+    if route == '/':
+        return 'home'
+    if route.startswith('/learning/'):
+        return 'learning'
+    if route == '/setup/':
+        return 'hardware'
+    if route.startswith('/personal/anime/'):
+        return 'anime'
+    if route.startswith('/personal/games/'):
+        return 'games'
+    if route.startswith('/personal/misc/phasmophobia/'):
+        return 'field-guide'
+    if route.startswith('/personal/misc/writing/'):
+        return 'journal'
+    if route.startswith('/personal/'):
+        return 'personal'
+    return 'general'
+
+
+def breadcrumbs(route, title):
+    if route == '/':
+        return ''
+    crumbs = [link('/', 'Home')]
+    if route.startswith('/learning/') and route != '/learning/':
+        crumbs.append(link('/learning/', 'Learning'))
+        subject = route.split('/')[2]
+        base = '/learning/' + subject + '/'
+        if subject in TRACKS and route != base:
+            crumbs.append(link(base, TRACKS[subject]))
+    elif route.startswith('/personal/') and route != '/personal/':
+        crumbs.append(link('/personal/', 'Personal'))
+    elif route == '/setup/':
+        crumbs.append(link('/personal/', 'Personal'))
+    return '<nav class="breadcrumb" aria-label="Breadcrumb">' + ' / '.join(crumbs + ['<span aria-current="page">' + e(title) + '</span>']) + '</nav>'
 
 
 def frame(route, page, body, origin):
@@ -481,7 +589,7 @@ def frame(route, page, body, origin):
     robots = '<meta name="robots" content="noindex">' if page.get('meta', {}).get('noindex') or route in ('/404.html', '/offline.html') else ''
     return f'''<!doctype html>
 <html lang="en" data-theme="balanced"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{e(page['title'])} | Kaz</title><meta name="description" content="{e(page['description'])}">{robots}<link rel="canonical" href="{e(canonical)}"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/v6/site.css"><script src="/v6/theme.js"></script><script src="/v6/site.js" defer></script><link rel="alternate" type="application/rss+xml" title="Kaz’s journal" href="/feed.xml"></head>
-<body><a class="skip" href="#main">Skip to content</a><div class="ambient-field" aria-hidden="true"><span class="glyph-stream">◇<br>⌬<br>⌁<br>◈<br>⟐<br>◇<br>⌬<br>⌁<br>◈</span><span class="glyph-stream">⟐<br>◇<br>◈<br>⌁<br>⌬<br>⟐<br>◇<br>◈<br>⌁</span><span class="glyph-stream">⌬<br>◈<br>⟐<br>◇<br>⌁<br>⌬<br>◈<br>⟐<br>◇</span><span class="glyph-stream">⌁<br>⟐<br>◇<br>⌬<br>◈<br>⌁<br>⟐<br>◇<br>⌬</span></div><header class="masthead"><div class="shell"><div class="mastrow"><a href="/" class="brand"><b>Kaz.</b><span>personal posts + learning notes</span></a><div class="theme-control"><label for="theme">Theme</label><select id="theme"><option value="balanced">Balanced</option><option value="forerunner">Halo / Forerunner</option><option value="resident">Resident Evil</option></select><button id="motion-toggle" type="button" aria-pressed="false" hidden>Motion effects</button></div></div><div class="navrow"><nav class="primary" aria-label="Main navigation">{nav()}</nav><details class="mobile-nav"><summary>Menu</summary><nav aria-label="Mobile navigation">{nav()}</nav></details><a class="search-link" href="/search/">Search</a></div></div><div class="signal-strip" aria-hidden="true"><span></span><span></span><span></span></div></header><div class="shell"><div class="breadcrumb">{link('/', 'Kaz’s site')} / {e('Home' if route == '/' else page['title'])}</div><main class="page" id="main" tabindex="-1">{body}</main></div><footer class="footer"><div class="shell"><div>Kaz’s site<br>Personal posts. Learning notes. Work I can point to.</div><div>{link('/sitemap/', 'Site directory')}{link('/about/', 'About')}<a href="/music/" target="_blank" rel="noopener">Music player (new tab)</a>{link('/feed.xml', 'RSS feed')}{link('https://github.com/Kazumi7884', 'GitHub')}</div></div></footer></body></html>'''
+<body class="room-{page_kind(route)}"><a class="skip" href="#main">Skip to content</a><div class="ambient-field" aria-hidden="true"><span class="glyph-stream">◇<br>⌬<br>⌁<br>◈<br>⟐<br>◇<br>⌬<br>⌁<br>◈</span><span class="glyph-stream">⟐<br>◇<br>◈<br>⌁<br>⌬<br>⟐<br>◇<br>◈<br>⌁</span><span class="glyph-stream">⌬<br>◈<br>⟐<br>◇<br>⌁<br>⌬<br>◈<br>⟐<br>◇</span><span class="glyph-stream">⌁<br>⟐<br>◇<br>⌬<br>◈<br>⌁<br>⟐<br>◇<br>⌬</span></div><header class="masthead"><div class="shell"><div class="mastrow"><a href="/" class="brand"><b>KAZ</b><span>My corner of the internet</span></a><div class="theme-control"><label for="theme">Theme</label><select id="theme"><option value="balanced">Balanced</option><option value="forerunner">Halo / Forerunner</option><option value="resident">Resident Evil</option></select><button id="motion-toggle" type="button" aria-pressed="false" hidden>Motion effects</button></div></div><div class="navrow"><nav class="primary" aria-label="Main navigation">{nav()}</nav><details class="mobile-nav"><summary>Menu</summary><nav aria-label="Mobile navigation">{nav()}</nav></details><a class="search-link" href="/search/">Search</a></div></div><div class="signal-strip" aria-hidden="true"><span></span><span></span><span></span></div></header><div class="shell">{breadcrumbs(route, page['title'])}<main class="page" id="main" tabindex="-1">{body}</main></div><footer class="footer"><div class="shell"><div>Kaz’s site<br>Personal posts. Learning notes. Work I can point to.</div><div>{link('/sitemap/', 'Site directory')}{link('/about/', 'About')}<a href="/music/" target="_blank" rel="noopener">Music player (new tab)</a>{link('/feed.xml', 'RSS feed')}{link('https://github.com/Kazumi7884', 'GitHub')}</div></div></footer></body></html>'''
 
 
 def check(output):
@@ -535,7 +643,10 @@ def build(output=ROOT / 'build', origin=None):
         shutil.copy2(ROOT / 'static/assets/audio/veritas.mp3', staging / 'assets/audio/veritas.mp3')
         shutil.copy2(ROOT / 'static/favicon.ico', staging / 'favicon.ico')
         (staging / 'v6').mkdir()
-        for name in ['site.css', 'site.js', 'theme.js']:
+        # Keep authoring concerns separate, with one external runtime stylesheet.
+        stylesheet = '\n'.join((HERE / name).read_text(encoding='utf-8') for name in STYLE_SOURCES)
+        (staging / 'v6/site.css').write_text(stylesheet, encoding='utf-8')
+        for name in ['site.js', 'theme.js']:
             shutil.copy2(HERE / name, staging / 'v6' / name)
         index = []
         aliases = read_json(ROOT / 'data/legacy-routes.json')
@@ -607,7 +718,7 @@ def build(output=ROOT / 'build', origin=None):
         shutil.copytree(staging, output)
     report['canonical_pages'] = len(pages)
     report['canonical_routes'] = sorted(pages)
-    report['css_js_bytes'] = sum((HERE / n).stat().st_size for n in ['site.css', 'site.js', 'theme.js'])
+    report['css_js_bytes'] = (output / 'v6/site.css').stat().st_size + sum((output / 'v6' / n).stat().st_size for n in ('site.js', 'theme.js'))
     (output / 'build-info.json').write_text(json.dumps(report, indent=2), encoding='utf-8')
     return report
 

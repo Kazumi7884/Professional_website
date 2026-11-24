@@ -72,9 +72,10 @@ class EditorialNavigationTests(unittest.TestCase):
         css = (HERE / "site.css").read_text(encoding="utf-8")
         self.assertIn(".article-outline-long ol{columns:2", css)
         self.assertIn("overflow-x:auto", css)
-        self.assertNotIn("@import", css)
+        for name in builder.STYLE_SOURCES:
+            self.assertNotIn("@import", (HERE / name).read_text(encoding="utf-8"))
         self.assertLess(
-            sum((HERE / file).stat().st_size for file in ("site.css", "site.js", "theme.js")),
+            sum((HERE / file).stat().st_size + 1 for file in (*builder.STYLE_SOURCES, "site.js", "theme.js")),
             45 * 1024,
         )
 
@@ -97,8 +98,10 @@ class OriginalSiteContractTests(unittest.TestCase):
     def test_home_is_personal_not_a_recruitment_landing_page(self):
         _, bodies = builder.make_site()
         home = BeautifulSoup(bodies['/'], 'html.parser')
-        doors = home.select('.split-door a')
+        doors = home.select('.home-boards .board-title a')
         self.assertEqual([a['href'] for a in doors], ['/learning/', '/personal/'])
+        self.assertIsNotNone(home.select_one('.home-boards a[href="/personal/anime/"]'))
+        self.assertIsNotNone(home.select_one('.home-sidebar a[href="/music/"]'))
         self.assertIsNone(home.select_one('a[href="/work/projects/"]'))
 
     def test_project_details_have_one_canonical_subject_owner(self):
@@ -138,6 +141,45 @@ class OriginalSiteContractTests(unittest.TestCase):
         self.assertEqual(player['preload'], 'none')
         page = BeautifulSoup(builder.frame('/', pages['/'], bodies['/'], 'https://kazumi7884.co.uk'), 'html.parser')
         self.assertEqual(page.select_one('a[href="/music/"]')['target'], '_blank')
+
+    def test_home_links_to_existing_subject_group_ids(self):
+        _, bodies = builder.make_site()
+        home = BeautifulSoup(bodies['/'], 'html.parser')
+        hub = BeautifulSoup(bodies['/learning/'], 'html.parser')
+        for anchor in home.select('a[href^="/learning/#"]'):
+            self.assertIsNotNone(hub.find(id=anchor['href'].split('#')[1]))
+
+    def test_subject_tabs_and_related_resources(self):
+        _, bodies = builder.make_site()
+        for suffix in ('', 'posts/', 'projects/', 'resources/'):
+            route = '/learning/c-sharp/' + suffix
+            doc = BeautifulSoup(bodies[route], 'html.parser')
+            self.assertEqual(doc.select_one('.track-nav [aria-current="page"]')['href'], route)
+            self.assertIsNotNone(doc.select_one('.notebook-sidebar a[href="/learning/courses/c-sharp-masterclass/"]'))
+
+    def test_forum_posts_keep_author_and_same_subject_navigation(self):
+        _, bodies = builder.make_site()
+        doc = BeautifulSoup(bodies['/learning/c-sharp/posts/c-sharp-lesson-1/'], 'html.parser')
+        self.assertEqual(len(doc.select('h1')), 1)
+        self.assertIsNotNone(doc.select_one('.author-gutter .monogram'))
+        self.assertIsNotNone(doc.select_one('.article'))
+        for anchor in doc.select('.post-navigation a'):
+            self.assertTrue(anchor['href'].startswith('/learning/c-sharp/'))
+
+    def test_anime_keeps_real_snapshot_and_filter_records(self):
+        _, bodies = builder.make_site()
+        doc = BeautifulSoup(bodies['/personal/anime/'], 'html.parser')
+        source = builder.read_json(builder.ROOT / 'static/data/anime.json')['items']
+        rows = doc.select('.anime-entry[data-record]')
+        self.assertEqual(len(rows), len(source))
+        self.assertEqual(rows[0].h3.get_text(), source[0]['title'])
+        self.assertIn('Watch status', rows[0].get_text())
+        self.assertIn('My score', rows[0].get_text())
+
+    def test_distinct_personal_section_classes(self):
+        cases = {'/personal/games/': 'games', '/personal/anime/': 'anime', '/personal/misc/phasmophobia/ghosts/': 'field-guide', '/setup/': 'hardware', '/personal/misc/writing/': 'journal'}
+        for route, kind in cases.items():
+            self.assertEqual(builder.page_kind(route), kind)
 
     def test_career_pages_render_without_visible_html_markup(self):
         pages = builder.content_pages()

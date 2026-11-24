@@ -15,7 +15,7 @@ await new Promise((resolve,reject)=>{server.stdout.once('data',resolve);server.o
 let browser;
 const rows=[],errors=[],flows=[],screenshots=[];
 const screenshotDir=path.join(output,'screenshots');await mkdir(screenshotDir,{recursive:true});
-const routes=['/','/learning/','/learning/ruby-on-rails/','/learning/c-sharp/posts/c-sharp-blog-1/','/personal/games/','/personal/anime/','/search/','/personal/misc/phasmophobia/ghosts/','/404.html'];
+const routes=['/','/learning/','/learning/c-sharp/','/learning/ruby-on-rails/','/learning/c-sharp/posts/c-sharp-blog-1/','/personal/','/personal/games/','/personal/anime/','/search/','/personal/misc/phasmophobia/ghosts/','/setup/','/personal/misc/writing/','/404.html'];
 const viewports=[[320,568],[390,844],[430,932],[844,390],[768,1024],[1024,768],[1280,1024],[1920,1080],[2560,1080],[3440,1440],[5120,2160],[5120,1440]];
 try {
   browser=await chromium.launch({...(process.env.CHROME_PATH?{executablePath:process.env.CHROME_PATH}:{channel:'chrome'}),headless:true,args:[...(process.env.CI?['--no-sandbox']:[]),'--disable-dev-shm-usage',...(process.env.WEBSITE_BROWSER_SINGLE_PROCESS?['--no-zygote','--single-process']:[])]});
@@ -33,10 +33,11 @@ try {
         if(actual>width+1)overflows.push({width,height,actual});
       }
       await page.setViewportSize({width:390,height:844});
-      if(['/', '/learning/', '/learning/c-sharp/posts/c-sharp-blog-1/', '/personal/games/'].includes(route)){
+      if(['/', '/learning/', '/learning/c-sharp/', '/learning/c-sharp/posts/c-sharp-blog-1/', '/personal/games/', '/personal/anime/', '/personal/misc/phasmophobia/ghosts/', '/setup/', '/personal/misc/writing/'].includes(route)){
         const label=route==='/'?'home':route.split('/').filter(Boolean).at(-1);
         await page.setViewportSize({width:1280,height:800});
-        await page.screenshot({path:path.join(output,theme+'-'+label+'.png'),fullPage:true,animations:'disabled'});
+        const height=await page.evaluate(()=>document.documentElement.scrollHeight);
+        await page.screenshot({path:path.join(output,theme+'-'+label+'.png'),fullPage:height<=9000,animations:'disabled'});
         await page.setViewportSize({width:390,height:844});
       }
       rows.push({theme,route,violations:axe.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})),overflows});
@@ -63,7 +64,7 @@ try {
   await page.locator('#motion-toggle').click();assert.equal(await page.locator('html').getAttribute('data-motion'),'off');
   await page.reload();assert.equal(await page.locator('#motion-toggle').getAttribute('aria-pressed'),'false');flows.push('Motion control and saved preference');
   await page.emulateMedia({reducedMotion:'reduce'});
-  assert.equal(await page.locator('#motion-toggle').isDisabled(),true);
+  await page.waitForFunction(()=>document.querySelector('#motion-toggle').disabled && document.documentElement.dataset.motion==='off');
   await page.emulateMedia({reducedMotion:'no-preference'});
   await page.locator('.search-link').click();await page.locator('#query').fill('C# Lesson 1');await page.getByRole('button',{name:'Search',exact:true}).click();
   await page.locator('#search-results a[href="/learning/c-sharp/posts/c-sharp-lesson-1/"]').click();await page.waitForURL('**/c-sharp-lesson-1/');await page.goBack();flows.push('Search to authored note and browser back');

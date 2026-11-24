@@ -169,3 +169,12 @@ No analytics, remote fonts, embeds or browser API credentials are introduced.
 
 For the latest maintenance evidence and continuation steps, read
 [the AI handoff](../docs/AI_HANDOFF.md).
+
+### Styling the current design
+
+Edit `theme-tokens.css` for the theme palette, `themes.css` for its visual
+materials, `sections.css` for the home, notebook, article and hobby layouts,
+and `site.css` for shared fundamentals. The build combines those four files
+into the one external public stylesheet `build/v6/site.css`; do not edit
+generated output. The local writing desk still uses its retained authoring
+styles and the View site action shows the actual public design.

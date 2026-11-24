@@ -22,3 +22,29 @@ Design dials: ENERGY 3 / RHYTHM 3 / MOTION 2 (decorative motion can be turned of
 The public build remains static HTML, external CSS and JavaScript, with a pinned Python build and a separate local writing desk. Search, accessibility, safe Markdown handling, historic URLs, offline behaviour and the 45 KiB CSS/JS budget must remain intact. The optional original music player opens a separate tab for uninterrupted playback; it never starts automatically. The audio is not precached.
 
 No invented projects, achievements, personal posts, course progress or public accounts. Empty subject subpages are explicit, excluded from search and sitemap until populated, and remain reachable from their subject hub.
+
+## Approved Kaz composition (24 November 2026)
+
+The owner's approved concept uses a compact personal-home masthead with the KAZ
+wordmark, a horizontal signal strip, a welcome panel, two navigable boards for
+Learning and Personal, separate recent-entry lists, and an author/utilities
+sidebar. The monogram is a typographic initial, not a fabricated avatar.
+
+Each subject has a heading, four locally active tabs, a published-entry board
+and related resource/project sidebars. Posts have a title bar, author/date
+gutter, readable code and same-subject older/newer navigation. On phones these
+columns stack in reading order; at ultrawide sizes the central shell remains
+bounded to avoid excessively long lines.
+
+Personal layouts follow their content: Steam chart figures, compact anime
+catalogue rows, Phasmophobia field records, a dated hardware spec sheet and a
+chronological journal. Do not invent imagery or publish information from private
+conversations. The three themes use distinct panel materials, headings and
+structural seams while keeping the same functional navigation.
+
+Style source order: theme-tokens.css, site.css (shared foundations), themes.css
+(theme materials), sections.css (content layouts). The builder assembles one
+external stylesheet to retain the existing request/offline budget. Design dials
+remain ENERGY 3 / RHYTHM 3 / MOTION 2; decoration never takes precedence over
+reading, and motion is optional. These directions are the accepted reference,
+not a mandate to add more ornamental features.

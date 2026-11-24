@@ -1,0 +1,49 @@
+/* Umbrella: original corporate-biotech dossier treatment. */
+:root[data-theme=resident] .masthead{background:#0a0b0a;border-bottom-color:var(--accent);box-shadow:none}:root[data-theme=resident] .masthead::before{content:"UMB-ARCHIVE / PUBLIC COPY";display:block;color:#d7d3ca;font-size:.64rem;letter-spacing:.16em;padding:.35rem max(var(--space),calc((100vw - 1280px)/2));border-bottom:1px solid #383936}:root[data-theme=resident] .brand b,:root[data-theme=resident] h1,:root[data-theme=resident] h2{font-family:Arial,sans-serif;text-transform:uppercase;letter-spacing:.035em}:root[data-theme=resident] h1{font-weight:800}:root[data-theme=resident] .primary a{border-color:#383936;text-transform:uppercase;font-size:.76rem;letter-spacing:.08em}:root[data-theme=resident] .profile,:root[data-theme=resident] .split-door,:root[data-theme=resident] .feature{box-shadow:none}:root[data-theme=resident] .profile-head{background:#252623;border-top:10px solid var(--accent)}:root[data-theme=resident] .section-head{border-top-color:var(--accent)}:root[data-theme=resident] .section-head span,:root[data-theme=resident] .eyebrow{color:#e26469}:root[data-theme=resident] .topic{border-bottom-color:#4b4c48}:root[data-theme=resident] .snapshot{border-left-color:var(--accent);background:#222320}:root[data-theme=resident] .button{background:var(--accent)}
+
+/* Forerunner: original stone archive and cyan wayfinding treatment. */
+:root[data-theme=forerunner] body{background:linear-gradient(140deg,#0d1112 0%,#101819 46%,#0d1112 100%)}:root[data-theme=forerunner] .masthead{background:#121a1b;border-bottom:1px solid var(--accent);box-shadow:0 5px 16px #0008}:root[data-theme=forerunner] .brand b{letter-spacing:.08em}:root[data-theme=forerunner] .primary a{border-color:#3c5653;letter-spacing:.05em}:root[data-theme=forerunner] .primary a[aria-current=page]{background:#334c48;color:#e6f7ef;box-shadow:inset 0 -3px var(--accent)}:root[data-theme=forerunner] .profile,:root[data-theme=forerunner] .split-door,:root[data-theme=forerunner] .feature,:root[data-theme=forerunner] .record{border-color:#607b76;box-shadow:inset 3px 0 #7be6dd33,inset -3px 0 #7be6dd22}:root[data-theme=forerunner] .profile-head{background:#203330;color:#e4eee9}:root[data-theme=forerunner] .section-head{border-top-color:#6accc5}:root[data-theme=forerunner] .section-head span,:root[data-theme=forerunner] .eyebrow{color:#97ede3}:root[data-theme=forerunner] .button{background:#b7d7d2;color:#0e211e}:root[data-theme=forerunner] .topic a:hover,:root[data-theme=forerunner] .track-nav a:hover{color:#d9fffb;text-shadow:0 0 10px #8ee4dd99}:root[data-theme=forerunner] .snapshot{background:#172927;border-left-color:#8ee4dd}
+
+:root[data-theme=resident]{--link:#f27a83}
+
+:root[data-theme=forerunner]{--signal:#8ee4dd}
+
+:root[data-theme=resident]{--signal:#f27a83}
+
+:root[data-theme=balanced] .masthead{border-bottom:1px solid var(--line);background:linear-gradient(90deg,#151426,#20162b 52%,#121d31)}
+
+:root[data-theme=balanced] .brand b{color:#f4f0ff}
+
+:root[data-theme=balanced] .profile-head{background:#28203a}
+
+:root[data-theme=balanced] .section-head,:root[data-theme=balanced] .subject-group h2{border-top-color:#8bc7ff}
+
+:root[data-theme=forerunner] .subject-group,:root[data-theme=forerunner] .article-frame{border-inline:3px solid var(--line)}
+
+:root[data-theme=forerunner] .subject-group h2{background:#203330;border-bottom:2px solid var(--accent)}
+
+:root[data-theme=resident] .subject-group h2{border-top:3px double var(--accent);border-bottom-style:dashed}
+
+:root[data-theme=resident] .article-frame{border-top:4px solid var(--accent)}
+
+/* Theme-specific materials and joins, not just different colour variables. */
+:root[data-theme=balanced] body{background:radial-gradient(ellipse at 50% 0,#291b3b 0,transparent 52rem),var(--paper)}
+:root[data-theme=balanced] .masthead{background:linear-gradient(110deg,#21162e,#281b39 60%,#171829);border-top:1px solid var(--line)}
+:root[data-theme=balanced] .brand b{color:var(--brand-ink);letter-spacing:.13em}
+:root[data-theme=balanced] .primary a[aria-current=page]{box-shadow:inset 0 2px var(--signal)}
+:root[data-theme=balanced] .signal-strip{background:#352345}
+:root[data-theme=balanced] .signal-strip span:nth-child(1){background:#9e77d9}
+:root[data-theme=balanced] .signal-strip span:nth-child(2){background:#ee8ed6}
+:root[data-theme=balanced] .signal-strip span:nth-child(3){background:#83b3e3}
+:root[data-theme=balanced] .welcome,:root[data-theme=balanced] .subject-heading{border-top:2px solid #bc85e3}
+:root[data-theme=balanced] .board-title{background:linear-gradient(100deg,#352347,#2b2340)}
+:root[data-theme=forerunner] .board,:root[data-theme=forerunner] .profile,:root[data-theme=forerunner] .subject-heading{border-inline:3px double var(--line)}
+:root[data-theme=forerunner] .board-title,:root[data-theme=forerunner] .post-header{background:#263d3a;border-bottom:2px solid var(--accent);letter-spacing:.045em}
+:root[data-theme=forerunner] .welcome{border-left:4px double var(--accent)}
+:root[data-theme=forerunner] .monogram{border:3px double var(--accent);clip-path:polygon(0 0,82% 0,100% 18%,100% 100%,18% 100%,0 82%)}
+:root[data-theme=resident] .board-title,:root[data-theme=resident] .post-header{border-top:3px double var(--accent);border-bottom:1px dashed var(--line);text-transform:uppercase;letter-spacing:.05em}
+:root[data-theme=resident] .welcome,:root[data-theme=resident] .subject-heading{border-left:4px solid var(--accent)}
+:root[data-theme=resident] .monogram{border:2px solid var(--accent);font-family:"Courier New",monospace}
+:root[data-theme=resident] .brand b{color:var(--brand-ink)}
+:root[data-theme=resident] .signal-strip span:nth-child(2){background:#e7e2d8}
+@media(max-width:480px){:root[data-theme=resident] .masthead::before{padding-inline:1rem;font-size:.57rem}}
