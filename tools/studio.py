@@ -173,10 +173,11 @@ def preview_html(body):
     return str(soup)
 
 
-def make_handler(token, port, build_fn):
+def make_handler(token, port, build_fn, public_dir=None, subject_groups=None):
+    public_dir = Path(public_dir) if public_dir is not None else ROOT / 'dist'
     class Handler(http.server.SimpleHTTPRequestHandler):
         def __init__(self, *args, **kwargs):
-            super().__init__(*args, directory=str(ROOT / 'dist'), **kwargs)
+            super().__init__(*args, directory=str(public_dir), **kwargs)
 
         def end_headers(self):
             self.send_header('Cache-Control', 'no-store')
@@ -232,7 +233,7 @@ def make_handler(token, port, build_fn):
                     return self.send_json({'path': relative, **read_document(content_path(relative))})
                 if route.path in ('/__studio', '/__studio/'):
                     env = Environment(loader=FileSystemLoader(ROOT / 'studio'), autoescape=select_autoescape(['html']))
-                    data = env.get_template('index.html').render(token=token).encode()
+                    data = env.get_template('index.html').render(token=token, subject_groups=subject_groups).encode()
                     self.send_response(200)
                     self.send_header('Content-Type', 'text/html; charset=utf-8')
                     self.send_header('Content-Length', str(len(data)))
@@ -297,16 +298,16 @@ def make_handler(token, port, build_fn):
     return Handler
 
 
-def serve(port, build_fn):
+def serve(port, build_fn, public_dir=None, subject_groups=None):
     build_fn()
     token = secrets.token_urlsafe(32)
     try:
-        server = http.server.ThreadingHTTPServer(('127.0.0.1', port), make_handler(token, port, build_fn))
+        server = http.server.ThreadingHTTPServer(('127.0.0.1', port), make_handler(token, port, build_fn, public_dir, subject_groups))
     except OSError as exc:
         if port == 0:
             raise
         print(f'Port {port} is unavailable ({exc}); selecting an available localhost port.', flush=True)
-        server = http.server.ThreadingHTTPServer(('127.0.0.1', 0), make_handler(token, 0, build_fn))
+        server = http.server.ThreadingHTTPServer(('127.0.0.1', 0), make_handler(token, 0, build_fn, public_dir, subject_groups))
     actual_port = server.server_address[1]
     with server:
         print(f'Writing desk: http://127.0.0.1:{actual_port}/__studio/ — Ctrl+C to stop.', flush=True)

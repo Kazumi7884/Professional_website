@@ -218,6 +218,44 @@ class StudioHTTP(unittest.TestCase):
         self.assertEqual(connection.getresponse().status, 413); connection.close()
 
 
+class SuccessorStudioHTTP(unittest.TestCase):
+    def test_current_build_and_topic_choices_are_served(self):
+        with tempfile.TemporaryDirectory() as directory:
+            public = Path(directory)
+            (public / 'index.html').write_text('Current public build', encoding='utf-8')
+            groups = [('Languages', [('ruby-on-rails', 'Ruby on Rails', 'Rails')])]
+            handler = studio.make_handler('test-token', 0, lambda: {'pages': ['/'], 'seconds': 0}, public, groups)
+            server = http.server.ThreadingHTTPServer(('127.0.0.1', 0), handler)
+            thread = threading.Thread(target=server.serve_forever, daemon=True)
+            thread.start()
+            try:
+                connection = http.client.HTTPConnection('127.0.0.1', server.server_port)
+                connection.request('GET', '/')
+                response = connection.getresponse()
+                self.assertEqual(response.status, 200)
+                self.assertIn(b'Current public build', response.read())
+                connection.close()
+                connection = http.client.HTTPConnection('127.0.0.1', server.server_port)
+                connection.request('GET', '/__studio/')
+                response = connection.getresponse()
+                self.assertEqual(response.status, 200)
+                page = BeautifulSoup(response.read(), 'html.parser')
+                self.assertIsNotNone(page.select_one('option[value="learning/ruby-on-rails/posts"]'))
+                self.assertIsNone(page.select_one('option[value="blog"]'))
+                connection.close()
+                connection = http.client.HTTPConnection('127.0.0.1', server.server_port)
+                connection.request('POST', '/__studio/api/build', '{}', {
+                    'Content-Type': 'application/json', 'X-Studio-Token': 'test-token'})
+                response = connection.getresponse()
+                self.assertEqual(response.status, 200)
+                self.assertEqual(json.loads(response.read())['pages'], 1)
+                connection.close()
+            finally:
+                server.shutdown()
+                server.server_close()
+                thread.join()
+
+
 class ThemeContrast(unittest.TestCase):
     def test_all_three_palettes_meet_high_contrast_text_target(self):
         import re

@@ -28,7 +28,7 @@
       <label for="post-title">Title<input id="post-title" name="title" maxlength="180" required placeholder="Give your post a title"></label>
       <label for="post-summary">Summary<textarea id="post-summary" name="description" rows="2" maxlength="350" placeholder="A short introduction for the post list and search results."></textarea></label>
       <div class="desk-fields">
-        <label for="post-section">Section<select id="post-section"><option value="blog">Blog</option><option value="personal/misc/writing/posts">Personal journal</option></select></label>
+        <label for="post-section">Section<select id="post-section">{% if subject_groups %}{% for group, subjects in subject_groups %}<optgroup label="{{ group }}">{% for slug, title, description in subjects %}<option value="learning/{{ slug }}/posts">{{ title }} · posts</option>{% endfor %}</optgroup>{% endfor %}{% else %}<option value="blog">Blog</option>{% endif %}<option value="personal/misc/writing/posts">Personal journal</option></select></label>
         <label for="post-slug">Filename<input id="post-slug" pattern="[a-zA-Z0-9_-]+" required placeholder="my-new-post"></label>
         <label for="post-date">Date<input id="post-date" type="date"></label>
         <label for="post-kind">Entry type<select id="post-kind"><option value="post">Post</option><option value="page">Page</option><option value="section">Section</option></select></label>

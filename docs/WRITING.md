@@ -1,10 +1,9 @@
-# Writing posts in V5.2
+# Writing posts
 
-For the clean-room successor, this desk remains a local Markdown authoring bridge.
-Its Build/View controls show V5. After saving, run `python successor/build.py`
-and `python successor/serve.py` from the repository root to inspect the new site.
-See [the current successor guide](../successor/README.md). Existing authored
-content and metadata remain editable; the new public site does not load V5 code.
+The local writing desk now builds and views the current successor. It edits
+the same shared Markdown and retains the existing localhost, token and
+conflict protections. The public site does not load the writing desk.
+See [the current successor guide](../successor/README.md).
 
 ## First-time setup
 
@@ -16,13 +15,13 @@ uses the same Python environment and requirements as the website build.
 From your website folder on Windows:
 
 ```powershell
-.venv\Scripts\python.exe tools/site.py studio
+.venv\Scripts\python.exe successor/write.py
 ```
 
 On Linux:
 
 ```bash
-.venv/bin/python tools/site.py studio
+.venv/bin/python successor/write.py
 ```
 
 Open **http://127.0.0.1:8000/__studio/**. Keep the terminal running while you
@@ -35,9 +34,9 @@ there is no browser-specific file-picker API or extra Node setup.
 1. Click **New post**.
 2. Enter a title. The filename fills itself in; edit it before the first save
    if you want a different address.
-3. Select a section. Use **blog** for a general blog post,
-   **personal/misc/writing/posts** for your journal, or a learning track's
-   **posts** folder for technical notes.
+3. Select the owning learning subject for technical notes, or **Personal
+   journal** for non-technical writing. Each subject's posts folder is listed.
+   Do not copy a technical post into the general blog directory.
 4. Write a short summary, choose a date and add comma-separated tags.
 5. Write your text. Select text and use **Bold**, **Italic**, **Link** or the
    other formatting buttons. The code button inserts a fenced block; replace
@@ -84,7 +83,7 @@ Work on one device at a time and let OneDrive finish syncing before switching.
 With your environment activated, the shared workflow is:
 
 ```bash
-python tools/site.py check
+python scripts/verify.py
 git status --short
 git diff -- content/
 git add content/

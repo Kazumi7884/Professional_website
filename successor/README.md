@@ -16,8 +16,10 @@ under multiple subjects. The original themes and optional motion controls are
 available throughout the site. The optional music player opens in a separate tab
 so navigating the notebook does not interrupt playback.
 
-The V5 writing desk remains a recovery bridge. Its preview still uses V5;
-build and preview the successor for the actual public design.
+Run `python successor/write.py` to open the local writing desk. Its Build
+and View site controls now use the successor output. The article-only
+editor preview retains the existing writing-desk styling; View site shows
+the actual public design.
 
 This is a new implementation. V5 supplies authored Markdown, saved snapshots,
 images and historical URLs. No V5 Python, template, CSS or JavaScript module is
@@ -105,10 +107,10 @@ automatic writer or publisher.
 ## Writing and recovery
 
 Authored sources remain in `content/`. Existing post bodies are unchanged.
-Use the established V5 writing desk to edit/save Markdown, then run the successor
-build above. Its old Build/View controls still preview V5, so use the successor
-preview URL for the new design. This bridge is explicit: the V5 writing desk
-has not been rewritten or certified as a clean-room component.
+Use `python successor/write.py` to edit, save and rebuild the successor locally.
+The desk remains the established, loopback-only authoring server rather than
+a new public CMS. The old `python tools/site.py studio` command is retained
+for V5 recovery only.
 
 Drafts are excluded. New published pages are indexed at build time. A failed
 build leaves the last successful output intact. The builder refuses to replace
