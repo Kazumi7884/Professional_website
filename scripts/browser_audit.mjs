@@ -15,7 +15,7 @@ await new Promise((resolve,reject)=>{server.stdout.once('data',resolve);server.o
 let browser;
 const rows=[],errors=[],flows=[],screenshots=[];
 const screenshotDir=path.join(output,'screenshots');await mkdir(screenshotDir,{recursive:true});
-const routes=['/','/learning/','/learning/c-sharp/posts/c-sharp-blog-1/','/personal/games/','/personal/anime/','/search/','/personal/misc/phasmophobia/ghosts/','/404.html'];
+const routes=['/','/learning/','/learning/ruby-on-rails/','/learning/c-sharp/posts/c-sharp-blog-1/','/personal/games/','/personal/anime/','/search/','/personal/misc/phasmophobia/ghosts/','/404.html'];
 const viewports=[[320,568],[390,844],[430,932],[844,390],[768,1024],[1024,768],[1280,1024],[1920,1080],[2560,1080],[3440,1440],[5120,2160],[5120,1440]];
 try {
   browser=await chromium.launch({...(process.env.CHROME_PATH?{executablePath:process.env.CHROME_PATH}:{channel:'chrome'}),headless:true,args:[...(process.env.CI?['--no-sandbox']:[]),'--disable-dev-shm-usage',...(process.env.WEBSITE_BROWSER_SINGLE_PROCESS?['--no-zygote','--single-process']:[])]});
@@ -51,7 +51,7 @@ try {
   await page.keyboard.press('Escape');assert.equal(await page.locator('.mobile-nav summary').evaluate(node=>node===document.activeElement),true);flows.push('Menu Enter/Escape and focus restoration');
   await page.locator('#theme').focus();await page.keyboard.press('Home');await page.keyboard.press('ArrowDown');await page.keyboard.press('ArrowDown');await page.keyboard.press('Enter');
   assert.equal(await page.locator('html').getAttribute('data-theme'),'resident');await page.reload();assert.equal(await page.locator('#theme').inputValue(),'resident');flows.push('Keyboard theme selection and persistence');
-  await page.locator('.mobile-nav summary').click();await page.getByRole('navigation',{name:'Mobile navigation'}).getByRole('link',{name:'Work',exact:true}).click();await page.waitForURL('**/work/');flows.push('Mobile home to work');
+  await page.locator('.mobile-nav summary').click();await page.getByRole('navigation',{name:'Mobile navigation'}).getByRole('link',{name:'Learning',exact:true}).click();await page.waitForURL('**/learning/');flows.push('Mobile home to learning');
   await page.locator('.search-link').click();await page.locator('#query').fill('C# Lesson 1');await page.getByRole('button',{name:'Search',exact:true}).click();
   await page.locator('#search-results a[href="/learning/c-sharp/posts/c-sharp-lesson-1/"]').click();await page.waitForURL('**/c-sharp-lesson-1/');await page.goBack();flows.push('Search to authored note and browser back');
   await page.locator('#query').fill('nonexistentxyz');await page.getByRole('button',{name:'Search',exact:true}).click();await page.locator('#search-status').filter({hasText:'No pages match'}).waitFor();
@@ -65,7 +65,7 @@ try {
   const imageResponse=await page.request.get(imageURL);assert.equal(imageResponse.status(),200);flows.push('Original full-size chart');
   // A halved desktop viewport checks the reflow required at 200% browser zoom.
   await page.setViewportSize({width:640,height:512});assert(await page.evaluate(()=>document.documentElement.scrollWidth)<=641);flows.push('200% equivalent desktop reflow');
-  const allRoutes=[...new Set([...((await readFile(path.join(root,'build/sitemap.xml'),'utf8')).matchAll(/<loc>(.*?)<\/loc>/g))].map(match=>new URL(match[1]).pathname).concat(['/404.html','/offline.html']))];
+  const allRoutes=JSON.parse(await readFile(path.join(root,'build/build-info.json'),'utf8')).canonical_routes;
   await cdp.send('Network.emulateNetworkConditions',{offline:false,latency:0,downloadThroughput:-1,uploadThroughput:-1});await cdp.send('Emulation.setCPUThrottlingRate',{rate:1});await page.setViewportSize({width:320,height:568});
   for(const route of allRoutes){
     const response=await page.goto('http://127.0.0.1:8765'+route);

@@ -36,7 +36,7 @@ async function search(dom, value) {
     ['punctuation','Console.WriteLine()','/learning/c-sharp/posts/c-sharp-lesson-1/'],
     ['unicode','Schwarzmüller','/learning/courses/angular-guide/'],
     ['course instructor','Panjuta','/learning/courses/c-sharp-masterclass/'],
-    ['project limitation','full functionality','/work/projects/space-invaders/']
+    ['project limitation','full functionality','/learning/c-sharp/projects/space-invaders/']
   ];
   for(const [name,query,url] of cases) await test(name,async()=>{
     const dom=page();const doc=await search(dom,query);

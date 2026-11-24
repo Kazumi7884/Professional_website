@@ -21,8 +21,36 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 HERE = Path(__file__).resolve().parent
-TRACKS = {"c-sharp": "C# & .NET", "python": "Python & data", "web": "Web development", "security": "Security"}
-NAV = [("Home", "/"), ("Work", "/work/"), ("Projects", "/work/projects/"), ("Learning", "/learning/"), ("Journal", "/blog/"), ("Personal", "/personal/"), ("About", "/about/")]
+SUBJECT_GROUPS = [
+    ("Web foundations", [
+        ("html", "HTML", "Structure accessible pages and documents."),
+        ("css", "CSS", "Style layouts, themes and responsive interfaces."),
+        ("javascript", "JavaScript", "Add browser behaviour and learn programming fundamentals."),
+    ]),
+    ("Languages and scripting", [
+        ("c-sharp", "C#", "Practise .NET, console applications and object-oriented programming."),
+        ("python", "Python", "Learn scripting, automation and working with data."),
+        ("ruby", "Ruby", "Learn the language before building Rails applications."),
+        ("powershell", "PowerShell", "Practise Windows administration and repeatable tasks."),
+        ("bash", "Bash", "Learn Linux shell commands and scripting."),
+    ]),
+    ("Frameworks and platforms", [
+        ("angular", "Angular", "Learn component-based web application development."),
+        ("asp-net", "ASP.NET", "Study web applications and APIs on .NET."),
+        ("react", "React", "Learn reusable UI components and application state."),
+        ("ruby-on-rails", "Ruby on Rails", "Learn MVC, routing and database-backed applications."),
+    ]),
+    ("Data and analysis", [
+        ("data-analytics", "Data Analytics", "Practise preparing, interpreting and presenting data, including Excel."),
+        ("r", "R", "Learn statistical computing and visualisation with R and RStudio."),
+        ("sql", "SQL", "Learn relational data, queries and database design."),
+    ]),
+    ("Security", [
+        ("cybersecurity", "Cybersecurity", "Learn defensive security and ethical hacking in authorised environments."),
+    ]),
+]
+TRACKS = {slug: title for _, subjects in SUBJECT_GROUPS for slug, title, _ in subjects}
+NAV = [("Home", "/"), ("Learning", "/learning/"), ("Personal", "/personal/"), ("About", "/about/"), ("Site", "/start-here/")]
 
 
 def e(value):
@@ -228,6 +256,19 @@ def topic_list(items):
     return '<ul class="topics">' + "".join(topic(route, page) for route, page in items) + "</ul>"
 
 
+def project_route(project):
+    return '/learning/' + project['track'] + '/projects/' + project['slug'] + '/'
+
+
+def subject_directory(groups=SUBJECT_GROUPS):
+    return '<nav class="subject-directory" aria-label="Learning subjects">' + ''.join(
+        '<section class="subject-group"><h2>' + e(group) + '</h2><ul>' + ''.join(
+            '<li>' + link('/learning/' + slug + '/', title) + '<p>' + e(description) + '</p></li>'
+            for slug, title, description in subjects
+        ) + '</ul></section>' for group, subjects in groups
+    ) + '</nav>'
+
+
 def progress(course):
     value = course["progress"]
     if value is None:
@@ -300,7 +341,7 @@ def make_site():
         return topic_list([(r, pages[r]) for r in routes]) if routes else '<p class="empty">No authored notes published for this course yet.</p>'
 
     def project_list(items):
-        return topic_list([('/work/projects/' + p['slug'] + '/', {'title': p['title'], 'description': p['summary']}) for p in items])
+        return topic_list([(project_route(p), {'title': p['title'], 'description': p['summary']}) for p in items])
 
     def repository_updates():
         rows = []
@@ -323,28 +364,61 @@ def make_site():
             term_pages.append((route, pages[route]))
         add('/' + taxonomy + '/', taxonomy.title(), 'Browse the notebook by ' + taxonomy + '.', '<h1>' + taxonomy.title() + '</h1>' + topic_list(term_pages))
 
-    home = '<div class="home-grid"><div><div class="welcome"><p class="eyebrow">welcome to my corner of the internet</p><h1>Hi, I’m Kaz.</h1><p>This is where I keep the learning side and the personal side together. There are notes, projects, games, and posts about whatever is going on.</p></div>' + section('Projects with evidence', 'work') + project_list(projects) + '<div class="split-door"><section><h2>Work &amp; learning</h2><p>Courses, C# notes and the work I can actually point to.</p>' + link('/work/', 'See work and learning') + '</section><section><h2>Personal stuff</h2><p>Posts, game notes, anime and things I want to keep around.</p>' + link('/personal/', 'Go to the personal side') + '</section></div>' + section('Latest learning notes', 'learning') + topic_list(notes[:2]) + '</div>' + profile() + '</div>'
-    home += section('Recent personal posts', 'journal') + topic_list(journal)
+    home = '<div class="home-grid"><div><div class="welcome"><p class="eyebrow">My personal website</p><h1>Hi, I’m Kaz.</h1><p>This is my corner of the internet for learning, technical notes, projects, games, anime and personal writing.</p></div><div class="split-door"><section><h2>Learning notebook</h2><p>Languages, frameworks, lessons, projects and resources grouped by subject.</p>' + link('/learning/', 'Browse learning subjects') + '</section><section><h2>Personal</h2><p>Miscellaneous blogs, reviews, games, anime, PC setup and field notes.</p>' + link('/personal/', 'Browse personal pages') + '</section></div>' + section('Recent learning entries', 'notebook') + topic_list(sorted(notes, key=lambda item: str(item[1]['meta'].get('date', '')), reverse=True)[:3]) + section('Recent personal posts', 'journal') + topic_list(sorted(journal, key=lambda item: str(item[1]['meta'].get('date', '')), reverse=True)[:3]) + '</div>' + profile() + '</div>'
     add('/', 'Kaz · personal site and learning notes', 'Learning notes, practical work and personal posts by Kaz.', home)
     add('/work/projects/', 'Projects and evidence', 'Authored project write-ups with links to evidence and known limitations.', '<div class="intro"><h1>Projects and evidence</h1><p>Practical work I can explain, including the source material and what still needs improving.</p></div>' + project_list(projects))
     add('/work/', 'Work and learning', 'Practical work, source evidence and learning context.', '<div class="intro"><p class="eyebrow">the professional side</p><h1>Work and learning</h1><p>This is the part where I keep the source, what I did, and what I still need to work on in the same place.</p></div><div class="work-grid"><div>' + section('Things I have made', 'evidence') + project_list(projects) + section('Notes from learning', 'written work') + topic_list(notes) + '</div><aside class="aside"><h2>What I’m focusing on</h2><p>C# is where I have the most written work so far. I am also working through Python, web development and security courses.</p>' + link('/work/skills/', 'Skills and evidence') + '<h2>Repository updates</h2><p>Public repository facts are checked separately from the write-ups.</p>' + link('/work/repository-updates/', 'See the latest snapshot') + '<h2>Background</h2><p>MSc Computing and Information Systems, completed in 2024.</p>' + link('/experience/', 'Experience') + ' · ' + link('/education/', 'Education') + ' · ' + link('/contact/', 'Contact') + '</aside></div>')
-    tracks = '<nav class="track-nav" aria-label="Learning tracks">' + ''.join(link('/learning/' + k + '/', v) for k, v in TRACKS.items()) + '</nav>'
     snapshot = f'<p class="snapshot">Owned Udemy courses, observed {e(courses["observed_at"])}. Completion is course progress, not a skill rating. This is a saved snapshot.</p>'
-    bodies['/learning/'] = '<div class="intro"><h1>The learning notebook</h1><p>Course study, the notes I’ve written, and the practical work that connects them.</p></div>' + tracks + section('Start with the written work') + topic_list(notes) + section('On my course shelf') + snapshot + course_rows(courses['courses'])
-    for key, name in TRACKS.items():
-        relevant = [c for c in courses['courses'] if c['track'] == key]
-        note_routes = list(dict.fromkeys(r for c in relevant for r in c['notes']))
-        work = [p for p in projects if p['track'] == key]
-        description = 'Study context and published evidence for ' + name + '.'
-        body = f'<div class="intro"><h1>{e(name)}</h1><p>{e(description)}</p></div>' + tracks + section('Owned courses') + snapshot + course_rows(relevant) + section('Authored notes & related practice') + related(note_routes)
-        if work:
-            body += section('Related work') + project_list(work)
-        if key == 'c-sharp':
-            body += '<details><summary>Original notebook introduction</summary>' + render_markdown(pages['/learning/c-sharp/']['body']) + '</details>'
-            bodies['/learning/c-sharp/'] = body
-        else:
-            add('/learning/' + key + '/', name, description, body)
-    add('/learning/courses/', 'Course shelf', 'Verified owned courses and dated Udemy progress.', '<h1>Course shelf</h1>' + snapshot + tracks + course_rows(courses['courses']))
+    bodies['/learning/'] = '<div class="intro"><h1>Learning notebook</h1><p>Choose a subject to find its own notes, projects and resources. A subject without authored work is clearly marked rather than presented as a completed skill.</p></div>' + subject_directory() + section('Notebook tools') + '<div class="actions">' + link('/learning/courses/', 'Course shelf') + link('/roadmap/', 'Learning roadmap') + link('/glossary/', 'Glossary') + link('/changelog/', 'Changelog') + '</div>'
+    for group, subjects in SUBJECT_GROUPS:
+        for key, name, description in subjects:
+            base = '/learning/' + key + '/'
+            relevant = [c for c in courses['courses'] if c['track'] == key]
+            authored = [(r, p) for r, p in notes if r.startswith(base)]
+            owned_projects = [p for p in projects if p['track'] == key]
+            authored_projects = [(r, p) for r, p in pages.items()
+                                 if r.startswith(base + 'projects/') and r != base + 'projects/']
+            authored_resources = [(r, p) for r, p in pages.items()
+                                  if r.startswith(base + 'resources/') and r != base + 'resources/']
+            local_nav = '<nav class="track-nav" aria-label="' + e(name) + ' notebook">' + ''.join(
+                link(base + suffix, label) for suffix, label in [
+                    ('', 'Overview'), ('posts/', 'Posts & lessons'),
+                    ('projects/', 'Projects'), ('resources/', 'Resources')
+                ]) + '</nav>'
+            intro = render_markdown(pages[base]['body']) if base in pages else '<p>' + e(description) + '</p>'
+            body = '<div class="intro"><h1>' + e(name) + '</h1>' + intro + '</div>' + local_nav
+            body += '<p class="meta">' + e(group) + ' · ' + str(len(authored)) + ' authored entries · ' + str(len(owned_projects) + len(authored_projects)) + ' project records</p>'
+            if not authored and not owned_projects and not authored_projects:
+                body += '<p class="empty">No authored posts or projects have been published for this subject yet.</p>'
+            if base in pages:
+                bodies[base] = body
+            else:
+                add(base, name, description, body)
+            for suffix, label, entries, listing, empty in [
+                ('posts/', 'Posts & lessons', authored, topic_list(authored), 'No authored posts or lessons published yet.'),
+                ('projects/', 'Projects', owned_projects + authored_projects, project_list(owned_projects) + topic_list(authored_projects), 'No verified project records published yet.'),
+                ('resources/', 'Resources', relevant + authored_resources, (snapshot + course_rows(relevant) if relevant else '') + topic_list(authored_resources), 'No reviewed resources published yet.'),
+            ]:
+                route = base + suffix
+                if route in pages:
+                    original = render_markdown(pages[route]['body'])
+                    if suffix == 'posts/':
+                        existing_links = {a.get('href') for a in BeautifulSoup(original, 'html.parser').select('a[href]')}
+                        additional = [(r, p) for r, p in authored if r not in existing_links]
+                        listing = original + (topic_list(additional) if additional else '')
+                    else:
+                        listing = original + listing
+                    bodies[route] = '<h1>' + e(name + ' ' + label.lower()) + '</h1>' + local_nav + listing
+                else:
+                    add(route, name + ' ' + label.lower(), description,
+                        '<h1>' + e(name + ' ' + label.lower()) + '</h1>' + local_nav + (listing if entries else '<p class="empty">' + e(empty) + '</p>'))
+                    if not entries:
+                        pages[route]['meta']['noindex'] = True
+                        pages[route]['meta']['searchable'] = False
+    add('/learning/web/', 'Web development', 'Web foundations and frameworks.', '<h1>Web development</h1>' + subject_directory([g for g in SUBJECT_GROUPS if g[0] in ('Web foundations', 'Frameworks and platforms')]))
+    pages['/learning/cybersecurity/']['meta']['aliases'] = ['/learning/security/']
+    add('/learning/software-development/', 'Software development', 'A signpost to the language and framework notebooks.', '<h1>Software development</h1><p>Posts and projects live under their own learning subjects.</p>' + subject_directory())
+    add('/learning/courses/', 'Course shelf', 'Verified owned courses and dated Udemy progress.', '<h1>Course shelf</h1>' + snapshot + course_rows(courses['courses']) + link('/learning/', 'Back to learning subjects'))
     for c in courses['courses']:
         work = [p for p in projects if p['slug'] in c['projects']]
         body = f'<div class="intro"><p class="meta">Owned course · {e(TRACKS[c["track"]])}</p><h1>{e(c["title"])}</h1><p>{e(c["instructors"])}</p></div>' + progress(c) + snapshot + f'<p>{e(c["relationship"])}</p><div class="actions">' + link('https://www.udemy.com/course-dashboard-redirect/?course_id=' + c['id'], 'Open this course on Udemy', 'button') + link('/learning/' + c['track'] + '/', 'Back to ' + TRACKS[c['track']]) + '</div>' + section('Connected notes') + related(c['notes'])
@@ -357,15 +431,18 @@ def make_site():
         fact = next((row for row in repository_snapshot['repositories'] if row['full_name'] == p.get('repo')), None)
         if fact:
             body += '<p class="snapshot">GitHub facts observed ' + e(repository_snapshot['observed_at'][:10]) + ': primary language ' + e(fact['language']) + '; last repository push ' + e(fact['pushed_at'][:10]) + '. This date is repository activity, not a measure of current proficiency.</p>'
-        add('/work/projects/' + p['slug'] + '/', p['title'], p['summary'], body)
-    add('/work/skills/', 'Skills & evidence', 'Documented practice separated from course study.', '<h1>Skills &amp; evidence</h1><p>Follow the written work to see what has been practised. Course ownership and progress are shown separately.</p>' + section('Documented practice') + topic_list([('/learning/c-sharp/', {'title': 'C# console input, output & strings', 'description': 'Two lessons and a console-app overview, plus separate object-oriented coursework.'}), ('/work/projects/steam-study/', {'title': 'Python & data visualisation', 'description': 'An authored Steam study with saved charts; reproducibility is not verified.'})]) + section('Course study') + tracks + snapshot + course_rows(courses['courses']))
+        route = project_route(p)
+        add(route, p['title'], p['summary'], body)
+        pages[route]['meta']['aliases'] = ['/work/projects/' + p['slug'] + '/']
+    add('/work/skills/', 'Skills & evidence', 'Documented practice separated from course study.', '<h1>Skills &amp; evidence</h1><p>Follow the written work to see what has been practised. Course ownership and progress are shown separately.</p>' + section('Documented practice') + topic_list([('/learning/c-sharp/', {'title': 'C# console input, output & strings', 'description': 'Two lessons and a console-app overview, plus separate object-oriented coursework.'}), ('/learning/python/projects/steam-study/', {'title': 'Python & data visualisation', 'description': 'An authored Steam study with saved charts; reproducibility is not verified.'})]) + section('Course study') + link('/learning/courses/', 'Browse the course shelf'))
     add('/work/repository-updates/', 'Repository updates', 'Reviewed public repository facts.', '<div class="intro"><p class="eyebrow">public repository snapshot</p><h1>Repository updates</h1><p>This is the practical record of what the selected public repositories have done recently. It does not try to turn a push date into a skill claim.</p></div>' + repository_updates() + '<div class="actions">' + link('https://github.com/Kazumi7884', 'Open my GitHub', 'button') + link('/work/', 'Back to work and learning') + '</div>')
     other_posts = [(r, p) for r, p in posts if r not in {route for route, _ in notes + journal}]
-    bodies['/blog/'] = ('<div class="intro"><p class="eyebrow">posts from both sides of the site</p><h1>The journal</h1><p>Technical notes and personal writing, filed separately below.</p></div>' + section('Technical notes', 'learning') + topic_list(notes) + section('Personal writing', 'journal') + topic_list(journal) + (section('More posts') + topic_list(other_posts) if other_posts else ''))
+    bodies['/blog/'] = '<h1>Blog directory</h1><p>Technical writing belongs to its learning subject. Personal blogs are kept separately.</p><div class="split-door"><section><h2>Technical notes</h2><p>Lessons, posts and projects filed by language or framework.</p>' + link('/learning/', 'Learning notebook') + '</section><section><h2>Personal writing</h2><p>Miscellaneous blogs and personal interests.</p>' + link('/personal/misc/writing/', 'Personal blogs') + '</section></div>' + (section('Earlier technical entries') + topic_list(other_posts) if other_posts else '')
+    bodies['/start-here/'] = '<article class="article"><h1>Site guide</h1>' + render_markdown(pages['/start-here/']['body']) + section('Site pages') + topic_list([(r, pages[r]) for r in ['/about/', '/contact/', '/education/', '/experience/', '/skills/', '/roadmap/', '/changelog/', '/glossary/', '/writing/', '/sitemap/']]) + '</article>'
+    bodies['/about/'] = '<article class="article"><h1>About</h1>' + render_markdown(pages['/about/']['body']) + section('Professional background') + topic_list([(r, pages[r]) for r in ['/education/', '/experience/', '/skills/', '/contact/', '/work/projects/', '/work/repository-updates/']]) + '</article>'
     bodies['/personal/'] = '<div class="home-grid"><div><div class="intro"><p class="eyebrow">the non-professional bit</p><h1>My corner of the web.</h1><p>Games, anime, field notes and somewhere to start writing again.</p></div>' + section('Journal entries', 'posts') + topic_list(journal) + section('The shelves', 'stuff I keep track of') + topic_list([(r, pages[r]) for r in ['/personal/games/', '/personal/anime/', '/personal/misc/phasmophobia/', '/personal/reviews/', '/setup/']]) + '</div>' + profile() + '</div>'
     bodies['/personal/misc/writing/'] = '<h1>Personal writing</h1>' + topic_list(journal)
     add('/personal/misc/writing/posts/', 'Personal posts', 'All authored personal posts.', '<h1>Personal posts</h1>' + topic_list(journal))
-    bodies['/learning/c-sharp/posts/'] = '<h1>C# notebook entries</h1>' + topic_list(notes)
     steam = read_json(ROOT / 'data/steam.json')
     bodies['/personal/games/'] = '<h1>Games &amp; Steam</h1><p>Saved charts from my Steam library. The original article explains the data and tools.</p><p class="snapshot">Offline snapshot carried forward from V5. No live Steam connection.</p>' + link('/personal/misc/writing/posts/steam-viz/', 'Read the full Steam study') + filters('Find a chart', len(steam['charts'])) + '<div class="records">' + ''.join(steam_chart(c) for c in steam['charts']) + '</div><p class="empty" data-filter-empty hidden>No charts match. Clear the filter to show all charts.</p>'
     anime = read_json(ROOT / 'static/data/anime.json')
@@ -381,13 +458,15 @@ def make_site():
     add('/offline.html', 'You are offline', 'Saved pages remain available offline.', '<h1>You’re offline.</h1><p>Pages you have already visited may be available. Reconnect to load an unsaved page.</p>' + link('/', 'Try the saved home page', 'button'))
     add('/search/', 'Search the notebook', 'Search published pages and authored notes.', '<h1>Search the notebook</h1><form class="search-form" id="search-form" role="search"><label class="sr-only" for="query">Search published pages</label><input id="query" name="q" type="search" placeholder="Try C#, strings or Steam"><button type="submit">Search</button><button type="reset">Clear</button></form><p id="search-status" role="status">Enter a word or topic to search.</p><button id="search-retry" hidden>Retry loading search</button><ul class="search-results" id="search-results"></ul><noscript><p>Interactive search needs JavaScript. You can browse every page in the <a href="/sitemap/">site directory</a>.</p></noscript>')
     add('/404.html', 'Page not found', 'Find your way back to the notebook.', '<h1>This page isn’t here.</h1><p>The address may have changed. The directory and search can help you find the original entry.</p><div class="actions">' + link('/', 'Back to home', 'button') + link('/search/', 'Search the notebook') + link('/sitemap/', 'Browse all pages') + '</div>')
-    bodies['/sitemap/'] = '<h1>Site directory</h1>' + topic_list([(r, p) for r, p in pages.items() if r not in ['/sitemap/', '/404.html']])
+    add('/music/', 'Music player', 'Optional local music player.', '<h1>Music player</h1><p>Keep this tab open while browsing the site in another tab. Playback starts only when you choose Play.</p><audio controls preload="none" src="/assets/audio/veritas.mp3">Your browser does not support the audio player.</audio><p class="meta">Original site audio: Veritas.</p>' + link('/start-here/', 'Back to the site guide'))
+    bodies['/sitemap/'] = '<h1>Site directory</h1>' + topic_list([(r, p) for r, p in pages.items() if r not in ['/sitemap/', '/404.html'] and not p['meta'].get('noindex')])
     for route, page in pages.items():
         if route in bodies:
             continue
         body = render_markdown(page['body'])
         if page['meta'].get('entryType') == 'post':
-            bodies[route] = '<div class="article-frame"><aside class="author-gutter"><b>Kaz</b><p>From the notebook</p><p>' + e(page['meta'].get('date', '')) + '</p>' + link('/about/', 'About the author') + '</aside><article class="article"><h1>' + e(page['title']) + '</h1>' + article_outline(body) + body + '<div class="actions">' + link('/blog/', 'All journal entries') + link('/learning/' if route.startswith('/learning/') else '/personal/', 'Back to this section') + '</div></article></div>'
+            owner = '/learning/' + route.split('/')[2] + '/' if route.startswith('/learning/') else '/personal/misc/writing/' if route.startswith('/personal/') else '/blog/technical/'
+            bodies[route] = '<div class="article-frame"><aside class="author-gutter"><b>Kaz</b><p>Author</p><p>' + e(page['meta'].get('date', '')) + '</p>' + link('/about/', 'About the author') + '</aside><article class="article"><header class="post-header"><p class="meta">' + link(owner, 'Back to notebook' if route.startswith('/learning/') else 'Back to writing') + '</p><h1>' + e(page['title']) + '</h1></header>' + article_outline(body) + body + '<div class="actions">' + link(owner, 'Return to this section') + '</div></article></div>'
         else:
             bodies[route] = '<article class="article"><h1>' + e(page['title']) + '</h1>' + article_outline(body) + body + '</article>'
     return pages, bodies
@@ -402,7 +481,7 @@ def frame(route, page, body, origin):
     robots = '<meta name="robots" content="noindex">' if page.get('meta', {}).get('noindex') or route in ('/404.html', '/offline.html') else ''
     return f'''<!doctype html>
 <html lang="en" data-theme="balanced"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{e(page['title'])} | Kaz</title><meta name="description" content="{e(page['description'])}">{robots}<link rel="canonical" href="{e(canonical)}"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/v6/site.css"><script src="/v6/theme.js"></script><script src="/v6/site.js" defer></script><link rel="alternate" type="application/rss+xml" title="Kaz’s journal" href="/feed.xml"></head>
-<body><a class="skip" href="#main">Skip to content</a><header class="masthead"><div class="shell"><div class="mastrow"><a href="/" class="brand"><b>Kaz.</b><span>personal posts + learning notes</span></a><div class="theme-control"><label for="theme">Theme</label><select id="theme"><option value="balanced">Forum</option><option value="forerunner">Forerunner</option><option value="resident">Umbrella</option></select></div></div><div class="navrow"><nav class="primary" aria-label="Main navigation">{nav()}</nav><details class="mobile-nav"><summary>Menu</summary><nav aria-label="Mobile navigation">{nav()}</nav></details><a class="search-link" href="/search/">Search</a></div></div></header><div class="shell"><div class="breadcrumb">{link('/', 'Kaz’s site')} / {e('Home' if route == '/' else page['title'])}</div><main class="page" id="main" tabindex="-1">{body}</main></div><footer class="footer"><div class="shell"><div>Kaz’s site<br>Personal posts. Learning notes. Work I can point to.</div><div>{link('/sitemap/', 'Site directory')}{link('/about/', 'About')}{link('/feed.xml', 'RSS feed')}{link('https://github.com/Kazumi7884', 'GitHub')}</div></div></footer></body></html>'''
+<body><a class="skip" href="#main">Skip to content</a><div class="ambient-field" aria-hidden="true"><span class="glyph-stream">◇<br>⌬<br>⌁<br>◈<br>⟐<br>◇<br>⌬<br>⌁<br>◈</span><span class="glyph-stream">⟐<br>◇<br>◈<br>⌁<br>⌬<br>⟐<br>◇<br>◈<br>⌁</span><span class="glyph-stream">⌬<br>◈<br>⟐<br>◇<br>⌁<br>⌬<br>◈<br>⟐<br>◇</span><span class="glyph-stream">⌁<br>⟐<br>◇<br>⌬<br>◈<br>⌁<br>⟐<br>◇<br>⌬</span></div><header class="masthead"><div class="shell"><div class="mastrow"><a href="/" class="brand"><b>Kaz.</b><span>personal posts + learning notes</span></a><div class="theme-control"><label for="theme">Theme</label><select id="theme"><option value="balanced">Balanced</option><option value="forerunner">Halo / Forerunner</option><option value="resident">Resident Evil</option></select><button id="motion-toggle" type="button" aria-pressed="false" hidden>Motion effects</button></div></div><div class="navrow"><nav class="primary" aria-label="Main navigation">{nav()}</nav><details class="mobile-nav"><summary>Menu</summary><nav aria-label="Mobile navigation">{nav()}</nav></details><a class="search-link" href="/search/">Search</a></div></div><div class="signal-strip" aria-hidden="true"><span></span><span></span><span></span></div></header><div class="shell"><div class="breadcrumb">{link('/', 'Kaz’s site')} / {e('Home' if route == '/' else page['title'])}</div><main class="page" id="main" tabindex="-1">{body}</main></div><footer class="footer"><div class="shell"><div>Kaz’s site<br>Personal posts. Learning notes. Work I can point to.</div><div>{link('/sitemap/', 'Site directory')}{link('/about/', 'About')}<a href="/music/" target="_blank" rel="noopener">Music player (new tab)</a>{link('/feed.xml', 'RSS feed')}{link('https://github.com/Kazumi7884', 'GitHub')}</div></div></footer></body></html>'''
 
 
 def check(output):
@@ -446,11 +525,14 @@ def build(output=ROOT / 'build', origin=None):
         raise ValueError('Output must be a build directory inside the repository')
     output.parent.mkdir(parents=True, exist_ok=True)
     validate_public_assets(ROOT / 'static/assets/images')
+    validate_public_assets(ROOT / 'static/assets/audio/veritas.mp3')
     validate_public_assets(ROOT / 'static/favicon.ico')
     with tempfile.TemporaryDirectory(prefix='.v6-build-', dir=output.parent) as temp:
         staging = Path(temp)
         shutil.copytree(ROOT / 'static/assets/images', staging / 'assets/images')
         prepare_images(staging)
+        (staging / 'assets/audio').mkdir()
+        shutil.copy2(ROOT / 'static/assets/audio/veritas.mp3', staging / 'assets/audio/veritas.mp3')
         shutil.copy2(ROOT / 'static/favicon.ico', staging / 'favicon.ico')
         (staging / 'v6').mkdir()
         for name in ['site.css', 'site.js', 'theme.js']:
@@ -510,7 +592,7 @@ def build(output=ROOT / 'build', origin=None):
         digest = digest_input.hexdigest()[:16]
         public_paths = []
         for asset in sorted(staging.rglob('*')):
-            if asset.is_file() and not asset.name.startswith('.') and asset.name != '_redirects':
+            if asset.is_file() and not asset.name.startswith('.') and asset.name != '_redirects' and asset.suffix != '.mp3':
                 route = '/' + asset.relative_to(staging).as_posix()
                 public_paths.append(route)
                 if route.endswith('/index.html'):
@@ -524,6 +606,7 @@ def build(output=ROOT / 'build', origin=None):
             shutil.rmtree(output)
         shutil.copytree(staging, output)
     report['canonical_pages'] = len(pages)
+    report['canonical_routes'] = sorted(pages)
     report['css_js_bytes'] = sum((HERE / n).stat().st_size for n in ['site.css', 'site.js', 'theme.js'])
     (output / 'build-info.json').write_text(json.dumps(report, indent=2), encoding='utf-8')
     return report

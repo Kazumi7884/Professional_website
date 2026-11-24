@@ -17,6 +17,26 @@
       try { localStorage.setItem('kaz-theme-v6', theme.value); } catch { /* Preference remains valid for this page. */ }
     });
   }
+  const motion = document.querySelector('#motion-toggle');
+  if (motion) {
+    const preference = typeof window.matchMedia === 'function' ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+    let enabled = true;
+    try { enabled = localStorage.getItem('kaz-motion-v6') !== 'off'; } catch { /* A blocked store does not stop the page. */ }
+    const applyMotion = () => {
+      const active = enabled && !preference?.matches;
+      document.documentElement.dataset.motion = active ? 'on' : 'off';
+      motion.setAttribute('aria-pressed', String(active));
+      motion.disabled = Boolean(preference?.matches);
+    };
+    motion.hidden = false;
+    motion.addEventListener('click', () => {
+      enabled = !enabled;
+      try { localStorage.setItem('kaz-motion-v6', enabled ? 'on' : 'off'); } catch { /* Keep the in-page choice. */ }
+      applyMotion();
+    });
+    preference?.addEventListener?.('change', applyMotion);
+    applyMotion();
+  }
   document.addEventListener('keydown', event => {
     const menu = document.querySelector('.mobile-nav[open]');
     if (event.key === 'Escape' && menu) {

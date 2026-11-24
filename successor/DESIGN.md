@@ -1,54 +1,24 @@
-# Kaz's clean-room successor
+# Kaz's personal website: restored original direction
 
-The site has two jobs. The personal side is a place for posts, games, anime and
-ordinary updates. The work side is a clear record of courses, notes and project
-evidence. It should feel like one person's site, rather than a portfolio template
-with a blog attached.
+This is a personal internet home and learning notebook, not a recruitment landing page. The professional background is accessible through About, but it does not dominate Home or the navigation. Technical writing and personal blogs are separate.
 
-The writing uses the plain, first-person tone already present in the published
-posts: direct, a little informal, and specific about what is known. It does not
-turn course progress into confidence ratings or make a small piece of work sound
-like a product launch. Authored Markdown remains the source for personal voice.
+## Information architecture
 
-The default theme is called **Forum**. It borrows the density and wayfinding of a
-good old personal site and forum: a compact masthead, clear date columns, a
-profile box, links that look like links, and visible section rules. Its cream,
-ink and oxblood palette makes reading comfortable without pretending to be
-vintage software.
+The original April 2026 topic contract is restored: Angular, ASP.NET, Bash, C#, CSS, Cybersecurity, Data Analytics, HTML, JavaScript, PowerShell, Python, R, React, Ruby, Ruby on Rails and SQL. Each has an overview and its own posts, projects and resources. Software development is a signpost only. Subject directories are grouped by purpose, not by a generic course funnel.
 
-The **Umbrella** theme is an original, Umbrella-inspired biotech dossier. It uses
-black, bone white, warning red and clinical rules. The straight borders,
-classification strip and tightly set metadata make pages feel filed and examined.
-It has no copied logos, trademarks, game art or affiliation claim.
+Markdown in content/learning/<subject>/posts/ is the owner of technical writing. Project records in projects.json have one canonical subject-owned route; earlier career URLs redirect there. Course details remain available as reviewed resources. The personal Steam study remains at its authored personal URL and is cross-linked, not copied into a technical blog. No placeholder exercise is presented as completed work.
 
-The **Forerunner** theme is an original, Halo Forerunner-inspired archive. Dark
-basalt, pale stone, cyan light and angular panel joins evoke a very old, precise
-system. The glow only marks current location, focus and active controls, so it
-helps orientation instead of becoming a blue-neon effect.
+## Visual identity
 
-Design dials: ENERGY 3 / RHYTHM 3 / MOTION 1. Density is intentional: the page
-should show where to go and what has changed without using empty space as a
-substitute for structure. Movement is limited to short state changes. Every
-visual device serves navigation, reading order, or the selected theme.
+- Balanced restores the retained V5 ink, purple, blue and pink palette rather than the cream Forum redesign. Compact editorial rows and personal-site boards are the default composition.
+- Halo / Forerunner uses the existing dark archive, cyan structural seams and angular panel framing.
+- Resident Evil uses the existing Umbrella-inspired clinical file treatment, warning red and dossier-like headings.
+- The themes retain their persisted identifiers; the visible labels reflect the original theme request.
+- Vertical falling glyphs and horizontal signal bars restore the requested identity motif. CSS-only movement is decorative, optional, independently switchable and disabled for reduced-motion users. No external fonts, new artwork or third-party browser assets are required.
+- Authored posts use a compact author column and bordered reading surface inspired by classic forums rather than modern portfolio cards.
 
-Acceptance: a visitor can reach an authored post or source-backed project in two
-clicks from the home page; each of the seven browser-verified Udemy courses has a
-real detail page; every navigation destination resolves; no course or repository
-fact becomes an invented achievement. CSS and JavaScript remain external. The
-site stays usable with keyboard navigation, high contrast and narrow screens.
+Design dials: ENERGY 3 / RHYTHM 3 / MOTION 2 (decorative motion can be turned off). Preserve the user's authored voice and meaningful route hierarchy. These are original-inspired implementations, not a claim that all historical assets have been recovered pixel for pixel.
 
-Authored Markdown and saved data are inputs, not implementation. This directory's
-builder, templates, styles and JavaScript are new. No V5 application module is
-imported. V5 remains available as a content and recovery reference while this
-successor is verified.
+The public build remains static HTML, external CSS and JavaScript, with a pinned Python build and a separate local writing desk. Search, accessibility, safe Markdown handling, historic URLs, offline behaviour and the 45 KiB CSS/JS budget must remain intact. The optional original music player opens a separate tab for uninterrupted playback; it never starts automatically. The audio is not precached.
 
-Budgets: no server at hosting/runtime, no third-party browser requests, no remote
-fonts, combined first-party CSS/JS under 45 KiB uncompressed. Offline source
-builds use the existing pinned Markdown/YAML libraries. Windows and Linux CI keep
-parity; local results describe Windows only until CI runs.
-
-Public source selection: owned course titles, instructors and progress were
-explicitly requested for portfolio context. No account identifiers, tokens,
-receipts, ratings or study streaks are published. Private repositories are
-excluded from automated snapshots. Local AI can draft a review, but it cannot
-publish facts or replace authored writing.
+No invented projects, achievements, personal posts, course progress or public accounts. Empty subject subpages are explicit, excluded from search and sitemap until populated, and remain reachable from their subject hub.

@@ -1,5 +1,24 @@
 # Kaz's personal site successor
 
+## Restored notebook structure
+
+Home leads to Learning and Personal. About contains professional background; the
+site guide holds maintenance and reference links. The Learning directory groups
+the original 16 subjects. Each subject has an overview, posts, projects and
+resources; empty sections are clearly marked and excluded from indexing.
+
+To add a technical post, save a Markdown file with valid front matter under
+`content/learning/<subject>/posts/`. The successor discovers it automatically.
+Keep personal blogs under `content/personal/misc/writing/posts/`. Reviewed
+projects and course links are attached to their owning topic using
+`successor/projects.json` and `successor/courses.json`. Do not duplicate a post
+under multiple subjects. The original themes and optional motion controls are
+available throughout the site. The optional music player opens in a separate tab
+so navigating the notebook does not interrupt playback.
+
+The V5 writing desk remains a recovery bridge. Its preview still uses V5;
+build and preview the successor for the actual public design.
+
 This is a new implementation. V5 supplies authored Markdown, saved snapshots,
 images and historical URLs. No V5 Python, template, CSS or JavaScript module is
 used by the new build. The old tools remain a recovery/authoring bridge, not the
