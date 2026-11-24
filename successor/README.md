@@ -1,5 +1,26 @@
 # Kaz's personal site successor
 
+## Restored notebook structure
+
+Home leads to Learning and Personal. About contains professional background; the
+site guide holds maintenance and reference links. The Learning directory groups
+the original 16 subjects. Each subject has an overview, posts, projects and
+resources; empty sections are clearly marked and excluded from indexing.
+
+To add a technical post, save a Markdown file with valid front matter under
+`content/learning/<subject>/posts/`. The successor discovers it automatically.
+Keep personal blogs under `content/personal/misc/writing/posts/`. Reviewed
+projects and course links are attached to their owning topic using
+`successor/projects.json` and `successor/courses.json`. Do not duplicate a post
+under multiple subjects. The original themes and optional motion controls are
+available throughout the site. The optional music player opens in a separate tab
+so navigating the notebook does not interrupt playback.
+
+Run `python successor/write.py` to open the local writing desk. Its Build
+and View site controls now use the successor output. The article-only
+editor preview retains the existing writing-desk styling; View site shows
+the actual public design.
+
 This is a new implementation. V5 supplies authored Markdown, saved snapshots,
 images and historical URLs. No V5 Python, template, CSS or JavaScript module is
 used by the new build. The old tools remain a recovery/authoring bridge, not the
@@ -86,10 +107,10 @@ automatic writer or publisher.
 ## Writing and recovery
 
 Authored sources remain in `content/`. Existing post bodies are unchanged.
-Use the established V5 writing desk to edit/save Markdown, then run the successor
-build above. Its old Build/View controls still preview V5, so use the successor
-preview URL for the new design. This bridge is explicit: the V5 writing desk
-has not been rewritten or certified as a clean-room component.
+Use `python successor/write.py` to edit, save and rebuild the successor locally.
+The desk remains the established, loopback-only authoring server rather than
+a new public CMS. The old `python tools/site.py studio` command is retained
+for V5 recovery only.
 
 Drafts are excluded. New published pages are indexed at build time. A failed
 build leaves the last successful output intact. The builder refuses to replace
@@ -148,3 +169,12 @@ No analytics, remote fonts, embeds or browser API credentials are introduced.
 
 For the latest maintenance evidence and continuation steps, read
 [the AI handoff](../docs/AI_HANDOFF.md).
+
+### Styling the current design
+
+Edit `theme-tokens.css` for the theme palette, `themes.css` for its visual
+materials, `sections.css` for the home, notebook, article and hobby layouts,
+and `site.css` for shared fundamentals. The build combines those four files
+into the one external public stylesheet `build/v6/site.css`; do not edit
+generated output. The local writing desk still uses its retained authoring
+styles and the View site action shows the actual public design.

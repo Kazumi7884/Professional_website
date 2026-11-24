@@ -57,7 +57,7 @@
   function fill(document) {
     current = document;
     const meta = document?.metadata || {};
-    const section = document ? document.path.split('/').slice(0, -1).join('/') : 'blog';
+    const section = document ? document.path.split('/').slice(0, -1).join('/') : $('post-section').options[0].value;
     ensureSection(section);
     $('post-section').value = section;
     $('post-section').disabled = Boolean(document?.revision);

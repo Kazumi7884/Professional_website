@@ -17,10 +17,14 @@ The learning area now connects seven verified owned Udemy courses to tracks,
 authored notes and related practical evidence. Progress is a dated snapshot, not
 a skill rating. Public repository updates are curated and reviewed before use.
 
-The V5 implementation below remains an explicit recovery and authoring bridge.
-It is not imported by the successor. Its writing desk still edits the shared
-Markdown, but its Build/View controls preview V5; use the new preview command
-to review the successor. No hosting upload happens merely by building locally.
+For writing, run `python successor/write.py` and open the printed localhost
+address. The established writing desk now offers the original 16 learning
+subjects and builds/views the actual successor. No hosting upload happens
+merely by saving or building locally.
+
+The V5 implementation below remains an explicit recovery reference. Its old
+commands still build and preview V5; use the current commands above for
+normal development.
 
 ## V5 reference and recovery instructions
 

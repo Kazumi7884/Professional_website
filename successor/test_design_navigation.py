@@ -72,11 +72,126 @@ class EditorialNavigationTests(unittest.TestCase):
         css = (HERE / "site.css").read_text(encoding="utf-8")
         self.assertIn(".article-outline-long ol{columns:2", css)
         self.assertIn("overflow-x:auto", css)
-        self.assertNotIn("@import", css)
+        for name in builder.STYLE_SOURCES:
+            self.assertNotIn("@import", (HERE / name).read_text(encoding="utf-8"))
         self.assertLess(
-            sum((HERE / file).stat().st_size for file in ("site.css", "site.js", "theme.js")),
+            sum((HERE / file).stat().st_size + 1 for file in (*builder.STYLE_SOURCES, "site.js", "theme.js")),
             45 * 1024,
         )
+
+
+class OriginalSiteContractTests(unittest.TestCase):
+    def test_learning_subjects_restore_original_scope(self):
+        pages, bodies = builder.make_site()
+        expected = {'angular', 'asp-net', 'bash', 'c-sharp', 'css', 'cybersecurity',
+                    'data-analytics', 'html', 'javascript', 'powershell', 'python',
+                    'r', 'react', 'ruby', 'ruby-on-rails', 'sql'}
+        self.assertEqual(set(builder.TRACKS), expected)
+        hub = BeautifulSoup(bodies['/learning/'], 'html.parser')
+        for subject in expected:
+            base = '/learning/' + subject + '/'
+            self.assertIsNotNone(hub.select_one('a[href="' + base + '"]'))
+            for suffix in ('', 'posts/', 'projects/', 'resources/'):
+                self.assertIn(base + suffix, pages)
+        self.assertTrue(pages['/learning/ruby-on-rails/posts/']['meta']['noindex'])
+
+    def test_home_is_personal_not_a_recruitment_landing_page(self):
+        _, bodies = builder.make_site()
+        home = BeautifulSoup(bodies['/'], 'html.parser')
+        doors = home.select('.home-boards .board-title a')
+        self.assertEqual([a['href'] for a in doors], ['/learning/', '/personal/'])
+        self.assertIsNotNone(home.select_one('.home-boards a[href="/personal/anime/"]'))
+        self.assertIsNotNone(home.select_one('.home-sidebar a[href="/music/"]'))
+        self.assertIsNone(home.select_one('a[href="/work/projects/"]'))
+
+    def test_project_details_have_one_canonical_subject_owner(self):
+        pages, bodies = builder.make_site()
+        for slug, topic in [('space-invaders', 'c-sharp'), ('steam-study', 'python')]:
+            route = '/learning/' + topic + '/projects/' + slug + '/'
+            self.assertIn(route, pages)
+            self.assertIn('/work/projects/' + slug + '/', pages[route]['meta']['aliases'])
+            self.assertNotIn('/work/projects/' + slug + '/', pages)
+            self.assertIn(route, bodies['/learning/' + topic + '/projects/'])
+
+    def test_posts_are_not_mixed_across_learning_topics(self):
+        _, bodies = builder.make_site()
+        self.assertIn('/learning/c-sharp/posts/c-sharp-lesson-1/', bodies['/learning/c-sharp/posts/'])
+        self.assertNotIn('/learning/c-sharp/posts/c-sharp-lesson-1/', bodies['/learning/python/posts/'])
+        self.assertNotIn('/personal/misc/writing/posts/steam-viz/', bodies['/learning/python/posts/'])
+        self.assertIn('/personal/misc/writing/', bodies['/blog/'])
+        self.assertNotIn('/personal/misc/writing/posts/steam-viz/', bodies['/blog/'])
+
+    def test_learning_navigation_active_on_project_details(self):
+        pages, bodies = builder.make_site()
+        route = '/learning/c-sharp/projects/space-invaders/'
+        soup = BeautifulSoup(builder.frame(route, pages[route], bodies[route], 'https://kazumi7884.co.uk'), 'html.parser')
+        self.assertEqual(soup.select_one('nav.primary a[aria-current="page"]')['href'], '/learning/')
+        self.assertEqual(soup.select_one('nav[aria-label="Mobile navigation"] a[aria-current="page"]')['href'], '/learning/')
+
+    def test_standalone_page_does_not_highlight_home(self):
+        pages, bodies = builder.make_site()
+        soup = BeautifulSoup(builder.frame('/skills/', pages['/skills/'], bodies['/skills/'], 'https://kazumi7884.co.uk'), 'html.parser')
+        self.assertFalse(soup.select('nav.primary a[aria-current]'))
+
+    def test_music_is_explicit_and_does_not_autoplay(self):
+        pages, bodies = builder.make_site()
+        player = BeautifulSoup(bodies['/music/'], 'html.parser').audio
+        self.assertTrue(player.has_attr('controls'))
+        self.assertFalse(player.has_attr('autoplay'))
+        self.assertEqual(player['preload'], 'none')
+        page = BeautifulSoup(builder.frame('/', pages['/'], bodies['/'], 'https://kazumi7884.co.uk'), 'html.parser')
+        self.assertEqual(page.select_one('a[href="/music/"]')['target'], '_blank')
+
+    def test_home_links_to_existing_subject_group_ids(self):
+        _, bodies = builder.make_site()
+        home = BeautifulSoup(bodies['/'], 'html.parser')
+        hub = BeautifulSoup(bodies['/learning/'], 'html.parser')
+        for anchor in home.select('a[href^="/learning/#"]'):
+            self.assertIsNotNone(hub.find(id=anchor['href'].split('#')[1]))
+
+    def test_subject_tabs_and_related_resources(self):
+        _, bodies = builder.make_site()
+        for suffix in ('', 'posts/', 'projects/', 'resources/'):
+            route = '/learning/c-sharp/' + suffix
+            doc = BeautifulSoup(bodies[route], 'html.parser')
+            self.assertEqual(doc.select_one('.track-nav [aria-current="page"]')['href'], route)
+            self.assertIsNotNone(doc.select_one('.notebook-sidebar a[href="/learning/courses/c-sharp-masterclass/"]'))
+
+    def test_forum_posts_keep_author_and_same_subject_navigation(self):
+        _, bodies = builder.make_site()
+        doc = BeautifulSoup(bodies['/learning/c-sharp/posts/c-sharp-lesson-1/'], 'html.parser')
+        self.assertEqual(len(doc.select('h1')), 1)
+        self.assertIsNotNone(doc.select_one('.author-gutter .monogram'))
+        self.assertIsNotNone(doc.select_one('.article'))
+        for anchor in doc.select('.post-navigation a'):
+            self.assertTrue(anchor['href'].startswith('/learning/c-sharp/'))
+
+    def test_anime_keeps_real_snapshot_and_filter_records(self):
+        _, bodies = builder.make_site()
+        doc = BeautifulSoup(bodies['/personal/anime/'], 'html.parser')
+        source = builder.read_json(builder.ROOT / 'static/data/anime.json')['items']
+        rows = doc.select('.anime-entry[data-record]')
+        self.assertEqual(len(rows), len(source))
+        self.assertEqual(rows[0].h3.get_text(), source[0]['title'])
+        self.assertIn('Watch status', rows[0].get_text())
+        self.assertIn('My score', rows[0].get_text())
+
+    def test_distinct_personal_section_classes(self):
+        cases = {'/personal/games/': 'games', '/personal/anime/': 'anime', '/personal/misc/phasmophobia/ghosts/': 'field-guide', '/setup/': 'hardware', '/personal/misc/writing/': 'journal'}
+        for route, kind in cases.items():
+            self.assertEqual(builder.page_kind(route), kind)
+
+    def test_career_pages_render_without_visible_html_markup(self):
+        pages = builder.content_pages()
+        for route in ('/skills/', '/experience/', '/education/', '/contact/'):
+            with self.subTest(route=route):
+                rendered = BeautifulSoup(builder.render_markdown(pages[route]['body']), 'html.parser')
+                visible = rendered.get_text(' ', strip=True)
+                self.assertNotIn('<div', visible)
+                self.assertNotIn('<section', visible)
+                self.assertNotIn('<article', visible)
+                self.assertGreaterEqual(len(rendered.select('a[href]')), 1)
+                self.assertTrue(len(visible) > 100)
 
 
 if __name__ == "__main__":

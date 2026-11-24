@@ -5,23 +5,23 @@ lastmod: 2026-08-14
 entryType: "page"
 ---
 
-<div class="timeline">
-  <article>
-    <time>Completed 2024</time>
-    <h2>MSc Computing and Information Systems</h2>
-    <p>Postgraduate study completed in 2024. The qualification strengthened the connection between long-standing practical interest in computing and a professional technology direction.</p>
-  </article>
-  <article>
-    <time>Earlier study</time>
-    <h2>BSc Computing and Information Systems</h2>
-    <p>Undergraduate computing study at the University of South Wales, recorded here at qualification level without inventing module, grade or project details that are not currently documented.</p>
-  </article>
-  <article>
-    <time>Foundation</time>
-    <h2>Level 2 System Support</h2>
-    <p>An earlier systems-support qualification forming part of the route into further computing study.</p>
-  </article>
-</div>
+## MSc Computing and Information Systems
+
+*Completed 2024*
+
+Postgraduate study completed in 2024. The qualification strengthened the connection between long-standing practical interest in computing and a professional technology direction.
+
+## BSc Computing and Information Systems
+
+*Earlier study*
+
+Undergraduate computing study at the University of South Wales, recorded here at qualification level without inventing module, grade or project details that are not currently documented.
+
+## Level 2 System Support
+
+*Foundation*
+
+An earlier systems-support qualification forming part of the route into further computing study.
 
 ## Continuing development
 
