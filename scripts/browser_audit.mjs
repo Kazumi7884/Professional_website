@@ -33,7 +33,12 @@ try {
         if(actual>width+1)overflows.push({width,height,actual});
       }
       await page.setViewportSize({width:390,height:844});
-      if(route==='/')await page.screenshot({path:path.join(output,theme+'-home.png'),fullPage:true});
+      if(['/', '/learning/', '/learning/c-sharp/posts/c-sharp-blog-1/', '/personal/games/'].includes(route)){
+        const label=route==='/'?'home':route.split('/').filter(Boolean).at(-1);
+        await page.setViewportSize({width:1280,height:800});
+        await page.screenshot({path:path.join(output,theme+'-'+label+'.png'),fullPage:true,animations:'disabled'});
+        await page.setViewportSize({width:390,height:844});
+      }
       rows.push({theme,route,violations:axe.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})),overflows});
       console.log(theme,route,'axe',axe.violations.length,'overflow',overflows.length);
     }
@@ -52,6 +57,14 @@ try {
   await page.locator('#theme').focus();await page.keyboard.press('Home');await page.keyboard.press('ArrowDown');await page.keyboard.press('ArrowDown');await page.keyboard.press('Enter');
   assert.equal(await page.locator('html').getAttribute('data-theme'),'resident');await page.reload();assert.equal(await page.locator('#theme').inputValue(),'resident');flows.push('Keyboard theme selection and persistence');
   await page.locator('.mobile-nav summary').click();await page.getByRole('navigation',{name:'Mobile navigation'}).getByRole('link',{name:'Learning',exact:true}).click();await page.waitForURL('**/learning/');flows.push('Mobile home to learning');
+  await page.locator('main a[href="/learning/ruby-on-rails/"]').click();await page.waitForURL('**/ruby-on-rails/');
+  await page.locator('main a[href="/learning/ruby-on-rails/posts/"]').click();await page.waitForURL('**/ruby-on-rails/posts/');
+  assert.match(await page.locator('main').innerText(),/No authored posts or lessons published yet/);flows.push('Subject directory and honest empty notebook');
+  await page.locator('#motion-toggle').click();assert.equal(await page.locator('html').getAttribute('data-motion'),'off');
+  await page.reload();assert.equal(await page.locator('#motion-toggle').getAttribute('aria-pressed'),'false');flows.push('Motion control and saved preference');
+  await page.emulateMedia({reducedMotion:'reduce'});
+  assert.equal(await page.locator('#motion-toggle').isDisabled(),true);
+  await page.emulateMedia({reducedMotion:'no-preference'});
   await page.locator('.search-link').click();await page.locator('#query').fill('C# Lesson 1');await page.getByRole('button',{name:'Search',exact:true}).click();
   await page.locator('#search-results a[href="/learning/c-sharp/posts/c-sharp-lesson-1/"]').click();await page.waitForURL('**/c-sharp-lesson-1/');await page.goBack();flows.push('Search to authored note and browser back');
   await page.locator('#query').fill('nonexistentxyz');await page.getByRole('button',{name:'Search',exact:true}).click();await page.locator('#search-status').filter({hasText:'No pages match'}).waitFor();
@@ -67,6 +80,7 @@ try {
   await page.setViewportSize({width:640,height:512});assert(await page.evaluate(()=>document.documentElement.scrollWidth)<=641);flows.push('200% equivalent desktop reflow');
   const allRoutes=JSON.parse(await readFile(path.join(root,'build/build-info.json'),'utf8')).canonical_routes;
   await cdp.send('Network.emulateNetworkConditions',{offline:false,latency:0,downloadThroughput:-1,uploadThroughput:-1});await cdp.send('Emulation.setCPUThrottlingRate',{rate:1});await page.setViewportSize({width:320,height:568});
+  await page.evaluate(()=>localStorage.setItem('kaz-theme-v6','balanced'));
   for(const route of allRoutes){
     const response=await page.goto('http://127.0.0.1:8765'+route);
     assert(response.status()===200,'HTTP status '+route);

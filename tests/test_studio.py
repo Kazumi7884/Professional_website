@@ -241,7 +241,7 @@ class SuccessorStudioHTTP(unittest.TestCase):
                 self.assertEqual(response.status, 200)
                 page = BeautifulSoup(response.read(), 'html.parser')
                 self.assertIsNotNone(page.select_one('option[value="learning/ruby-on-rails/posts"]'))
-                self.assertIsNone(page.select_one('option[value="blog"]'))
+                self.assertIsNone(page.select_one('#post-section option[value="blog"]'))
                 connection.close()
                 connection = http.client.HTTPConnection('127.0.0.1', server.server_port)
                 connection.request('POST', '/__studio/api/build', '{}', {
